@@ -50,12 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',      # Required for Admin/Login
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', 
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    
-]
+
 
 ROOT_URLCONF = 'quiz_project.urls'
 
