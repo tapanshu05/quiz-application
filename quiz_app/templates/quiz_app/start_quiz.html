@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.title }} - Live Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Disable text selection across the quiz layout */
+        body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        .sticky-timer { position: sticky; top: 10px; z-index: 1000; }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div class="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                
+                <div class="card bg-dark text-white shadow sticky-timer mb-4">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0 text-warning fw-bold">{{ quiz.title }}</h4>
+                        <h4 class="mb-0">Time Left: <span id="timer" class="badge bg-danger">00:00</span></h4>
+                    </div>
+                </div>
+
+                <form id="quizForm" method="POST" action="{% url 'submit_quiz' quiz.id %}">
+                    {% csrf_token %}
+                    
+                    {% for q in questions %}
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3"><strong>Q{{ forloop.counter }}:</strong> {{ q.question_text }}</h5>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_{{ q.id }}" value="A" id="q_{{ q.id }}_A">
+                                <label class="form-check-input-label" for="q_{{ q.id }}_A">{{ q.option_a }}</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_{{ q.id }}" value="B" id="q_{{ q.id }}_B">
+                                <label class="form-check-input-label" for="q_{{ q.id }}_B">{{ q.option_b }}</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_{{ q.id }}" value="C" id="q_{{ q.id }}_C">
+                                <label class="form-check-input-label" for="q_{{ q.id }}_C">{{ q.option_c }}</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="question_{{ q.id }}" value="D" id="q_{{ q.id }}_D">
+                                <label class="form-check-input-label" for="q_{{ q.id }}_D">{{ q.option_d }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-success btn-lg w-100 shadow mb-5">Submit Quiz</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. COUNTDOWN TIMER LOGIC
+        let timeLimitInMinutes = parseInt("{{ quiz.time_limit }}");
+        let totalTimeInSeconds = timeLimitInMinutes * 60;
+        const timerElement = document.getElementById('timer');
+
+        const countdown = setInterval(() => {
+            let minutes = Math.floor(totalTimeInSeconds / 60);
+            let seconds = totalTimeInSeconds % 60;
+
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+
+            timerElement.textContent = `${minutes}:${seconds}`;
+
+            if (totalTimeInSeconds <= 0) {
+                clearInterval(countdown);
+                alert("Time is up! Your quiz will be submitted automatically.");
+                document.getElementById('quizForm').submit();
+            }
+            totalTimeInSeconds--;
+        }, 1000);
+
+        // 2. ANTI-CHEAT: BLOCK COPY/PASTE & RIGHT CLICK
+        document.addEventListener('contextmenu', event => event.preventDefault()); // Block right click
+        document.addEventListener('copy', event => event.preventDefault());        // Block copy
+        document.addEventListener('paste', event => event.preventDefault());       // Block paste
+
+        // 3. ANTI-CHEAT: DETECT TAB SWITCHING
+        let warningCount = 0;
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                warningCount++;
+                if (warningCount >= 2) {
+                    alert("You switched tabs twice! Your quiz is being auto-submitted due to a violation.");
+                    document.getElementById('quizForm').submit();
+                } else {
+                    alert("⚠️ WARNING: Tab switching is strictly prohibited! Next time your test will auto-submit.");
+                }
+            }
+        });
+    </script>
+</body>
+</html>
