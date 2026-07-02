@@ -42,11 +42,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Handles static styles online
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Required for Admin/Login
+    'django.contrib.messages.middleware.MessageMiddleware',      # Required for Admin/Login
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 MIDDLEWARE = [
