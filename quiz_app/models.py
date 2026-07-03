@@ -29,3 +29,5 @@ class UserResult(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE) # Which quiz they took
     score = models.IntegerField()                            # Marks obtained
     total_questions = models.IntegerField()                  # Total questions present
+    def __str__(self):
+        return f"{self.user.username} - {self.quiz.title} ({self.score}/{self.total_questions})"
