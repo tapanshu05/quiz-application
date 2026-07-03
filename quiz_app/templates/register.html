@@ -14,12 +14,34 @@
                     <form method="POST">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-warning w-100 fw-bold mt-3 text-dark">Register</button>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="showPasswordReg">
+                            <label class="form-check-input-label" for="showPasswordReg">
+                                Show Passwords
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100 fw-bold text-dark">Register</button>
                     </form>
                     <p class="text-center mt-3">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('showPasswordReg').addEventListener('change', function() {
+            const passwordFields = document.querySelectorAll('input[type="password"], input.password-toggle');
+            passwordFields.forEach(field => {
+                if (this.checked) {
+                    field.type = 'text';
+                    field.classList.add('password-toggle');
+                } else {
+                    field.type = 'password';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
