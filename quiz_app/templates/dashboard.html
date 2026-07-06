@@ -67,36 +67,34 @@
 
             <!-- Right Side: Performance Score History -->
             <div class="col-lg-5 mb-4">
-                <h4 class="fw-bold text-dark mb-3">📈 Your Performance History</h4>
-                <div class="table-container">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Quiz Topic</th>
-                                    <th class="text-center">Score Metric</th>
-                                    <th class="text-end">Attempted On</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for result in past_results %}
-                                <tr>
-                                    <td class="fw-bold text-secondary">{{ result.quiz.title }}</td>
-                                    <td class="text-center">
-                                        <span class="badge badge-score">{{ result.score }} / {{ result.total_questions }}</span>
-                                    </td>
-                                    <td class="text-end text-muted small">{{ result.date_taken|date:"M d, Y" }}</td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="3" class="text-center text-muted py-4">You have not completed any quizzes yet. Your scores will populate here automatically.</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <h4 class="fw-bold text-dark mb-3">📈 Your Performance History</h4>
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Quiz Topic</th>
+                        <th class="text-center">Score Metric</th>
+                        </tr>
+                </thead>
+                <tbody>
+                    {% for result in past_results %}
+                    <tr>
+                        <td class="fw-bold text-secondary">{{ result.quiz.title }}</td>
+                        <td class="text-center">
+                            <span class="badge badge-score">{{ result.score }} / {{ result.total_questions }}</span>
+                        </td>
+                        </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center text-muted py-4">You have not completed any quizzes yet. Your scores will populate here automatically.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
         </div>
     </div>
 

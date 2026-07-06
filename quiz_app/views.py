@@ -80,7 +80,7 @@ def logout_view(request):
 @login_required(login_url='login')
 def student_dashboard(request):
     # Fetch results belonging strictly to the logged-in student
-    past_results = UserResult.objects.filter(user=request.user).order_by('-date_taken')
+    past_results = UserResult.objects.filter(user=request.user)
     
     # Fetch all available quizzes for them to take
     available_quizzes = Quiz.objects.all()
