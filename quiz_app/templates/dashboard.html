@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f7fafc; font-family: 'Segoe UI', sans-serif; }
+        .navbar-custom { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .dashboard-header { background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 30px; margin-top: 30px; margin-bottom: 30px; }
+        .quiz-card { background: white; border: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        .quiz-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(118, 75, 162, 0.15); }
+        .btn-start { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border: none; color: white; font-weight: 600; border-radius: 8px; }
+        .btn-start:hover { background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%); color: white; }
+        .table-container { background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 25px; }
+        .badge-score { background-color: #764ba2; color: white; font-size: 0.95rem; padding: 8px 12px; border-radius: 20px; }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">🎓 Exam Prep Portal</a>
+            <div class="d-flex align-items-center">
+                <span class="navbar-text text-white me-3 fw-medium">Welcome, {{ request.user.username }}!</span>
+                <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-light rounded-pill px-3">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header Welcome Box -->
+        <div class="dashboard-header d-md-flex align-items-center justify-content-between">
+            <div>
+                <h2 class="fw-bold text-dark mb-1">Student Progress Dashboard</h2>
+                <p class="text-muted mb-0">Track your practice milestones, attempt pending mock exams, and evaluate performance analytics.</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <span class="fs-5 fw-bold text-secondary">Account Status: <span class="text-success">● Active</span></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Side: Available Quizzes -->
+            <div class="col-lg-7 mb-4">
+                <h4 class="fw-bold text-dark mb-3">📋 Available Practice Exams</h4>
+                <div class="row">
+                    {% for quiz in available_quizzes %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card quiz-card h-100 p-3 d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="fw-bold text-dark mb-2">{{ quiz.title }}</h5>
+                                <p class="text-muted small mb-3">{{ quiz.description|default:"No description provided for this mock test." }}</p>
+                            </div>
+                            <a href="{% url 'start_quiz' quiz.id %}" class="btn btn-start w-100 mt-2">Attempt Quiz</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-info">No practice quizzes have been uploaded by the Administrator yet.</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Right Side: Performance Score History -->
+            <div class="col-lg-5 mb-4">
+                <h4 class="fw-bold text-dark mb-3">📈 Your Performance History</h4>
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Quiz Topic</th>
+                                    <th class="text-center">Score Metric</th>
+                                    <th class="text-end">Attempted On</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for result in past_results %}
+                                <tr>
+                                    <td class="fw-bold text-secondary">{{ result.quiz.title }}</td>
+                                    <td class="text-center">
+                                        <span class="badge badge-score">{{ result.score }} / {{ result.total_questions }}</span>
+                                    </td>
+                                    <td class="text-end text-muted small">{{ result.date_taken|date:"M d, Y" }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-4">You have not completed any quizzes yet. Your scores will populate here automatically.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

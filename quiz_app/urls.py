@@ -14,3 +14,8 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
 ]
+
+urlpatterns = [
+    # ... keep your existing login, register, logout, and quiz paths ...
+    path('dashboard/', views.student_dashboard, name='dashboard'),
+]
