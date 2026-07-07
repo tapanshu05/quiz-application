@@ -42,8 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'quiz_app',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Handles static styles online
@@ -127,3 +131,22 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
+
+# Django Sites Framework के लिए (1 का मतलब पहली साइट यानी आपकी लाइव साइट)
+SITE_ID = 1
+
+# Authentication Backends जांगो को बताएंगे कि सोशल लॉगिन भी चेक करना है
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# लॉगिन और लॉगआउट के बाद बच्चा कहाँ जाएगा
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'
+
+# सोशल लॉगिन सेटिंग्स (ईमेल को जरूरी बनाने के लिए)
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email_username'
+SOCIALACCOUNT_QUERY_EMAIL = True
