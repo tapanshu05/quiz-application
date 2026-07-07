@@ -1,3 +1,4 @@
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,6 +79,11 @@
 
                         <button type="submit" class="btn btn-custom w-100 text-uppercase tracking-wider">Login</button>
                     </form>
+                    <div class="text-center mt-3">
+    <a href="{% provider_login_url 'google' %}" class="btn btn-outline-danger w-100">
+        Sign in with Google
+    </a>
+</div>
                     <p class="text-center mt-4 mb-0 text-muted">New Student? <a href="{% url 'register' %}" class="text-decoration-none fw-bold" style="color: #764ba2;">Register here</a></p>
                 </div>
             </div>
