@@ -148,5 +148,5 @@ LOGOUT_REDIRECT_URL = 'login'
 # सोशल लॉगिन सेटिंग्स (ईमेल को जरूरी बनाने के लिए)
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email_username'
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email' 
 SOCIALACCOUNT_QUERY_EMAIL = True
