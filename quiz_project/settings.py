@@ -39,6 +39,14 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 
+# settings.py के अंदर ये दो लाइनें जोड़ो:
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://exampreperation.online',
+    'https://www.exampreperation.online',
+    'https://quiz-application-dbo8.onrender.com', # पुराना रेंडर लिंक भी सेफ रखने के लिए
+]
+
 
 # Application definition
 
