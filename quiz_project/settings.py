@@ -29,7 +29,15 @@ SECRET_KEY = 'django-insecure-i^kd+uutfyvce12vu+)&(o#xnzq*k&(ft#vy-bhl)s2k1vj3+5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'quiz-application-dbo8.onrender.com']
+# settings.py के अंदर जाओ और ALLOWED_HOSTS को ऐसे अपडेट करो:
+
+ALLOWED_HOSTS = [
+    'quiz-application-dbo8.onrender.com', # तुम्हारा पुराना रेंडर लिंक (ताकि वो भी काम करे)
+    'exampreperation.online',             # तुम्हारा नया मुख्य डोमेन 😎
+    'www.exampreperation.online',         # www वाला वर्जन
+    '127.0.0.1',                          # लोकलहोस्ट (ताकि कंप्यूटर पर भी चलता रहे)
+    'localhost',
+]
 
 
 # Application definition
