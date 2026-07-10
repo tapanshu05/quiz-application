@@ -135,7 +135,7 @@
                                         {% if quiz.description %}{{ quiz.description }}{% else %}No description provided for this mock test.{% endif %}
                                     </p>
                                 </div>
-                                <a href="{% url 'take_quiz' quiz.id %}" class="btn btn-attempt w-100 shadow-sm text-center">
+                                <a href="/quiz/{{ quiz.id }}/" class="btn btn-attempt w-100 shadow-sm text-center">
                                     <i class="fa-solid fa-play me-1 small"></i> Attempt Quiz
                                 </a>
                             </div>
