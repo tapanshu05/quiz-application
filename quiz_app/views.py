@@ -55,7 +55,7 @@ def register_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            auth_login(request, user) # रजिस्टर होते ही ऑटोमैटिक लॉगिन हो जाएगा
+            auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('dashboard')
     else:
         form = UserCreationForm()
