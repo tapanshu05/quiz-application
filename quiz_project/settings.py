@@ -177,3 +177,8 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 
 SECURE_SSL_REDIRECT = True
+
+# 🔒 प्रोडक्शन में हमेशा HTTPS फ़ोर्स करने के लिए
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
