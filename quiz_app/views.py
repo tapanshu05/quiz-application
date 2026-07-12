@@ -154,3 +154,16 @@ def payment_success_view(request):
             return render(request, 'quiz_app/payment_status.html', {'status': 'failed'})
             
     return HttpResponseBadRequest()
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import StudentProfile
+
+@login_required(login_url='login')
+def solutions_view(request):
+    # पक्का करो कि यूजर प्रीमियम है या नहीं
+    profile, created = StudentProfile.objects.get_or_create(user=request.user)
+    if not profile.is_premium:
+        return redirect('checkout') # अगर प्रीमियम नहीं है तो पेमेंट पेज पर भेजो
+        
+    return render(request, 'quiz_app/solutions.html')
