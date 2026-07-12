@@ -2,7 +2,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# 1. Table to store Quiz Name and its Time Limit
 class Quiz(models.Model):
     title = models.CharField(max_length=200)       # Name of the quiz (e.g., Python Basics)
     time_limit = models.IntegerField()             # Time allowed in minutes (e.g., 5)
@@ -31,3 +30,11 @@ class UserResult(models.Model):
     total_questions = models.IntegerField()                  # Total questions present
     def __str__(self):
         return f"{self.user.username} - {self.quiz.title} ({self.score}/{self.total_questions})"
+    
+class StudentProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_premium = models.BooleanField(default=False)
+    payment_id = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
