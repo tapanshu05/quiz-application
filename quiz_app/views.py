@@ -1,9 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Quiz, Question, UserResult
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
-from .models import Quiz, Question, UserResult
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseBadRequest
+from django.conf import settings
+import razorpay
+
+# मॉडल इम्पोर्ट्स
+from .models import Quiz, Question, UserResult, StudentProfile
+
+# Razorpay Client Initialization
+razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
 @login_required(login_url='login')
 def home(request):
@@ -27,13 +35,11 @@ def submit_quiz(request, quiz_id):
         score = 0
         total_questions = questions.count()
 
-        # Loop through each question to check if the submitted answer matches the correct one
         for question in questions:
-            user_answer = request.POST.get(f'question_{question.id}') # Gets selected radio option
+            user_answer = request.POST.get(f'question_{question.id}')
             if user_answer == question.correct_option:
                 score += 1
 
-        # Save the finalized performance record into the database
         UserResult.objects.create(
             user=request.user,
             quiz=quiz,
@@ -41,7 +47,6 @@ def submit_quiz(request, quiz_id):
             total_questions=total_questions
         )
         
-        # Take the user to a summary dashboard or back home after submission
         return render(request, 'quiz_app/result.html', {
             'quiz': quiz,
             'score': score,
@@ -79,10 +84,7 @@ def logout_view(request):
 
 @login_required(login_url='login')
 def student_dashboard(request):
-    # Fetch results belonging strictly to the logged-in student
     past_results = UserResult.objects.filter(user=request.user)
-    
-    # Fetch all available quizzes for them to take
     available_quizzes = Quiz.objects.all()
     
     context = {
@@ -91,25 +93,13 @@ def student_dashboard(request):
     }
     return render(request, 'quiz_app/dashboard.html', context)
 
-
-import razorpay
-from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseBadRequest
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import StudentProfile
-
-# Razorpay Client Initialization
-razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-
 @login_required(login_url='login')
 def checkout_view(request):
     profile, created = StudentProfile.objects.get_or_create(user=request.user)
     
-    # 💡 इसे बदलकर ऐसा कर दो:
+    # अगर छात्र पहले से ही प्रीमियम है, तो सीधे डैशबोर्ड पर भेज दो
     if profile.is_premium:
-     return redirect('dashboard')  # <-- सही नाम!
+        return redirect('dashboard')
         
     amount = 5900  # ₹59 = 5900 Paise
     currency = "INR"
@@ -130,6 +120,7 @@ def checkout_view(request):
 
 @csrf_exempt
 def payment_success_view(request):
+    """4. Auto Payment Handler: रेज़रपे से पेमेंट कंफर्म होते ही ताला अपने आप खुलेगा और यूज़र डैशबोर्ड पर आ जाएगा।"""
     if request.method == "POST":
         payment_id = request.POST.get('razorpay_payment_id', '')
         order_id = request.POST.get('razorpay_order_id', '')
@@ -142,30 +133,31 @@ def payment_success_view(request):
         }
         
         try:
+            # रेज़रपे के सिग्नेचर को 100% सिक्योर तरीके से वेरीफाई करें
             razorpay_client.utility.verify_payment_signature(params_dict)
             
-            profile = StudentProfile.objects.get(user=request.user)
-            profile.is_premium = True
-            profile.payment_id = payment_id
-            profile.save()
+            # अगर यूजर लॉगिन है तो उसकी प्रोफाइल ढूंढकर ऑटोमैटिक प्रीमियम एक्टिव कर दो
+            if request.user.is_authenticated:
+                profile, created = StudentProfile.objects.get_or_create(user=request.user)
+                profile.is_premium = True
+                profile.payment_id = payment_id
+                profile.save()
             
-            return render(request, 'quiz_app/payment_status.html', {'status': 'success'})
+            # 🚀 बिना किसी फालतू पेज पर रोके छात्र को सीधे प्रीमियम डैशबोर्ड पर रीडायरेक्ट करो
+            return redirect('dashboard')
+            
+        except razorpay.errors.SignatureVerificationError:
+            return HttpResponseBadRequest("Security Check Failed: Invalid Signature.")
         except Exception as e:
-            return render(request, 'quiz_app/payment_status.html', {'status': 'failed'})
+            return HttpResponseBadRequest(f"An unexpected error occurred: {str(e)}")
             
-    return HttpResponseBadRequest()
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import StudentProfile
+    return redirect('dashboard')
 
 @login_required(login_url='login')
 def solutions_view(request):
-    # पक्का करो कि यूजर प्रीमियम है या नहीं
     profile, created = StudentProfile.objects.get_or_create(user=request.user)
     if not profile.is_premium:
-        return redirect('checkout') # अगर प्रीमियम नहीं है तो पेमेंट पेज पर भेजो
-        
+        return redirect('checkout')
     return render(request, 'quiz_app/solutions.html')
 
 @login_required(login_url='login')
@@ -173,5 +165,4 @@ def notes_view(request):
     profile, created = StudentProfile.objects.get_or_create(user=request.user)
     if not profile.is_premium:
         return redirect('checkout')
-        
     return render(request, 'quiz_app/notes.html')

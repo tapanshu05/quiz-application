@@ -24,6 +24,7 @@
             "name": "Exam Prep Portal",
             "description": "Lifetime Premium Access",
             "order_id": "{{ order_id }}",
+            "callback_url": "https://exampreperation.online/payment/success/",
             "handler": function (response){
                 var form = document.createElement('form');
                 form.method = 'POST';
