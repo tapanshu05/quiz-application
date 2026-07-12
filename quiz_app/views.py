@@ -107,8 +107,9 @@ razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZOR
 def checkout_view(request):
     profile, created = StudentProfile.objects.get_or_create(user=request.user)
     
+    # 💡 इसे बदलकर ऐसा कर दो:
     if profile.is_premium:
-        return redirect('student_dashboard')
+     return redirect('dashboard')  # <-- सही नाम!
         
     amount = 5900  # ₹59 = 5900 Paise
     currency = "INR"
