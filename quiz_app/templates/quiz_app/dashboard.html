@@ -169,17 +169,27 @@
         <div class="row g-4 mb-5">
             
             <!-- 1. QUIZZES BOX -->
-            <div class="col-md-4">
-                <div class="card main-hub-card">
-                    <span class="unlock-badge"><i class="fa-solid fa-unlock me-1"></i> Free Mode</span>
-                    <div class="hub-icon-wrapper bg-quiz">
-                        <i class="fa-regular fa-clipboard"></i>
-                    </div>
-                    <h4 class="fw-bold text-dark mb-2">Practice Exams</h4>
-                    <p class="text-muted small">Real-time mock tests with live timers and strict anti-cheat tracking.</p>
-                    <a href="#quizzes-section" class="btn btn-primary btn-hub">Go to Tests →</a>
-                </div>
+        <div class="col-md-4">
+          <div class="card main-hub-card">
+            {% if user.studentprofile.is_premium %}
+              <span class="unlock-badge"><i class="fa-solid fa-unlock me-1"></i> Unlocked</span>
+            {% else %}
+              <span class="lock-badge"><i class="fa-solid fa-lock me-1"></i> Paid Plan</span>
+            {% endif %}
+            
+            <div class="hub-icon-wrapper bg-quiz">
+              <i class="fa-regular fa-clipboard"></i>
             </div>
+            <h4 class="fw-bold text-dark mb-2">Practice Exams</h4>
+            <p class="text-muted small">Real-time mock tests with live timers and strict anti-cheat tracking.</p>
+            
+            {% if user.studentprofile.is_premium %}
+              <a href="#quizzes-section" class="btn btn-primary btn-hub">Go to Tests →</a>
+            {% else %}
+              <a href="/checkout/" class="btn btn-warning text-dark btn-hub"><i class="fa-solid fa-lock me-1"></i> Unlock Now</a>
+            {% endif %}
+          </div>
+        </div>
 
             <!-- 2. SOLUTIONS BOX -->
             <div class="col-md-4">
