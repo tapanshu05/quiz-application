@@ -103,6 +103,30 @@
             border-radius: 30px;
             font-size: 0.9rem;
         }
+
+        /* Quiz & History Cards Fallback Styles */
+        .quiz-card, .history-card {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+        .btn-attempt {
+            background: #5b73df;
+            color: white;
+            border-radius: 10px;
+        }
+        .btn-attempt:hover {
+            background: #4a62cd;
+            color: white;
+        }
+        .score-badge {
+            background: #eef2ff;
+            color: #5b73df;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -128,8 +152,8 @@
                     <p class="text-muted mb-0">Access premium handwritten solutions, top-tier PDF notes, and live practice tests.</p>
                 </div>
                 <div class="mt-3 mt-md-0">
-                    <!-- 👑 अगर यूजर प्रीमियम है तो Active दिखाएगा, नहीं तो Premium Join करने का बटन -->
-                    {% if is_premium_user %}
+                    <!-- 👑 डेटाबेस से सीधे प्रीमियम स्टेटस चेक हो रहा है -->
+                    {% if user.studentprofile.is_premium %}
                         <span class="status-badge"><i class="fa-solid fa-crown me-1 text-warning"></i> Premium Access: Active</span>
                     {% else %}
                         <a href="/checkout/" class="btn btn-warning fw-bold rounded-pill px-4 shadow-sm text-dark">
@@ -160,7 +184,7 @@
             <!-- 2. SOLUTIONS BOX -->
             <div class="col-md-4">
                 <div class="card main-hub-card">
-                    {% if is_premium_user %}
+                    {% if user.studentprofile.is_premium %}
                         <span class="unlock-badge"><i class="fa-solid fa-unlock me-1"></i> Unlocked</span>
                     {% else %}
                         <span class="lock-badge"><i class="fa-solid fa-lock me-1"></i> Paid Plan</span>
@@ -171,16 +195,20 @@
                     </div>
                     <h4 class="fw-bold text-dark mb-2">Handwritten Solutions</h4>
                     <p class="text-muted small">Step-by-step, clean handwritten answers for deeply understanding core logic.</p>
-                    <a href="/checkout/" class="btn btn-warning text-dark btn-hub">
-                        {% if is_premium_user %}View Solutions →{% else %}<i class="fa-solid fa-lock me-1"></i> Unlock Now{% endif %}
-                    </a>
+                    
+                    {% if user.studentprofile.is_premium %}
+                        <!-- 💡 अनलॉक होने के बाद यहाँ अपना असली सॉल्यूशन्स वाला यूआरएल पाथ (जैसे /solutions/) डाल सकते हो -->
+                        <a href="/solutions/" class="btn btn-success text-white btn-hub">View Solutions →</a>
+                    {% else %}
+                        <a href="/checkout/" class="btn btn-warning text-dark btn-hub"><i class="fa-solid fa-lock me-1"></i> Unlock Now</a>
+                    {% endif %}
                 </div>
             </div>
 
             <!-- 3. NOTES BOX -->
             <div class="col-md-4">
                 <div class="card main-hub-card">
-                    {% if is_premium_user %}
+                    {% if user.studentprofile.is_premium %}
                         <span class="unlock-badge"><i class="fa-solid fa-unlock me-1"></i> Unlocked</span>
                     {% else %}
                         <span class="lock-badge"><i class="fa-solid fa-lock me-1"></i> Paid Plan</span>
@@ -191,9 +219,13 @@
                     </div>
                     <h4 class="fw-bold text-dark mb-2">Premium PDF Notes</h4>
                     <p class="text-muted small">Highly optimized, chapter-wise premium study notes without messy ads.</p>
-                    <a href="/checkout/" class="btn btn-info text-white btn-hub">
-                        {% if is_premium_user %}Download Notes →{% else %}<i class="fa-solid fa-lock me-1"></i> Unlock Now{% endif %}
-                    </a>
+                    
+                    {% if user.studentprofile.is_premium %}
+                        <!-- 💡 अनलॉक होने के बाद यहाँ अपना असली नोट्स वाला यूआरएल पाथ (जैसे /notes/) डाल सकते हो -->
+                        <a href="/notes/" class="btn btn-info text-white btn-hub">Download Notes →</a>
+                    {% else %}
+                        <a href="/checkout/" class="btn btn-warning text-dark btn-hub"><i class="fa-solid fa-lock me-1"></i> Unlock Now</a>
+                    {% endif %}
                 </div>
             </div>
 
