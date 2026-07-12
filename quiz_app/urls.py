@@ -11,5 +11,7 @@ urlpatterns = [
     path('quiz/<int:quiz_id>/', views.start_quiz, name='start_quiz'),
     path('quiz/<int:quiz_id>/submit/', views.submit_quiz, name='submit_quiz'),
     path('checkout/', views.checkout_view, name='checkout'),
-path('payment/success/', views.payment_success_view, name='payment_success'),
+    path('payment/success/', views.payment_success_view, name='payment_success'),
+    path('solutions/', views.solutions_view, name='solutions'),
+    path('notes/', views.notes_view, name='notes'),
 ]

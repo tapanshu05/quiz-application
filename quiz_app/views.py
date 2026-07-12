@@ -167,3 +167,11 @@ def solutions_view(request):
         return redirect('checkout') # अगर प्रीमियम नहीं है तो पेमेंट पेज पर भेजो
         
     return render(request, 'quiz_app/solutions.html')
+
+@login_required(login_url='login')
+def notes_view(request):
+    profile, created = StudentProfile.objects.get_or_create(user=request.user)
+    if not profile.is_premium:
+        return redirect('checkout')
+        
+    return render(request, 'quiz_app/notes.html')
