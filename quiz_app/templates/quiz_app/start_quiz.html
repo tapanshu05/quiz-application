@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ quiz.title }} - Live Exam</title>
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- MathJax Setup (LaTeX के लिए) -->
     <script>
       window.MathJax = {
         tex: {
@@ -28,7 +31,6 @@
             user-select: none;
             -webkit-user-select: none;
         }
-        /* Top Navigation Header Bar */
         .exam-header {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
@@ -52,7 +54,6 @@
             margin-top: 40px;
             margin-bottom: 60px;
         }
-        /* Question Card Interface */
         .question-card {
             background: white;
             border: none;
@@ -60,8 +61,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             padding: 30px;
         }
-    
-       
         .q-number {
             background: #eef2f7;
             color: #1e3c72;
@@ -75,7 +74,6 @@
             color: #2d3748;
             line-height: 1.6;
         }
-        /* Beautiful Premium Options */
         .option-label {
             display: flex;
             align-items: center;
@@ -88,42 +86,17 @@
             transition: all 0.2s ease;
             font-size: 1.05rem;
             color: #4a5568;
+            width: 100%;
         }
         .option-label:hover {
             background: #edf2f7;
             border-color: #cbd5e0;
         }
         .option-input {
-            display: none;
-        }
-        .custom-radio {
-            height: 20px;
-            width: 20px;
-            border: 2px solid #a0aec0;
-            border-radius: 50%;
-            display: inline-block;
             margin-right: 15px;
-            position: relative;
-            flex-shrink: 0;
-        }
-        .option-input:checked + .custom-radio {
-            border-color: #3182ce;
-            background: #3182ce;
-        }
-        .option-input:checked + .custom-radio::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .option-input:checked ~ .option-text-span {
-            color: #2b6cb0;
-            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
         }
         .btn-nav {
             padding: 12px 30px;
@@ -150,6 +123,7 @@
 </head>
 <body>
 
+    <!-- Header -->
     <header class="exam-header sticky-top">
         <div class="container d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
@@ -162,6 +136,7 @@
         </div>
     </header>
 
+    <!-- Quiz Container -->
     <div class="container quiz-container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -170,7 +145,11 @@
                     {% csrf_token %}
                     
                     {% for q in questions %}
-                    <div class="card question-card mb-4 question-block tex2jax_process" id="q-block-{{ forloop.index }}">
+                    <!-- 💡 सीधे जांगो से ही पक्का किया कि पहला सवाल दिखेगा (block) और बाकी छिपे रहेंगे (none) -->
+                    <div class="card question-card mb-4 question-block tex2jax_process" 
+                         id="q-block-{{ forloop.index }}" 
+                         style="display: {% if forloop.first %}block{% else %}none{% endif %};">
+                        
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <span class="q-number fw-semibold">Question {{ forloop.index }} of {{ questions|length }}</span>
                             <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">Marks: +1</span>
@@ -183,25 +162,21 @@
                         <div class="option-wrapper">
                             <label class="option-label">
                                 <input type="radio" name="question_{{ q.id }}" value="A" class="option-input">
-                                <span class="custom-radio"></span>
                                 <span class="option-text-span">{{ q.option_a }}</span>
                             </label>
 
                             <label class="option-label">
                                 <input type="radio" name="question_{{ q.id }}" value="B" class="option-input">
-                                <span class="custom-radio"></span>
                                 <span class="option-text-span">{{ q.option_b }}</span>
                             </label>
 
                             <label class="option-label">
                                 <input type="radio" name="question_{{ q.id }}" value="C" class="option-input">
-                                <span class="custom-radio"></span>
                                 <span class="option-text-span">{{ q.option_c }}</span>
                             </label>
 
                             <label class="option-label">
                                 <input type="radio" name="question_{{ q.id }}" value="D" class="option-input">
-                                <span class="custom-radio"></span>
                                 <span class="option-text-span">{{ q.option_d }}</span>
                             </label>
                         </div>
@@ -212,6 +187,7 @@
                     </div>
                     {% endfor %}
 
+                    <!-- Controls -->
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <button type="button" class="btn btn-nav btn-prev" id="prevBtn" onclick="changeQuestion(-1)" disabled>
                             <i class="fa-solid fa-arrow-left me-2"></i> Previous
@@ -231,42 +207,29 @@
         </div>
     </div>
 
+    <!-- Script Blocks -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let currentIdx = 1;
         const totalQuestions = parseInt("{{ questions|length }}") || 1;
 
-        // 💡 पेज लोड होते ही केवल पहला सवाल दिखाने का फुल-प्रूफ तरीका
-        document.addEventListener("DOMContentLoaded", function() {
-            showQuestion(currentIdx);
-        });
-
-        function showQuestion(idx) {
-            // 1. सारे सवालों को एक साथ छुपाओ
-            const allBlocks = document.querySelectorAll('.question-block');
-            allBlocks.forEach(block => {
-                block.style.display = 'none';
-            });
+        function changeQuestion(step) {
+            // पुराने सवाल को छुपाओ
+            const currentBlock = document.getElementById(`q-block-${currentIdx}`);
+            if (currentBlock) currentBlock.style.display = 'none';
             
-            // 2. सिर्फ सही नंबर वाले सवाल को स्क्रीन पर लाओ
-            const targetBlock = document.getElementById(`q-block-${idx}`);
-            if (targetBlock) {
-                targetBlock.style.display = 'block';
-            }
+            // इंडेक्स अपडेट करो
+            currentIdx += step;
+            
+            // नए सवाल को दिखाओ
+            const nextBlock = document.getElementById(`q-block-${currentIdx}`);
+            if (nextBlock) nextBlock.style.display = 'block';
 
-            // 3. टॉप काउंटर टेक्स्ट को डायनामिकली अपडेट करो (जैसे: Question 1 of 3)
-            if (targetBlock) {
-                const qNumSpan = targetBlock.querySelector('.q-number');
-                if (qNumSpan) {
-                    qNumSpan.textContent = `Question ${idx} of ${totalQuestions}`;
-                }
-            }
+            // Previous बटन की स्थिति
+            document.getElementById('prevBtn').disabled = (currentIdx === 1);
 
-            // Previous बटन कंट्रोल
-            document.getElementById('prevBtn').disabled = (idx === 1);
-
-            // Next और Submit बटन कंट्रोल
-            if (idx >= totalQuestions) {
+            // Next और Submit बटनों की स्थिति
+            if (currentIdx >= totalQuestions) {
                 document.getElementById('nextBtn').classList.add('d-none');
                 document.getElementById('submitBtn').classList.remove('d-none');
             } else {
@@ -274,34 +237,23 @@
                 document.getElementById('submitBtn').classList.add('d-none');
             }
 
-            // मैथ फ़ॉर्मूला रेंडरिंग
+            // MathJax रेंडरिंग ट्रिगर
             if (window.MathJax && window.MathJax.typesetPromise) {
                 MathJax.typesetPromise();
             }
         }
 
-        function changeQuestion(step) {
-            currentIdx += step;
-            showQuestion(currentIdx);
-        }
-
-        // ⏱️ 10 मिनट टाइमर
+        // ⏱️ 10 मिनट का टाइमर
         let timeRemaining = 600; 
         const timerElement = document.getElementById('timer');
-
         const countdown = setInterval(() => {
             let minutes = Math.floor(timeRemaining / 60);
             let seconds = timeRemaining % 60;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-
             if (timerElement) {
-                timerElement.textContent = `${minutes}:${seconds}`;
+                timerElement.textContent = `${minutes < 10 ? '0'+minutes : minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
             }
-
             if (timeRemaining <= 0) {
                 clearInterval(countdown);
-                alert("Time is up! Submitting your exam automatically.");
                 document.getElementById('quizForm').submit();
             }
             timeRemaining--;
