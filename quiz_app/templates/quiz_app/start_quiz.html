@@ -211,39 +211,81 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let currentIdx = 1;
-        const totalQuestions = parseInt("{{ questions|length }}") || 1;
+        let totalQuestions = 1;
 
-        function changeQuestion(step) {
-            // पुराने सवाल को छुपाओ
-            const currentBlock = document.getElementById(`q-block-${currentIdx}`);
-            if (currentBlock) currentBlock.style.display = 'none';
+        // 🌟 जैसे ही पेज लोड हो, सबसे पहले सवाल को ज़बरदस्ती ढूंढो
+        document.addEventListener("DOMContentLoaded", function() {
+            const blocks = document.querySelectorAll('.question-block');
+            totalQuestions = blocks.length || 1;
             
-            // इंडेक्स अपडेट करो
-            currentIdx += step;
+            console.log("Total questions found: " + totalQuestions);
+
+            // 1. ज़बरदस्ती पक्का करो कि केवल पहला सवाल (Index 1) खुलेगा, बाकी सब पूरी तरह बंद!
+            blocks.forEach((block, index) => {
+                if (index === 0) {
+                    block.style.setProperty('display', 'block', 'important');
+                    // आईडी को भी री-सेट कर देते हैं ताकि जावास्क्रिप्ट कभी कन्फ्यूज न हो
+                    block.id = "q-block-1";
+                } else {
+                    block.style.setProperty('display', 'none', 'important');
+                    block.id = `q-block-${index + 1}`;
+                }
+
+                // टॉप काउंटर को जबरदस्ती फिक्स करो (जैसे: Question 1 of 3)
+                const qNumSpan = block.querySelector('.q-number');
+                if (qNumSpan) {
+                    qNumSpan.textContent = `Question ${index + 1} of ${totalQuestions}`;
+                }
+            });
+
+            // बटन को शुरूआती पोजीशन पर सेट करो
+            updateButtonStates(1);
+        });
+
+        function showQuestion(idx) {
+            // सारे ब्लॉक्स छुपाओ
+            document.querySelectorAll('.question-block').forEach(block => {
+                block.style.setProperty('display', 'none', 'important');
+            });
             
-            // नए सवाल को दिखाओ
-            const nextBlock = document.getElementById(`q-block-${currentIdx}`);
-            if (nextBlock) nextBlock.style.display = 'block';
+            // सिर्फ टारगेट ब्लॉक दिखाओ
+            const targetBlock = document.getElementById(`q-block-${idx}`);
+            if (targetBlock) {
+                targetBlock.style.setProperty('display', 'block', 'important');
+            }
 
-            // Previous बटन की स्थिति
-            document.getElementById('prevBtn').disabled = (currentIdx === 1);
+            updateButtonStates(idx);
 
-            // Next और Submit बटनों की स्थिति
-            if (currentIdx >= totalQuestions) {
+            // MathJax दोबारा रेंडर करें
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function updateButtonStates(idx) {
+            // Previous बटन कंट्रोल
+            document.getElementById('prevBtn').disabled = (idx === 1);
+
+            // Next / Submit बटन कंट्रोल
+            if (idx >= totalQuestions) {
                 document.getElementById('nextBtn').classList.add('d-none');
                 document.getElementById('submitBtn').classList.remove('d-none');
             } else {
                 document.getElementById('nextBtn').classList.remove('d-none');
                 document.getElementById('submitBtn').classList.add('d-none');
             }
-
-            // MathJax रेंडरिंग ट्रिगर
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                MathJax.typesetPromise();
-            }
         }
 
-        // ⏱️ 10 मिनट का टाइमर
+        function changeQuestion(step) {
+            currentIdx += step;
+            // बाउंड्री चेक ताकि इंडेक्स बाहर न भागे
+            if (currentIdx < 1) currentIdx = 1;
+            if (currentIdx > totalQuestions) currentIdx = totalQuestions;
+            
+            showQuestion(currentIdx);
+        }
+
+        // ⏱️ 10 मिनट का लाइव टाइमर
         let timeRemaining = 600; 
         const timerElement = document.getElementById('timer');
         const countdown = setInterval(() => {
