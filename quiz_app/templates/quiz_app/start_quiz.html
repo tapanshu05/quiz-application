@@ -60,13 +60,8 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             padding: 30px;
         }
-        /* 💡 पक्का करें कि शुरुआत में केवल पहला सवाल दिखे, बाकी छुप जाएं */
-        .question-block {
-            display: none;
-        }
-        .question-block:first-of-type {
-            display: block !important;
-        }
+    
+       
         .q-number {
             background: #eef2f7;
             color: #1e3c72;
@@ -237,32 +232,40 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script>
         let currentIdx = 1;
         const totalQuestions = parseInt("{{ questions|length }}") || 1;
 
-        // पक्का करें कि पेज खुलते ही केवल पहला सवाल एक्टिव रहे
+        // 💡 पेज लोड होते ही केवल पहला सवाल दिखाने का फुल-प्रूफ तरीका
         document.addEventListener("DOMContentLoaded", function() {
             showQuestion(currentIdx);
         });
 
         function showQuestion(idx) {
-            // सभी सवालों को पूरी तरह छिपाओ
-            document.querySelectorAll('.question-block').forEach(block => {
-                block.style.setProperty('display', 'none', 'important');
+            // 1. सारे सवालों को एक साथ छुपाओ
+            const allBlocks = document.querySelectorAll('.question-block');
+            allBlocks.forEach(block => {
+                block.style.display = 'none';
             });
             
-            // सिर्फ जो सवाल देखना है, उसे ज़बरदस्ती दिखाओ
+            // 2. सिर्फ सही नंबर वाले सवाल को स्क्रीन पर लाओ
             const targetBlock = document.getElementById(`q-block-${idx}`);
             if (targetBlock) {
-                targetBlock.style.setProperty('display', 'block', 'important');
+                targetBlock.style.display = 'block';
             }
 
-            // Previous बटन को पहले सवाल पर लॉक करो
+            // 3. टॉप काउंटर टेक्स्ट को डायनामिकली अपडेट करो (जैसे: Question 1 of 3)
+            if (targetBlock) {
+                const qNumSpan = targetBlock.querySelector('.q-number');
+                if (qNumSpan) {
+                    qNumSpan.textContent = `Question ${idx} of ${totalQuestions}`;
+                }
+            }
+
+            // Previous बटन कंट्रोल
             document.getElementById('prevBtn').disabled = (idx === 1);
 
-            // अगर आख़िरी सवाल है तो Next हटाओ और Submit दिखाओ
+            // Next और Submit बटन कंट्रोल
             if (idx >= totalQuestions) {
                 document.getElementById('nextBtn').classList.add('d-none');
                 document.getElementById('submitBtn').classList.remove('d-none');
@@ -271,7 +274,7 @@
                 document.getElementById('submitBtn').classList.add('d-none');
             }
 
-            // जब भी सवाल बदले, गणित के सूत्रों को दोबारा सुंदर रेंडर करो
+            // मैथ फ़ॉर्मूला रेंडरिंग
             if (window.MathJax && window.MathJax.typesetPromise) {
                 MathJax.typesetPromise();
             }
@@ -282,7 +285,7 @@
             showQuestion(currentIdx);
         }
 
-        // ⏱️ 10 मिनट लाइव काउंटर
+        // ⏱️ 10 मिनट टाइमर
         let timeRemaining = 600; 
         const timerElement = document.getElementById('timer');
 
