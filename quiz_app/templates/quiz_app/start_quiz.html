@@ -28,6 +28,7 @@
             user-select: none;
             -webkit-user-select: none;
         }
+        /* Top Navigation Header Bar */
         .exam-header {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
@@ -51,12 +52,20 @@
             margin-top: 40px;
             margin-bottom: 60px;
         }
+        /* Question Card Interface */
         .question-card {
             background: white;
             border: none;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             padding: 30px;
+        }
+        /* 💡 पक्का करें कि शुरुआत में केवल पहला सवाल दिखे, बाकी छुप जाएं */
+        .question-block {
+            display: none;
+        }
+        .question-block:first-of-type {
+            display: block !important;
         }
         .q-number {
             background: #eef2f7;
@@ -71,6 +80,7 @@
             color: #2d3748;
             line-height: 1.6;
         }
+        /* Beautiful Premium Options */
         .option-label {
             display: flex;
             align-items: center;
@@ -165,7 +175,7 @@
                     {% csrf_token %}
                     
                     {% for q in questions %}
-                    <div class="card question-card mb-4 question-block tex2jax_process" id="q-block-{{ forloop.index }}" {% if not forloop.first %}style="display:none;"{% endif %}>
+                    <div class="card question-card mb-4 question-block tex2jax_process" id="q-block-{{ forloop.index }}">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <span class="q-number fw-semibold">Question {{ forloop.index }} of {{ questions|length }}</span>
                             <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">Marks: +1</span>
@@ -203,7 +213,7 @@
                     </div>
                     {% empty %}
                     <div class="card question-card text-center">
-                        <p class="text-muted my-4">No questions available.</p>
+                        <p class="text-muted my-4">No questions available in this quiz.</p>
                     </div>
                     {% endfor %}
 
@@ -227,42 +237,52 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         let currentIdx = 1;
-        // कुल कितने सवाल हैं, उसे जांगो से निकालकर नंबर में बदला
         const totalQuestions = parseInt("{{ questions|length }}") || 1;
 
-        function changeQuestion(step) {
-            // पुराने क्वेश्चन ब्लॉक को छुपाओ
-            const currentBlock = document.getElementById(`q-block-${currentIdx}`);
-            if (currentBlock) currentBlock.style.display = 'none';
-            
-            // इंडेक्स बदलो
-            currentIdx += step;
-            
-            // नए क्वेश्चन ब्लॉक को दिखाओ
-            const nextBlock = document.getElementById(`q-block-${currentIdx}`);
-            if (nextBlock) nextBlock.style.display = 'block';
+        // पक्का करें कि पेज खुलते ही केवल पहला सवाल एक्टिव रहे
+        document.addEventListener("DOMContentLoaded", function() {
+            showQuestion(currentIdx);
+        });
 
-            // MathJax को दोबारा रेंडर करो अगर मैथ फार्मूला है
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                MathJax.typesetPromise();
+        function showQuestion(idx) {
+            // सभी सवालों को पूरी तरह छिपाओ
+            document.querySelectorAll('.question-block').forEach(block => {
+                block.style.setProperty('display', 'none', 'important');
+            });
+            
+            // सिर्फ जो सवाल देखना है, उसे ज़बरदस्ती दिखाओ
+            const targetBlock = document.getElementById(`q-block-${idx}`);
+            if (targetBlock) {
+                targetBlock.style.setProperty('display', 'block', 'important');
             }
 
-            // 'Previous' बटन को कंट्रोल करो
-            document.getElementById('prevBtn').disabled = (currentIdx === 1);
+            // Previous बटन को पहले सवाल पर लॉक करो
+            document.getElementById('prevBtn').disabled = (idx === 1);
 
-            // 'Next' और 'Submit' बटन को कंट्रोल करो
-            if (currentIdx >= totalQuestions) {
+            // अगर आख़िरी सवाल है तो Next हटाओ और Submit दिखाओ
+            if (idx >= totalQuestions) {
                 document.getElementById('nextBtn').classList.add('d-none');
                 document.getElementById('submitBtn').classList.remove('d-none');
             } else {
                 document.getElementById('nextBtn').classList.remove('d-none');
                 document.getElementById('submitBtn').classList.add('d-none');
             }
+
+            // जब भी सवाल बदले, गणित के सूत्रों को दोबारा सुंदर रेंडर करो
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
         }
 
-        // ⏱️ 10 मिनट का टाइमर
+        function changeQuestion(step) {
+            currentIdx += step;
+            showQuestion(currentIdx);
+        }
+
+        // ⏱️ 10 मिनट लाइव काउंटर
         let timeRemaining = 600; 
         const timerElement = document.getElementById('timer');
 
