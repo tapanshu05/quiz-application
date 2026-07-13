@@ -166,3 +166,17 @@ def notes_view(request):
     if not profile.is_premium:
         return redirect('checkout')
     return render(request, 'quiz_app/notes.html')
+
+@login_required(login_url='login')
+def performance_history_view(request):
+    """4. Performance History Page: यूजर के सारे पुराने टेस्ट का रिजल्ट नए पेज पर दिखाएगा"""
+    profile, created = StudentProfile.objects.get_or_create(user=request.user)
+    
+    # सुरक्षा परत: अगर यूजर प्रीमियम नहीं है तो उसे सीधे पेमेंट पर भगाओ
+    if not profile.is_premium:
+        return redirect('checkout')
+        
+    # सिर्फ लॉगिन यूजर के पुराने रिजल्ट्स निकालो (ताजा रिजल्ट सबसे ऊपर - Ordered by latest)
+    past_results = UserResult.objects.filter(user=request.user).order_by('-id')
+    
+    return render(request, 'quiz_app/performance.html', {'past_results': past_results})

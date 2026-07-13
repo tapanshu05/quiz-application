@@ -14,4 +14,6 @@ urlpatterns = [
     path('payment/success/', views.payment_success_view, name='payment_success'),
     path('solutions/', views.solutions_view, name='solutions'),
     path('notes/', views.notes_view, name='notes'),
+    path('dashboard/performance/', views.performance_history_view, name='performance_history'),
 ]
+ 

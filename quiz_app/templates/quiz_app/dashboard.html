@@ -273,32 +273,20 @@
             </div>
 
             <div class="col-lg-5">
-                <h4 class="fw-bold text-secondary mb-4"><i class="fa-solid fa-chart-line me-2 text-info"></i> Your Performance History</h4>
-                <div class="card history-card p-3">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Quiz Topic</th>
-                                    <th class="text-end">Score Metric</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for attempt in past_results %}
-                                <tr>
-                                    <td class="text-dark fw-medium text-capitalize">{{ attempt.quiz }}</td>
-                                    <td class="text-end"><span class="score-badge">{{ attempt.score }}/{{ attempt.total_questions }}</span></td>
-                                </tr>
-                                {% empty %}
-                                <tr><td colspan="2" class="text-muted text-center py-3">No attempts history found.</td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                <h4 class="fw-bold text-secondary mb-4"><i class="fa-solid fa-chart-line me-2 text-info"></i> Performance Analytics</h4>
+                <div class="card history-card p-4 text-center border-0 shadow-sm rounded-4 bg-white">
+                    <div class="my-3">
+                        <i class="fa-solid fa-receipt text-info mb-3" style="font-size: 3.5rem; opacity: 0.8;"></i>
+                        <h5 class="fw-bold text-dark mb-2">Track Your Progress</h5>
+                        <p class="text-muted small mx-auto" style="max-width: 300px;">
+                            Check your detailed scorecard, previous attempts, marks metrics, and analysis for all taken mock tests.
+                        </p>
                     </div>
+                    <a href="{% url 'performance_history' %}" class="btn btn-info text-white fw-bold rounded-pill py-2.5 px-4 shadow-sm w-100 mt-2">
+                        <i class="fa-solid fa-eye me-2"></i> View Performance History
+                    </a>
                 </div>
             </div>
-        </div>
-        {% else %}
         <!-- 🔒 अगर यूजर प्रीमियम नहीं है, तो उसे यह सुंदर सा लॉक मैसेज दिखेगा -->
         <div class="text-center py-5 bg-white rounded-4 shadow-sm mt-4 mb-5 border">
             <i class="fa-solid fa-lock text-danger mb-3" style="font-size: 3rem; opacity: 0.8;"></i>
