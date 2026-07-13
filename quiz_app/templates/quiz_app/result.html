@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Result - {{ quiz.title }}</title>
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Animate.css for beautiful appearance -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <style>
@@ -135,7 +132,6 @@
     <div class="container result-container">
         <div class="card result-card animate__animated animate__zoomIn">
             
-            <!-- Animated Celebration Icon -->
             <div class="celebration-icon animate__animated animate__tada animate__infinite animate__slower">
                 <i class="fa-solid fa-trophy text-warning"></i>
             </div>
@@ -143,17 +139,15 @@
             <h2 class="fw-bold text-success mb-1">Quiz Completed!</h2>
             <p class="quiz-title mb-4"><i class="fa-solid fa-book-open me-2"></i>{{ quiz.title }}</p>
 
-            <!-- Circular Score Engine Block -->
             <div class="score-badge-wrapper">
                 <span class="score-number">{{ score }}</span>
-                <span class="total-number">/ {{ total }}</span>
+                <span class="total-number">/ {{ total_questions }}</span>
             </div>
 
-            <!-- Dynamic Feedback message based on score -->
             <div class="feedback-text">
-                {% if score == total %}
+                {% if score == total_questions %}
                     🌟 Brilliant! Perfect Score!
-                {% elif score >= total|divisibleby:2 %}
+                {% elif score >= total_questions|divisibleby:2 %}
                     👍 Good Job! Keep It Up!
                 {% else %}
                     📚 Need Practice! Try Again!
@@ -162,7 +156,6 @@
 
             <div class="row g-2 justify-content-center">
                 <div class="col-12">
-                    <!-- Action redirect button -->
                     <a href="{% url 'dashboard' %}" class="btn btn-dashboard">
                         <i class="fa-solid fa-house-user me-2"></i> Back to Dashboard
                     </a>
