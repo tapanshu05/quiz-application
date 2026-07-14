@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Result - {{ quiz.title }}</title>
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Animate.css for beautiful appearance -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <!-- 💡 MathJax Configuration Engine -->
     <script>
       window.MathJax = {
         tex: {
@@ -130,6 +126,13 @@
             border-left: 3px solid #3182ce;
             margin-top: 15px;
         }
+        /* 💡 ChatGPT जैसा क्लीन स्ट्रक्चर रखने की क्लास */
+        .custom-sol-content {
+            white-space: pre-wrap !important;
+            word-wrap: break-word;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -163,7 +166,6 @@
                 </button>
             </div>
 
-            <!-- 💡 Wrapper and target class injection for LaTeX safe render -->
             <div class="collapse text-start tex2jax_process" id="solutionCollapse">
                 <div class="analysis-box">
                     <hr class="my-4 text-muted">
@@ -205,7 +207,7 @@
                         {% if item.solution %}
                         <div class="sol-text-block">
                             <strong class="text-primary d-block mb-1"><i class="fa-solid fa-lightbulb me-1 text-warning"></i> Step-by-Step Solution:</strong>
-                            <div class="text-dark">{{ item.solution }}</div>
+                            <div class="text-dark custom-sol-content">{{ item.solution|linebreaksbr }}</div>
                         </div>
                         {% endif %}
                     </div>
@@ -216,80 +218,23 @@
         </div>
     </div>
 
-    <!-- Script Blocks -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const solutionCollapse = document.getElementById('solutionCollapse');
             
-            // 💡 गूगल के हर तरह के ब्रैकेट [ ] या \text को MathJax फ़ॉर्मेट में बदलने का ऑटोमैटिक इंजन
-            function autoFixGoogleMath() {
-                document.querySelectorAll('.sol-text-block div.text-dark').forEach(el => {
-                    let text = el.innerHTML;
-                    
-                    // 1. अगर गूगल से कॉपी किए टेक्स्ट में [ ] या   लगे हैं, तो उन्हें MathJax के \‍( \‍) में बदलो
-                    text = text.replace(/\[\s*/g, '\\(').replace(/\s*\]/g, '\\)');
-                    
-                    // 2. लाइन ब्रेक (# # #) को सुंदर हेडिंग्स में बदलो
-                    text = text.replace(/###\s*(.*?)(?=\n|<br>|$)/g, '<strong class="d-block text-secondary mt-3 mb-1"><i class="fa-solid fa-chevron-right me-1 text-primary" style="font-size:0.8rem;"></i> $1</strong>');
-                    
-                    el.innerHTML = text;
+            function cleanSolutionDelimiters() {
+                document.querySelectorAll('.custom-sol-content').forEach(el => {
+                    let html = el.innerHTML;
+                    // केवल अव्यवस्थित स्क्वायर ब्रैकेट्स को MathJax फॉर्मेट में कन्वर्ट करें
+                    html = html.replace(/\[\s*/g, '\\(').replace(/\s*\]/g, '\\)');
+                    el.innerHTML = html;
                 });
             }
 
-            // पेज लोड होते ही पहले टेक्स्ट को साफ़ करो
-            autoFixGoogleMath();
+            cleanSolutionDelimiters();
 
-            // जैसे ही स्टूडेंट "View Detailed Solution" बटन दबाए, तुरंत मैथ रेंडर कर दो
-            if (solutionCollapse) {
-                solutionCollapse.addEventListener('shown.bs.collapse', function () {
-                    if (window.MathJax && window.MathJax.typesetPromise) {
-                        window.MathJax.typesetPromise();
-                    }
-                });
-            }
-        });
-    <!-- Script Blocks -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const solutionCollapse = document.getElementById('solutionCollapse');
-            
-            function autoFixGoogleMath() {
-                document.querySelectorAll('.sol-text-block div.text-dark').forEach(el => {
-                    let text = el.innerText;
-                    
-                    // 💡 1. Pehle fattu line breaks saaf karo taaki degree aur equals ek line mein aayein
-                    text = text.replace(/\n\s*°/g, '°')
-                               .replace(/(\w+)\s*\n\s*°/g, '$1°')
-                               .replace(/°\s*\n\s*=/g, '° =')
-                               .replace(/=\s*\n\s*(-?\d+)/g, '= $1');
-
-                    // 💡 2. RAMBAAN TRICK: Agar copy-paste mein direct "root3" ya "root(3)" ya "sqrt3" ya "sqrt(3)" aa gaya hai,
-                    // toh usey automatically proper LaTeX math block \(\sqrt{3}\) mein convert karo
-                    text = text.replace(/(?:sqrt|root)\(?(\d+)\)?/gi, '\\(\\sqrt{$1}\\)');
-
-                    // 💡 3. Agar ChatGPT ke double backslash wale standard math functions hain, toh unhe proper format do
-                    text = text.replace(/(?<!\\)(frac|sin|cos|tan|left|right|cdot|deg)/g, '\\\\$1');
-
-                    // 💡 4. Google ke square brackets [ ] ko MathJax delimiters \( \) mein badlo
-                    text = text.replace(/\[/g, '\\(').replace(/\]/g, '\\)');
-                    
-                    // 💡 5. '###' Markdown headings ko premium styling do
-                    text = text.replace(/###\s*(.*?)(?=\n|$)/g, '<strong class="d-block text-secondary mt-3 mb-1"><i class="fa-solid fa-chevron-right me-1 text-primary" style="font-size:0.8rem;"></i> $1</strong>');
-                    
-                    // 💡 6. Newlines ko HTML line breaks mein badlo aur double spaces khatam karo
-                    text = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-                    text = text.replace(/(<br>\s*){2,}/g, '<br>');
-                    
-                    el.innerHTML = text;
-                });
-            }
-
-            // Engine execute karein
-            autoFixGoogleMath();
-
-            // Collapse open hone par MathJax render triger
+            // कोलैप्स ओपन होने पर MathJax रेंडर ट्रिगर करें
             if (solutionCollapse) {
                 solutionCollapse.addEventListener('shown.bs.collapse', function () {
                     if (window.MathJax && window.MathJax.typesetPromise) {
