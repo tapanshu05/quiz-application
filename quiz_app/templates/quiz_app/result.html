@@ -249,34 +249,35 @@
                 });
             }
         });
-    </script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <script>
         document.addEventListener("DOMContentLoaded", function() {
             const solutionCollapse = document.getElementById('solutionCollapse');
             
             function autoFixGoogleMath() {
                 document.querySelectorAll('.sol-text-block div.text-dark').forEach(el => {
-                    let text = el.innerHTML;
+                    // 💡 innerText से शुरुआत
+                    let text = el.innerText;
                     
-                    // 💡 ट्रिक 1: पहले सादे न्यूलाइन्स (\n) को असली HTML लाइन-ब्रेक (<br>) में बदलो
-                    // इससे पैराग्राफ बनना तुरंत बंद हो जाएगा और हर लाइन अलग दिखेगी
+                    // 1. स्क्वायर ब्रैकेट्स को MathJax ट्रिगर्स में बदलें
+                    text = text.replace(/\[/g, '\\(').replace(/\]/g, '\\)');
+                    
+                    // 2. '###' हेडिंग्स को सही फॉर्मेट दें
+                    text = text.replace(/###\s*(.*?)(?=\n|$)/g, '<strong class="d-block text-secondary mt-3 mb-1"><i class="fa-solid fa-chevron-right me-1 text-primary" style="font-size:0.8rem;"></i> $1</strong>');
+                    
+                    // 3. न्यूलाइन्स को HTML लाइन ब्रेक में बदलें
                     text = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-
-                    // 💡 ट्रिक 2: गूगल के स्क्वायर ब्रैकेट्स [ ] को MathJax फ़ॉर्मेट में बदलें
-                    text = text.replace(/\[\s*/g, '\\(').replace(/\s*\]/g, '\\)');
                     
-                    // 💡 ट्रिक 3: लाइन ब्रेक (###) को सुंदर बोल्ड हेडिंग्स में बदलें
-                    text = text.replace(/###\s*(.*?)(?=<br>|$)/g, '<strong class="d-block text-secondary mt-3 mb-1"><i class="fa-solid fa-chevron-right me-1 text-primary" style="font-size:0.8rem;"></i> $1</strong>');
+                    // 4. लगातार आए फालतू खाली गैप्स को हटाकर सिंगल ब्रेक करें
+                    text = text.replace(/(<br>\s*){2,}/g, '<br>');
                     
                     el.innerHTML = text;
                 });
             }
 
-            // टेक्स्ट फॉर्मेटिंग फ़िक्स को रन करें
+            // फ़ंक्शंस रन करें
             autoFixGoogleMath();
 
-            // कोलैप्स खुलने पर MathJax को सक्रिय करें
             if (solutionCollapse) {
                 solutionCollapse.addEventListener('shown.bs.collapse', function () {
                     if (window.MathJax && window.MathJax.typesetPromise) {
