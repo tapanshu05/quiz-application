@@ -8,20 +8,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)'], ['\\\\(', '\\\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]'], ['\\\\[', '\\\\]']],
+          processEscapes: true
+        },
+        options: {
+          processHtmlClass: 'tex2jax_process'
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+
     <style>
         body {
             background: #f4f6f9;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 60px;
         }
-
         .result-container {
-            max-width: 580px;
-            margin: 30px auto;
+            max-width: 680px;
+            margin: 0 auto;
         }
-
         .result-card {
             background: white;
             border: none;
@@ -29,11 +40,9 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.08);
             padding: 40px 30px;
             text-align: center;
-            overflow: hidden;
             position: relative;
+            overflow: hidden;
         }
-
-        /* Top decorative gradient bar */
         .result-card::before {
             content: '';
             position: absolute;
@@ -43,26 +52,9 @@
             height: 8px;
             background: linear-gradient(90deg, #38a169 0%, #3182ce 100%);
         }
-
-        .celebration-icon {
-            font-size: 4.5rem;
-            color: #38a169;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-
-        .quiz-title {
-            color: #718096;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        /* Premium Score Display Sphere */
         .score-badge-wrapper {
-            width: 160px;
-            height: 160px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             background: #f0fff4;
             border: 4px dashed #38a169;
@@ -70,60 +62,69 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin: 30px auto;
-            transition: all 0.3s ease;
+            margin: 25px auto;
         }
-
-        .score-badge-wrapper:hover {
-            transform: scale(1.05);
-            background: #e6fffa;
-        }
-
         .score-number {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 800;
             color: #276749;
             line-height: 1;
         }
-
         .total-number {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #4a5568;
-            font-weight: 500;
             border-top: 2px solid #cbd5e0;
             margin-top: 5px;
             padding-top: 5px;
-            width: 60px;
+            width: 50px;
         }
-
-        .feedback-text {
-            font-size: 1.4rem;
-            color: #2d3748;
-            font-weight: 700;
-            margin-bottom: 25px;
+        .btn-custom {
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
         }
-
-        /* Custom Modern Dashboard Button */
         .btn-dashboard {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             border: none;
-            padding: 14px 35px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            box-shadow: 0 5px 15px rgba(33, 147, 176, 0.3);
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
-            width: 100%;
+        }
+        .btn-dashboard:hover { color: white; transform: translateY(-1px); }
+        
+        .btn-sol {
+            background: #edf2f7;
+            color: #4a5568;
+            border: 1px solid #cbd5e0;
         }
 
-        .btn-dashboard:hover {
-            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(33, 147, 176, 0.4);
+        /* Solution Section Cards */
+        .analysis-box {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .sol-card {
+            background: white;
+            border-radius: 16px;
+            border-left: 6px solid #cbd5e0;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .sol-card.correct { border-left-color: #38a169; }
+        .sol-card.wrong { border-left-color: #e53e3e; }
+        
+        .badge-status {
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .sol-text-block {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 12px 15px;
+            border-left: 3px solid #3182ce;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -131,34 +132,79 @@
 
     <div class="container result-container">
         <div class="card result-card animate__animated animate__zoomIn">
-            
-            <div class="celebration-icon animate__animated animate__tada animate__infinite animate__slower">
-                <i class="fa-solid fa-trophy text-warning"></i>
+            <div class="animate__animated animate__tada animate__infinite animate__slower d-inline-block text-warning mb-2" style="font-size: 4rem;">
+                <i class="fa-solid fa-trophy"></i>
             </div>
 
             <h2 class="fw-bold text-success mb-1">Quiz Completed!</h2>
-            <p class="quiz-title mb-4"><i class="fa-solid fa-book-open me-2"></i>{{ quiz.title }}</p>
+            <p class="text-muted text-uppercase small fw-bold tracking-wider mb-3">{{ quiz.title }}</p>
 
             <div class="score-badge-wrapper">
                 <span class="score-number">{{ score }}</span>
                 <span class="total-number">/ {{ total_questions }}</span>
             </div>
 
-            <div class="feedback-text">
-                {% if score == total_questions %}
-                    🌟 Brilliant! Perfect Score!
-                {% elif score >= total_questions|divisibleby:2 %}
-                    👍 Good Job! Keep It Up!
-                {% else %}
-                    📚 Need Practice! Try Again!
-                {% endif %}
+            <div class="fs-5 fw-bold text-dark mb-4">
+                {% if score == total_questions %} 🌟 Perfect Score! Excellent!
+                {% elif score >= total_questions|divisibleby:2 %} 👍 Well Done! Keep practicing!
+                {% else %} 📚 Need Practice! Try Again! {% endif %}
             </div>
 
-            <div class="row g-2 justify-content-center">
-                <div class="col-12">
-                    <a href="{% url 'dashboard' %}" class="btn btn-dashboard">
-                        <i class="fa-solid fa-house-user me-2"></i> Back to Dashboard
-                    </a>
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                <a href="{% url 'dashboard' %}" class="btn btn-custom btn-dashboard flex-grow-1">
+                    <i class="fa-solid fa-house-user me-2"></i> Dashboard
+                </a>
+                <button class="btn btn-custom btn-sol flex-grow-1" type="button" data-bs-toggle="collapse" data-bs-target="#solutionCollapse" aria-expanded="false">
+                    <i class="fa-solid fa-square-poll-horizontal me-2"></i> View Detailed Solution
+                </button>
+            </div>
+
+            <div class="collapse text-start tex2jax_process" id="solutionCollapse">
+                <div class="analysis-box">
+                    <hr class="my-4 text-muted">
+                    <h4 class="fw-bold text-dark mb-4"><i class="fa-solid fa-graduation-cap text-primary me-2"></i> Question Paper Analysis</h4>
+                    
+                    {% for item in analysis %}
+                    <div class="sol-card {% if item.is_correct %}correct{% else %}wrong{% endif %}">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="fw-bold text-secondary">Question {{ forloop.index }}</span>
+                            {% if item.is_correct %}
+                                <span class="badge bg-success-subtle text-success badge-status"><i class="fa-solid fa-circle-check me-1"></i> Correct</span>
+                            {% else %}
+                                <span class="badge bg-danger-subtle text-danger badge-status"><i class="fa-solid fa-circle-xmark me-1"></i> Incorrect</span>
+                            {% endif %}
+                        </div>
+
+                        <p class="fw-semibold text-dark mb-3" style="font-size: 1.1rem;">{{ item.question_text }}</p>
+
+                        <div class="small text-muted mb-2">
+                            <div class="mb-1 {% if item.correct_option == 'A' %}text-success fw-bold{% elif item.user_answer == 'A' %}text-danger fw-bold{% endif %}">
+                                <strong>A.</strong> {{ item.option_a }}
+                            </div>
+                            <div class="mb-1 {% if item.correct_option == 'B' %}text-success fw-bold{% elif item.user_answer == 'B' %}text-danger fw-bold{% endif %}">
+                                <strong>B.</strong> {{ item.option_b }}
+                            </div>
+                            <div class="mb-1 {% if item.correct_option == 'C' %}text-success fw-bold{% elif item.user_answer == 'C' %}text-danger fw-bold{% endif %}">
+                                <strong>C.</strong> {{ item.option_c }}
+                            </div>
+                            <div class="mb-1 {% if item.correct_option == 'D' %}text-success fw-bold{% elif item.user_answer == 'D' %}text-danger fw-bold{% endif %}">
+                                <strong>D.</strong> {{ item.option_d }}
+                            </div>
+                        </div>
+
+                        <div class="mt-3 pt-2 border-top small text-secondary">
+                            <span>Your Answer: <strong class="{% if item.is_correct %}text-success{% else %}text-danger{% endif %}">{{ item.user_answer|default:"Not Attempted" }}</strong></span> | 
+                            <span>Correct Answer: <strong class="text-success">{{ item.correct_option }}</strong></span>
+                        </div>
+
+                        {% if item.solution %}
+                        <div class="sol-text-block">
+                            <strong class="text-primary d-block mb-1"><i class="fa-solid fa-lightbulb me-1 text-warning"></i> Step-by-Step Solution:</strong>
+                            <div class="text-dark">{{ item.solution }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
 

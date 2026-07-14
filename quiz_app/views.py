@@ -28,31 +28,52 @@ def start_quiz(request, quiz_id):
 
 @login_required(login_url='login')
 def submit_quiz(request, quiz_id):
-    """3. Submission Logic: Calculates scores and saves them to the UserResult table"""
+    """3. Submission Logic: Calculates scores, collects detailed analysis, and saves to database"""
     if request.method == "POST":
         quiz = get_object_or_404(Quiz, pk=quiz_id)
         questions = Question.objects.filter(quiz=quiz)
         score = 0
         total_questions = questions.count()
+        
+        # 💡 हर सवाल का एनालिसिस स्टोर करने के लिए लिस्ट
+        detailed_analysis = []
 
         for question in questions:
-            user_answer = request.POST.get(f'question_{question.id}')
-            if user_answer == question.correct_option:
+            user_answer = request.POST.get(f'question_{question.id}', '')
+            is_correct = (user_answer == question.correct_option)
+            
+            if is_correct:
                 score += 1
+                
+            # 💡 छात्र का जवाब और सही जवाब दोनों को लिस्ट में डालो
+            detailed_analysis.append({
+                'question_text': question.question_text,
+                'option_a': question.option_a,
+                'option_b': question.option_b,
+                'option_c': question.option_c,
+                'option_d': question.option_d,
+                'user_answer': user_answer,
+                'correct_option': question.correct_option,
+                'is_correct': is_correct,
+                'solution': getattr(question, 'solution', 'No solution provided.'),
+            })
 
+        # तुम्हारा पुराना डेटाबेस में सेव करने वाला कोड
         UserResult.objects.create(
             user=request.user,
             quiz=quiz,
             score=score,
             total_questions=total_questions
         )
-        
+
+        # 💡 ध्यान से देखो, हमने 'analysis' को भी कॉन्टेक्स्ट में जोड़ दिया है
         return render(request, 'quiz_app/result.html', {
             'quiz': quiz,
             'score': score,
-            'total_questions': total_questions
+            'total_questions': total_questions,
+            'analysis': detailed_analysis
         })
-        
+
     return redirect('home')
 
 def register_view(request):
