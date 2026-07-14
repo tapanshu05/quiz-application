@@ -259,33 +259,42 @@
                 document.querySelectorAll('.sol-text-block div.text-dark').forEach(el => {
                     let text = el.innerText;
                     
-                    // 💡 स्टेप 1: पहले बिखरे हुए डिग्री (°), बराबर (=) और वैल्यूज के बीच के फालतू लाइन ब्रेक्स को साफ़ करो
-                    // यह जादुई रेगुलर एक्सप्रेशन सिंबल्स के आसपास के गैप को खत्म करके उन्हें एक लाइन में लाएगा
+                    // 💡 1. Pehle degree, equals aur bikhre symbols ke fattu line breaks saaf karo
                     text = text.replace(/\n\s*°/g, '°')
                                .replace(/(\w+)\s*\n\s*°/g, '$1°')
                                .replace(/°\s*\n\s*=/g, '° =')
-                               .replace(/=\s*\n\s*(\d+)/g, '= $1')
-                               .replace(/(\w+)\s*\n\s*(\d+)/g, '$1 $2');
+                               .replace(/=\s*\n\s*(-?\d+)/g, '= $1');
+
+                    // 💡 2. ChatGPT/Google se copy-paste mein agar backslash gayab ho gaya ho, toh use auto-inject karo
+                    // Yeh math functions (sqrt, frac, sin, cos, tan, left, right) ke aage auto double backslash laga dega
+                    text = text.replace(/(?<!\\)(sqrt|frac|sin|cos|tan|left|right|cdot|deg)/g, '\\\\$1');
                     
-                    // 💡 स्टेप 2: गूगल के स्क्वायर ब्रैकेट्स को MathJax ट्रिगर्स में बदलो
+                    // 💡 3. Agar poora formula bina brackets ke khula ghum raha hai (jaise \sqrt{3}), toh use MathJax inline \( ... \) mein pack karo
+                    text = text.replace(/(?:\\\\(?:sqrt|frac|sin|cos|tan)[\s\S]*?)(?=\s*(?:<br>|\n|$))/g, function(match) {
+                        if (!match.trim().startsWith('\\(')) {
+                            return '\\(' + match.trim() + '\\)';
+                        }
+                        return match;
+                    });
+
+                    // 💡 4. Google/ChatGPT ke square brackets [ ] ko MathJax delimiters \( \) mein badlo
                     text = text.replace(/\[/g, '\\(').replace(/\]/g, '\\)');
                     
-                    // 💡 स्टेप 3: '###' हेडिंग्स को सुंदर फॉर्मेट दो
+                    // 💡 5. '###' Markdown headings ko premium styling do
                     text = text.replace(/###\s*(.*?)(?=\n|$)/g, '<strong class="d-block text-secondary mt-3 mb-1"><i class="fa-solid fa-chevron-right me-1 text-primary" style="font-size:0.8rem;"></i> $1</strong>');
                     
-                    // 💡 स्टेप 4: अब जो असली बचे हुए न्यूलाइन्स हैं, सिर्फ उन्हें ही HTML लाइन ब्रेक (<br>) में बदलो
+                    // 💡 6. Newlines ko HTML line breaks mein badlo aur double line spaces khatam karo
                     text = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-                    
-                    // 💡 स्टेप 5: लगातार आए फालतू खाली गैप्स को हटाकर सिंगल ब्रेक करें
                     text = text.replace(/(<br>\s*){2,}/g, '<br>');
                     
                     el.innerHTML = text;
                 });
             }
 
-            // फ़ंक्शंस रन करें
+            // Engine ko execute karein
             autoFixGoogleMath();
 
+            // Collapse open hone par MathJax ko asli render trigger dein
             if (solutionCollapse) {
                 solutionCollapse.addEventListener('shown.bs.collapse', function () {
                     if (window.MathJax && window.MathJax.typesetPromise) {
