@@ -259,31 +259,26 @@
                 document.querySelectorAll('.sol-text-block div.text-dark').forEach(el => {
                     let text = el.innerText;
                     
-                    // 💡 1. Pehle degree, equals aur bikhre symbols ke fattu line breaks saaf karo
+                    // 💡 1. Pehle fattu line breaks saaf karo taaki degree aur equals ek line mein aayein
                     text = text.replace(/\n\s*°/g, '°')
                                .replace(/(\w+)\s*\n\s*°/g, '$1°')
                                .replace(/°\s*\n\s*=/g, '° =')
                                .replace(/=\s*\n\s*(-?\d+)/g, '= $1');
 
-                    // 💡 2. ChatGPT/Google se copy-paste mein agar backslash gayab ho gaya ho, toh use auto-inject karo
-                    // Yeh math functions (sqrt, frac, sin, cos, tan, left, right) ke aage auto double backslash laga dega
-                    text = text.replace(/(?<!\\)(sqrt|frac|sin|cos|tan|left|right|cdot|deg)/g, '\\\\$1');
-                    
-                    // 💡 3. Agar poora formula bina brackets ke khula ghum raha hai (jaise \sqrt{3}), toh use MathJax inline \( ... \) mein pack karo
-                    text = text.replace(/(?:\\\\(?:sqrt|frac|sin|cos|tan)[\s\S]*?)(?=\s*(?:<br>|\n|$))/g, function(match) {
-                        if (!match.trim().startsWith('\\(')) {
-                            return '\\(' + match.trim() + '\\)';
-                        }
-                        return match;
-                    });
+                    // 💡 2. RAMBAAN TRICK: Agar copy-paste mein direct "root3" ya "root(3)" ya "sqrt3" ya "sqrt(3)" aa gaya hai,
+                    // toh usey automatically proper LaTeX math block \(\sqrt{3}\) mein convert karo
+                    text = text.replace(/(?:sqrt|root)\(?(\d+)\)?/gi, '\\(\\sqrt{$1}\\)');
 
-                    // 💡 4. Google/ChatGPT ke square brackets [ ] ko MathJax delimiters \( \) mein badlo
+                    // 💡 3. Agar ChatGPT ke double backslash wale standard math functions hain, toh unhe proper format do
+                    text = text.replace(/(?<!\\)(frac|sin|cos|tan|left|right|cdot|deg)/g, '\\\\$1');
+
+                    // 💡 4. Google ke square brackets [ ] ko MathJax delimiters \( \) mein badlo
                     text = text.replace(/\[/g, '\\(').replace(/\]/g, '\\)');
                     
                     // 💡 5. '###' Markdown headings ko premium styling do
                     text = text.replace(/###\s*(.*?)(?=\n|$)/g, '<strong class="d-block text-secondary mt-3 mb-1"><i class="fa-solid fa-chevron-right me-1 text-primary" style="font-size:0.8rem;"></i> $1</strong>');
                     
-                    // 💡 6. Newlines ko HTML line breaks mein badlo aur double line spaces khatam karo
+                    // 💡 6. Newlines ko HTML line breaks mein badlo aur double spaces khatam karo
                     text = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
                     text = text.replace(/(<br>\s*){2,}/g, '<br>');
                     
@@ -291,10 +286,10 @@
                 });
             }
 
-            // Engine ko execute karein
+            // Engine execute karein
             autoFixGoogleMath();
 
-            // Collapse open hone par MathJax ko asli render trigger dein
+            // Collapse open hone par MathJax render triger
             if (solutionCollapse) {
                 solutionCollapse.addEventListener('shown.bs.collapse', function () {
                     if (window.MathJax && window.MathJax.typesetPromise) {
