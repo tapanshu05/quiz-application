@@ -223,18 +223,24 @@
         document.addEventListener("DOMContentLoaded", function() {
             const solutionCollapse = document.getElementById('solutionCollapse');
             
-            function cleanSolutionDelimiters() {
+            function applyPremiumHeadings() {
                 document.querySelectorAll('.custom-sol-content').forEach(el => {
                     let html = el.innerHTML;
-                    // केवल अव्यवस्थित स्क्वायर ब्रैकेट्स को MathJax फॉर्मेट में कन्वर्ट करें
+                    
+                    // 💡 1. '###' को वापस उसी सुंदर नीले एरो वाले बोल्ड हेडिंग में बदलें
+                    html = html.replace(/###\s*(.*?)(?=<br>|$)/g, '<strong class="d-block text-secondary mt-3 mb-1"><i class="fa-solid fa-chevron-right me-1 text-primary" style="font-size:0.85rem;"></i> $1</strong>');
+                    
+                    // 💡 2. केवल चैटजीपीटी के स्क्वायर ब्रैकेट्स [ ] को सही delimiters में बदलें (सुरक्षित तरीके से)
                     html = html.replace(/\[\s*/g, '\\(').replace(/\s*\]/g, '\\)');
+                    
                     el.innerHTML = html;
                 });
             }
 
-            cleanSolutionDelimiters();
+            // हेडिंग्स को लागू करें
+            applyPremiumHeadings();
 
-            // कोलैप्स ओपन होने पर MathJax रेंडर ट्रिगर करें
+            // जैसे ही कोलैप्स खुले, MathJax रेंडर ट्रिगर करें
             if (solutionCollapse) {
                 solutionCollapse.addEventListener('shown.bs.collapse', function () {
                     if (window.MathJax && window.MathJax.typesetPromise) {
