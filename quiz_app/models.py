@@ -18,6 +18,9 @@ class Question(models.Model):
     option_c = models.CharField(max_length=200)
     option_d = models.CharField(max_length=200)
     correct_option = models.CharField(max_length=1)          # Stores 'A', 'B', 'C', or 'D'
+    solution = models.TextField(blank=True, null=True, help_text="Write step-by-step LaTeX solution here")
+    def __str__(self):
+        return self.question_text[:50]
 
     def __str__(self):
         return self.question_text
