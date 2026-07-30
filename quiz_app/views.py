@@ -57,12 +57,13 @@ def send_welcome_email_async(user_email, username):
             f"Best regards,\n"
             f"Team FormulaFly"
         )
-        from_email = getattr(settings, 'EMAIL_HOST_USER', '')
-        if from_email:
-            send_mail(subject, message, from_email, [user_email], fail_silently=True)
+        from_email = getattr(settings, 'EMAIL_HOST_USER', 'formulafly.online@gmail.com')
+        
+        # fail_silently=False करने से Render Logs में असली एरर दिखेगा
+        sent = send_mail(subject, message, from_email, [user_email], fail_silently=False)
+        print(f"✅ Email status for {user_email}: {sent}")
     except Exception as e:
-        print(f"Failed to send email: {e}")
-
+        print(f"❌ Failed to send email to {user_email}: {e}")
 
 # Registration View
 def register_view(request):

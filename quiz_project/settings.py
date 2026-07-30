@@ -194,10 +194,13 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 
-# Email Configuration (Free Gmail SMTP)
+
+# Email Configuration (Gmail SMTP - Production Ready)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'formulafly.online@gmail.com'  # 👈 यहाँ अपना Gmail ID डालें
-EMAIL_HOST_PASSWORD = 'bclywoohwqndehtm' # 👈 यहाँ Gmail का App Password डालें (नीचे बताया है कैसे निकालना है)
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = 'formulafly.online@gmail.com'
+EMAIL_HOST_PASSWORD = 'bclywoohwqndehtm'
+DEFAULT_FROM_EMAIL = 'FormulaFly <formulafly.online@gmail.com>'
