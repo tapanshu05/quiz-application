@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - FormulaFly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         body {
             background-color: #0b0f17;
@@ -93,6 +94,24 @@
             box-shadow: 0 0 0 3px rgba(0, 210, 181, 0.15);
         }
 
+        .password-toggle-btn {
+            background-color: #0b0f17;
+            border: 1px solid #1e293b;
+            border-left: none;
+            color: #94a3b8;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            cursor: pointer;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+
+        .password-toggle-btn:hover {
+            color: #00d2b5;
+        }
+
         .btn-auth {
             background: linear-gradient(135deg, #00d2b5 0%, #00b89f 100%);
             color: #0b0f17;
@@ -162,7 +181,19 @@
             {% for field in form %}
             <div class="mb-3">
                 <label class="form-label">{{ field.label }}</label>
+                
+                {% if 'password' in field.name.lower %}
+                <!-- Password Field with Show/Hide Eye Toggle -->
+                <div class="input-group">
+                    {{ field }}
+                    <button class="btn password-toggle-btn" type="button" onclick="togglePasswordVisibility(this)">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+                </div>
+                {% else %}
                 {{ field }}
+                {% endif %}
+
                 {% if field.errors %}
                 <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
                 {% endif %}
@@ -177,5 +208,24 @@
         </div>
     </div>
 
+    <script>
+        function togglePasswordVisibility(button) {
+            const inputGroup = button.closest('.input-group');
+            const passwordInput = inputGroup.querySelector('input');
+            const icon = button.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+                button.style.color = '#00d2b5';
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+                button.style.color = '#94a3b8';
+            }
+        }
+    </script>
 </body>
 </html>
