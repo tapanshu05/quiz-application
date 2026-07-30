@@ -15,7 +15,8 @@ def landing_page_view(request):
         return redirect('dashboard')
     return render(request, 'quiz_app/home.html')
 
-# 2. AJAX Endpoint for Sending OTP
+
+# Send OTP API
 @csrf_exempt
 def send_otp_view(request):
     if request.method == 'POST':
@@ -26,35 +27,47 @@ def send_otp_view(request):
             if not phone or len(phone) != 10:
                 return JsonResponse({'status': 'error', 'message': '10 अंकों का मान्य मोबाइल नंबर डालें!'}, status=400)
                 
-            # 4-digit test OTP generate कर रहे हैं
             generated_otp = str(random.randint(1000, 9999))
             request.session['register_otp'] = generated_otp
             request.session['register_phone'] = phone
             
-            # Debugging / Testing Output
-            print(f"--- OTP FOR {phone}: {generated_otp} ---")
-            
             return JsonResponse({
                 'status': 'success', 
-                'message': f'OTP आपके नंबर {phone} पर भेज दिया गया है! (Testing OTP: {generated_otp})'
+                'message': f'OTP आपके नंबर पर भेज दिया गया है! (Testing OTP: {generated_otp})'
             })
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
             
     return JsonResponse({'status': 'error', 'message': 'Invalid Request'}, status=400)
 
-# 3. Student Registration View with Mobile & OTP
-# Student Registration View
+
+# Registration View
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
         
     if request.method == 'POST':
         form = StudentRegistrationForm(request.POST)
+        user_otp = request.POST.get('otp_input')
+        saved_otp = request.session.get('register_otp')
+        saved_phone = request.session.get('register_phone')
+        
+        # Verify OTP
+        if not user_otp or user_otp != saved_otp:
+            return render(request, 'quiz_app/register.html', {
+                'form': form, 
+                'error': 'गलत OTP दर्ज किया गया है! कृपया Send OTP बटन दबाकर सही OTP डालें।'
+            })
+            
         if form.is_valid():
             user = form.save()
             profile, created = StudentProfile.objects.get_or_create(user=user)
+            profile.mobile_number = saved_phone
             profile.save()
+            
+            # Reset OTP Session
+            request.session.pop('register_otp', None)
+            request.session.pop('register_phone', None)
             
             login(request, user)
             return redirect('dashboard')
@@ -62,7 +75,6 @@ def register_view(request):
         form = StudentRegistrationForm()
         
     return render(request, 'quiz_app/register.html', {'form': form})
-
 # 4. Student Login View
 def login_view(request):
     if request.user.is_authenticated:

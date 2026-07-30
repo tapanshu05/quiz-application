@@ -16,16 +16,33 @@
             justify-content: center;
             padding: 40px 0;
             margin: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(0, 210, 181, 0.12) 0%, rgba(11, 15, 23, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
         }
 
         .auth-card {
-            background: rgba(17, 24, 39, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+            background: rgba(17, 24, 39, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
             padding: 36px;
             width: 100%;
             max-width: 440px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 210, 181, 0.05);
         }
 
         .brand-logo {
@@ -35,7 +52,21 @@
             text-decoration: none;
             display: block;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+        }
+
+        .auth-title {
+            font-weight: 700;
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .auth-subtitle {
+            color: #94a3b8;
+            text-align: center;
+            font-size: 13px;
+            margin-bottom: 24px;
         }
 
         .form-label {
@@ -52,6 +83,7 @@
             border-radius: 12px;
             padding: 11px 15px;
             font-size: 14px;
+            transition: all 0.2s ease;
         }
 
         .form-control:focus, .form-select:focus {
@@ -69,13 +101,15 @@
             padding: 13px;
             width: 100%;
             border: none;
-            margin-top: 20px;
+            margin-top: 15px;
             font-size: 15px;
             transition: all 0.2s ease;
         }
 
         .btn-auth:hover {
-            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 210, 181, 0.3);
+            color: #0b0f17;
         }
 
         .auth-footer {
@@ -90,14 +124,31 @@
             text-decoration: none;
             font-weight: 600;
         }
+
+        .back-home {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-home:hover {
+            color: #00d2b5;
+        }
     </style>
 </head>
 <body>
 
+    <a href="/" class="back-home">← Home Page</a>
+    <div class="bg-glow"></div>
+
     <div class="auth-card">
         <a href="/" class="brand-logo">🚀 FormulaFly</a>
-        <h4 class="fw-bold text-center mb-1">Create Account</h4>
-        <p class="text-secondary text-center small mb-4">Start learning step by step for free</p>
+        <div class="auth-title">Create Account</div>
+        <div class="auth-subtitle">Start learning step by step for free</div>
 
         {% if error %}
         <div class="alert alert-danger py-2 small rounded-3 mb-3" role="alert">
