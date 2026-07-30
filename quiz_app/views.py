@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import StudentRegistrationForm
-from .models import StudentProfile, Quiz, Question, Choice, UserResponse, Payment
+from .models import StudentProfile, Quiz, Question, UserResponse, Payment
 
 # 1. Teachoo Style Dark Landing Page (Without Login Requirement)
 def landing_page_view(request):

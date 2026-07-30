@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import StudentProfile
+from quiz_app.models import StudentProfile
 
 class StudentRegistrationForm(forms.ModelForm):
     name = forms.CharField(
