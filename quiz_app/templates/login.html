@@ -4,24 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Exam Preperation</title>
+    <title>Login - FormulaFly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-       body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    
-    background: linear-gradient(135deg, #5b73df 0%, #9053c7 100%) !important;
-    background-size: cover;
-}
+        body {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 0;
+            margin: 0;
+        }
         .quiz-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             border: none;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -31,7 +27,7 @@
             transform: translateY(-5px);
         }
         .btn-custom {
-            background: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%);
+            background: linear-gradient(135deg, #ff5722 0%, #ff7043 100%);
             border: none;
             color: white;
             font-weight: bold;
@@ -40,28 +36,75 @@
             transition: all 0.3s ease;
         }
         .btn-custom:hover {
-            background: linear-gradient(135deg, #ff5e62 0%, #ff9966 100%);
-            box-shadow: 0 5px 15px rgba(255, 94, 98, 0.4);
+            background: linear-gradient(135deg, #e64a19 0%, #ff5722 100%);
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
             color: white;
         }
+        
         /* जांगो के फॉर्म इनपुट्स को सुंदर बनाने के लिए */
         form p input {
             width: 100%;
             padding: 10px 15px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             outline: none;
             transition: border-color 0.3s ease;
+            background-color: #fff;
         }
         form p input:focus {
-            border-color: #764ba2;
+            border-color: #ff5722;
         }
         form p label {
             font-weight: 600;
             margin-bottom: 5px;
             color: #4a5568;
+            display: block;
         }
+        
+        /* Google Sign-in Button Design */
+        .btn-google {
+            background-color: #ffffff;
+            color: #333333;
+            border: 1.5px solid #e2e8f0;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        .btn-google:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            color: #1a202c;
+        }
+
+        .brand-logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ff5722;
+            letter-spacing: 1px;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #a0aec0;
+            margin: 20px 0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .divider::before { margin-right: .5em; }
+        .divider::after { margin-left: .5em; }
     </style>
 </head>
 <body>
@@ -69,7 +112,12 @@
         <div class="row justify-content-center">
             <div class="col-md-5 px-4">
                 <div class="card quiz-card p-4 p-md-5">
-                    <h3 class="text-center mb-4 fw-bold text-dark" style="letter-spacing: 1px;">🔐 Student Login</h3>
+                    <!-- Brand Name -->
+                    <div class="text-center mb-3">
+                        <span class="brand-logo">🚀 FormulaFly</span>
+                    </div>
+                    <h4 class="text-center mb-4 fw-bold text-dark">Welcome Back</h4>
+                    
                     <form method="POST" id="loginForm">
                         {% csrf_token %}
                         {{ form.as_p }}
@@ -84,18 +132,29 @@
 
                         <button type="submit" class="btn btn-custom w-100 text-uppercase tracking-wider">Login</button>
                     </form>
-                    <div class="text-center mt-3">
-    <a href="{% provider_login_url 'google' %}" class="btn btn-outline-danger w-100">
-        Sign in with Google
-    </a>
-</div>
-                    <p class="text-center mt-4 mb-0 text-muted">New Student? <a href="{% url 'register' %}" class="text-decoration-none fw-bold" style="color: #764ba2;">Register here</a></p>
+
+                    <div class="divider">OR</div>
+
+                    <!-- Google OAuth Sign In -->
+                    <div class="text-center">
+                        {% load socialaccount %}
+                        <a href="{% provider_login_url 'google' %}" class="btn btn-google w-100 text-decoration-none">
+                            <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.259h2.908c1.702-1.567 2.684-3.874 2.684-6.617z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
+                            Sign in with Google
+                        </a>
+                    </div>
+
+                    <p class="text-center mt-4 mb-0 text-muted">
+                        New Student? 
+                        <a href="{% url 'register' %}" class="text-decoration-none fw-bold" style="color: #ff5722;">Register here</a>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Toggle Password Visibility
         document.getElementById('showPassword').addEventListener('change', function() {
             const passwordFields = document.querySelectorAll('input[type="password"], input.password-toggle');
             passwordFields.forEach(field => {
