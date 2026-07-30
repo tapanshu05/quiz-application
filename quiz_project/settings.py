@@ -200,4 +200,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'formulafly.online@gmail.com'  # 👈 यहाँ अपना Gmail ID डालें
-EMAIL_HOST_PASSWORD = 'bcly wooh wqnd ehtm' # 👈 यहाँ Gmail का App Password डालें (नीचे बताया है कैसे निकालना है)
+EMAIL_HOST_PASSWORD = 'bclywoohwqndehtm' # 👈 यहाँ Gmail का App Password डालें (नीचे बताया है कैसे निकालना है)

@@ -42,9 +42,29 @@ def send_otp_view(request):
 
 
 # Registration View
+import threading
 from django.core.mail import send_mail
 from django.conf import settings
 
+# 📩 Background Email Sending Function
+def send_welcome_email_async(user_email, username):
+    try:
+        subject = "🎉 Welcome to FormulaFly! Registration Successful"
+        message = (
+            f"Hello {username},\n\n"
+            f"Congratulations! Your registration on FormulaFly has been completed successfully.\n\n"
+            f"Thank you for choosing us to power your learning journey!\n\n"
+            f"Best regards,\n"
+            f"Team FormulaFly"
+        )
+        from_email = getattr(settings, 'EMAIL_HOST_USER', '')
+        if from_email:
+            send_mail(subject, message, from_email, [user_email], fail_silently=True)
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+
+
+# Registration View
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
@@ -56,16 +76,60 @@ def register_view(request):
             profile, created = StudentProfile.objects.get_or_create(user=user)
             profile.save()
             
-            # 📩 Send Welcome Email Automatically (100% FREE)
-            try:
-                subject = "🎉 Welcome to FormulaFly! Registration Successful"
-                message = f"Hello {user.first_name or user.username},\n\nCongratulations! Your registration on FormulaFly has been completed successfully.\n\nThank you for choosing us to power your learning journey!\n\nBest regards,\nTeam FormulaFly"
-                from_email = settings.EMAIL_HOST_USER
-                recipient_list = [user.email]
-                
-                send_mail(subject, message, from_email, recipient_list, fail_silently=True)
-            except Exception as e:
-                print(f"Email Error: {e}")
+            # 🚀 Send Email in Background Thread (Will NOT freeze/crash the site)
+            if user.email:
+                email_thread = threading.Thread(
+                    target=send_welcome_email_async, 
+                    args=(user.email, user.first_name or user.username)
+                )
+                email_thread.start()
+            
+            login(request, user)
+            return redirect('dashboard')
+    else:
+        form = StudentRegistrationForm()
+        
+    return render(request, 'quiz_app/register.html', {'form': form})import threading
+from django.core.mail import send_mail
+from django.conf import settings
+
+# 📩 Background Email Sending Function
+def send_welcome_email_async(user_email, username):
+    try:
+        subject = "🎉 Welcome to FormulaFly! Registration Successful"
+        message = (
+            f"Hello {username},\n\n"
+            f"Congratulations! Your registration on FormulaFly has been completed successfully.\n\n"
+            f"Thank you for choosing us to power your learning journey!\n\n"
+            f"Best regards,\n"
+            f"Team FormulaFly"
+        )
+        from_email = getattr(settings, 'EMAIL_HOST_USER', '')
+        if from_email:
+            send_mail(subject, message, from_email, [user_email], fail_silently=True)
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+
+
+# Registration View
+def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+        
+    if request.method == 'POST':
+        form = StudentRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            profile, created = StudentProfile.objects.get_or_create(user=user)
+            profile.save()
+            
+            # 🚀 Send Email in Background Thread (Will NOT freeze/crash the site)
+            if user.email:
+                email_thread = threading.Thread(
+                    target=send_welcome_email_async, 
+                    args=(user.email, user.first_name or user.username)
+                )
+                email_thread.start()
             
             login(request, user)
             return redirect('dashboard')
