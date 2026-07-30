@@ -72,7 +72,7 @@ def register_view(request):
     else:
         form = StudentRegistrationForm()
         
-    return render(request, 'quiz_app/register.html', {'form': form})v
+    return render(request, 'quiz_app/register.html', {'form': form})
 # 4. Student Login View
 def login_view(request):
     if request.user.is_authenticated:
