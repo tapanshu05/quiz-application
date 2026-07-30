@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Exam Preperation</title>
+    <title>Register - FormulaFly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -15,7 +15,7 @@
             padding: 40px 0;
         }
         .quiz-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             border: none;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -25,7 +25,7 @@
             transform: translateY(-5px);
         }
         .btn-custom {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            background: linear-gradient(135deg, #ff5722 0%, #ff7043 100%);
             border: none;
             color: white;
             font-weight: bold;
@@ -34,12 +34,13 @@
             transition: all 0.3s ease;
         }
         .btn-custom:hover {
-            background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
-            box-shadow: 0 5px 15px rgba(56, 239, 125, 0.4);
+            background: linear-gradient(135deg, #e64a19 0%, #ff5722 100%);
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
             color: white;
         }
-        /* जांगो फॉर्म के इनपुट्स */
-        form p input {
+        
+        /* जांगो फॉर्म के इनपुट्स और ड्रॉपडाउन CSS */
+        form p input, form p select {
             width: 100%;
             padding: 10px 15px;
             border: 2px solid #e2e8f0;
@@ -47,22 +48,32 @@
             margin-bottom: 12px;
             outline: none;
             transition: border-color 0.3s ease;
+            background-color: #fff;
         }
-        form p input:focus {
-            border-color: #764ba2;
+        form p input:focus, form p select:focus {
+            border-color: #ff5722;
         }
         form p label {
             font-weight: 600;
             margin-bottom: 5px;
             color: #4a5568;
+            display: block;
         }
-        /* जांगो की हेल्प टेक्स्ट (जैसे पासवर्ड रूल्स) को छोटा और साफ़ रखने के लिए */
+        
+        /* जांगो की हेल्प टेक्स्ट (जैसे पासवर्ड रूल्स) */
         .helptext {
             display: block;
             font-size: 11px;
             color: #718096;
             margin-bottom: 10px;
             line-height: 1.3;
+        }
+        
+        .brand-logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ff5722;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -71,7 +82,12 @@
         <div class="row justify-content-center">
             <div class="col-md-6 px-4">
                 <div class="card quiz-card p-4 p-md-5">
-                    <h3 class="text-center mb-4 fw-bold text-dark" style="letter-spacing: 1px;">📝 Student Registration</h3>
+                    <!-- Brand Name -->
+                    <div class="text-center mb-3">
+                        <span class="brand-logo">🚀 FormulaFly</span>
+                    </div>
+                    <h4 class="text-center mb-4 fw-bold text-dark">Create Your Account</h4>
+                    
                     <form method="POST">
                         {% csrf_token %}
                         {{ form.as_p }}
@@ -84,15 +100,20 @@
                             </label>
                         </div>
 
-                        <button type="submit" class="btn btn-custom w-100 text-uppercase tracking-wider">Register</button>
+                        <button type="submit" class="btn btn-custom w-100 text-uppercase tracking-wider">Register & Start</button>
                     </form>
-                    <p class="text-center mt-4 mb-0 text-muted">Already have an account? <a href="{% url 'login' %}" class="text-decoration-none fw-bold" style="color: #764ba2;">Login here</a></p>
+                    
+                    <p class="text-center mt-4 mb-0 text-muted">
+                        Already have an account? 
+                        <a href="{% url 'login' %}" class="text-decoration-none fw-bold" style="color: #ff5722;">Login here</a>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Password Hide/Show Logic
         document.getElementById('showPasswordReg').addEventListener('change', function() {
             const passwordFields = document.querySelectorAll('input[type="password"], input.password-toggle');
             passwordFields.forEach(field => {
