@@ -14,84 +14,150 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px 0;
+            position: relative;
+            overflow: hidden;
+            margin: 0;
         }
+
+        /* Subtle Glow Background Effect */
+        .bg-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 210, 181, 0.15) 0%, rgba(11, 15, 23, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .auth-card {
-            background-color: #111827;
-            border: 1px solid #1e293b;
-            border-radius: 16px;
+            position: relative;
+            z-index: 1;
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
             padding: 40px;
             width: 100%;
             max-width: 420px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 210, 181, 0.05);
         }
+
         .brand-logo {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
-            color: #ffffff;
+            color: #00d2b5;
             letter-spacing: -0.5px;
             text-decoration: none;
             display: block;
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 8px;
         }
-        .form-label {
-            color: #94a3b8;
-            font-size: 13px;
-            font-weight: 600;
+
+        .auth-title {
+            font-weight: 700;
+            text-align: center;
+            font-size: 22px;
             margin-bottom: 6px;
         }
+
+        .auth-subtitle {
+            color: #94a3b8;
+            text-align: center;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .form-label {
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
         .form-control {
             background-color: #0b0f17;
-            border: 1px solid #334155;
+            border: 1px solid #1e293b;
             color: #ffffff;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 12px 16px;
             font-size: 14px;
-        }
-        .form-control:focus {
-            background-color: #0b0f17;
-            border-color: #ffffff;
-            color: #ffffff;
-            box-shadow: none;
-        }
-        .btn-auth {
-            background-color: #ffffff;
-            color: #000000;
-            font-weight: 700;
-            border-radius: 10px;
-            padding: 12px;
-            width: 100%;
-            border: none;
-            margin-top: 15px;
             transition: all 0.2s ease;
         }
-        .btn-auth:hover {
-            background-color: #e2e8f0;
-            color: #000000;
+
+        .form-control:focus {
+            background-color: #0b0f17;
+            border-color: #00d2b5;
+            color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(0, 210, 181, 0.15);
         }
+
+        .btn-auth {
+            background: linear-gradient(135deg, #00d2b5 0%, #00b89f 100%);
+            color: #0b0f17;
+            font-weight: 800;
+            border-radius: 12px;
+            padding: 13px;
+            width: 100%;
+            border: none;
+            margin-top: 20px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 210, 181, 0.3);
+            color: #0b0f17;
+        }
+
         .auth-footer {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 24px;
             color: #64748b;
             font-size: 13px;
         }
+
         .auth-footer a {
-            color: #ffffff;
+            color: #00d2b5;
             text-decoration: none;
             font-weight: 600;
         }
+
         .auth-footer a:hover {
             text-decoration: underline;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .back-home:hover {
+            color: #00d2b5;
         }
     </style>
 </head>
 <body>
 
+    <!-- Top Left Home Link -->
+    <a href="/" class="back-home">← Home Page</a>
+
+    <!-- Background Glow Effect -->
+    <div class="bg-glow"></div>
+
     <div class="auth-card">
-        <a href="/" class="brand-logo">FormulaFly.</a>
-        <h4 class="fw-bold text-center mb-1">Welcome Back</h4>
-        <p class="text-secondary text-center small mb-4">Log in to continue to your dashboard</p>
+        <a href="/" class="brand-logo">🚀 FormulaFly</a>
+        <div class="auth-title">Welcome Back</div>
+        <div class="auth-subtitle">Log in to continue your learning journey</div>
 
         <form method="POST">
             {% csrf_token %}
@@ -110,7 +176,7 @@
         </form>
 
         <div class="auth-footer">
-            Don't have an account? <a href="{% url 'register' %}">Register here</a>
+            Don't have an account? <a href="{% url 'register' %}">Register for free</a>
         </div>
     </div>
 
