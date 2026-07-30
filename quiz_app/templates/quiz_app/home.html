@@ -3,37 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controlled Quiz Dashboard</title>
+    <title>FormulaFly - Learn Anything Step by Step</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b0f17;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navbar */
+        .navbar-teachoo {
+            background-color: #0b0f17;
+            padding: 18px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+        .brand-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #00d2b5;
+            letter-spacing: -0.5px;
+        }
+        .nav-link-custom {
+            color: #cbd5e1;
+            font-weight: 600;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .nav-link-custom:hover {
+            color: #00d2b5;
+        }
+        .btn-login {
+            background-color: #00d2b5;
+            color: #0b0f17;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 8px 20px;
+            border: none;
+        }
+        .btn-login:hover {
+            background-color: #00b89f;
+            color: #0b0f17;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 0 50px 0;
+            text-align: center;
+        }
+        .hero-title {
+            font-size: 56px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+        .hero-title-highlight {
+            color: #00d2b5;
+            display: block;
+        }
+        .hero-subtitle {
+            color: #94a3b8;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .btn-start {
+            background-color: #00d2b5;
+            color: #0b0f17;
+            font-weight: 800;
+            font-size: 18px;
+            padding: 14px 36px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 210, 181, 0.3);
+            color: #0b0f17;
+        }
+
+        /* Subject Badges */
+        .badge-chip {
+            background-color: #1a2234;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 5px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .badge-chip:hover {
+            border-color: #00d2b5;
+            color: #00d2b5;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            border-top: 1px solid #1e293b;
+            border-bottom: 1px solid #1e293b;
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+        .stat-num {
+            font-size: 28px;
+            font-weight: 800;
+            color: #00d2b5;
+        }
+        .stat-text {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Class Selector Cards Section */
+        .class-section {
+            background-color: #ffffff;
+            color: #0b0f17;
+            padding: 40px 0;
+        }
+        .class-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px 10px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 22px;
+            color: #0b0f17;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        .class-card:hover {
+            border-color: #00d2b5;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transform: translateY(-3px);
+            color: #00d2b5;
+        }
+        .class-subtext {
+            display: block;
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-dark bg-dark shadow mb-4">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-warning" href="#">⚡ Fully Controlled Quiz System</a>
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-teachoo">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="brand-logo text-decoration-none">🚀 FormulaFly</a>
+            <div class="d-none d-md-block">
+                <a href="#" class="nav-link-custom">Maths</a>
+                <a href="#" class="nav-link-custom">Science</a>
+                <a href="#" class="nav-link-custom">English</a>
+                <a href="#" class="nav-link-custom">Class 9-12</a>
+            </div>
+            <div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn btn-login">Dashboard ➔</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-login">Login</a>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h2 class="mb-4 fw-bold text-secondary">Available Quizzes</h2>
-                
-                {% for quiz in quizzes %}
-                <div class="card shadow-sm mb-3">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h4 class="card-title mb-1 text-dark">{{ quiz.title }}</h4>
-                            <p class="text-muted mb-0">⏱️ Time Limit: <strong>{{ quiz.time_limit }} minutes</strong></p>
-                        </div>
-                        <a href="{% url 'start_quiz' quiz.id %}" class="btn btn-warning fw-bold">Start Quiz</a>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="alert alert-info">No quizzes available at the moment. Check back later!</div>
-                {% endfor %}
-                
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">
+                Learn anything.
+                <span class="hero-title-highlight">Step by step.</span>
+            </h1>
+            <p class="hero-subtitle">Handwritten Notes • Step-by-Step NCERT Solutions • Live Test Series</p>
+            
+            <a href="{% url 'register' %}" class="btn btn-start text-decoration-none">Start Now ➔</a>
+
+            <div class="mt-4">
+                <a href="#" class="badge-chip">Maths</a>
+                <a href="#" class="badge-chip">Science</a>
+                <a href="#" class="badge-chip">English</a>
+                <a href="#" class="badge-chip">Physics</a>
+                <a href="#" class="badge-chip">Chemistry</a>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-bar">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-6 col-md-3">
+                    <div class="stat-num">5,000+</div>
+                    <div class="stat-text">Handwritten Solutions</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-num">4.9 ★</div>
+                    <div class="stat-text">Student Rating</div>
+                </div>
+                <div class="col-6 col-md-3 mt-3 mt-md-0">
+                    <div class="stat-num">10,000+</div>
+                    <div class="stat-text">Active Students</div>
+                </div>
+                <div class="col-6 col-md-3 mt-3 mt-md-0">
+                    <div class="stat-num">100%</div>
+                    <div class="stat-text">NCERT & Exemplar Coverage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Class Selection Cards (Light Theme Section like Teachoo) -->
+    <section class="class-section">
+        <div class="container">
+            <h5 class="fw-bold text-dark mb-4">For School Students</h5>
+            <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <a href="{% url 'register' %}" class="class-card">
+                        9
+                        <span class="class-subtext">Class 9th Pass</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="{% url 'register' %}" class="class-card">
+                        10
+                        <span class="class-subtext">Class 10th Boards</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="{% url 'register' %}" class="class-card">
+                        11
+                        <span class="class-subtext">Class 11th Senior</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="{% url 'register' %}" class="class-card">
+                        12
+                        <span class="class-subtext">Class 12th Boards</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </body>
 </html>
