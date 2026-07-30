@@ -57,13 +57,14 @@ def send_welcome_email_async(user_email, username):
             f"Best regards,\n"
             f"Team FormulaFly"
         )
-        from_email = getattr(settings, 'EMAIL_HOST_USER', 'formulafly.online@gmail.com')
+        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'formulafly.online@gmail.com')
         
-        # fail_silently=False करने से Render Logs में असली एरर दिखेगा
-        sent = send_mail(subject, message, from_email, [user_email], fail_silently=False)
-        print(f"✅ Email status for {user_email}: {sent}")
+        # Send Email
+        sent_count = send_mail(subject, message, from_email, [user_email], fail_silently=False)
+        print(f"✅ EMAIL SUCCESS: Sent {sent_count} email to {user_email}")
     except Exception as e:
-        print(f"❌ Failed to send email to {user_email}: {e}")
+        print(f"❌ EMAIL ERROR: Failed to send to {user_email}. Reason: {e}")
+
 
 # Registration View
 def register_view(request):
@@ -77,7 +78,7 @@ def register_view(request):
             profile, created = StudentProfile.objects.get_or_create(user=user)
             profile.save()
             
-            # 🚀 Send Email in Background Thread
+            # 🚀 Threading Call
             if user.email:
                 email_thread = threading.Thread(
                     target=send_welcome_email_async, 
@@ -85,14 +86,12 @@ def register_view(request):
                 )
                 email_thread.start()
             
-            # ✅ Fixed: Pass explicit backend to resolve ValueError
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('dashboard')
     else:
         form = StudentRegistrationForm()
         
     return render(request, 'quiz_app/register.html', {'form': form})
-
 
 # 4. Student Login View
 def login_view(request):

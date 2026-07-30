@@ -196,6 +196,7 @@ CSRF_COOKIE_SECURE = True
 
 
 # Email Configuration (Gmail SMTP - Production Ready)
+# Email Configuration (Production Ready SSL)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
