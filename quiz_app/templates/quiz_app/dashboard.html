@@ -3,150 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard - ExamPreparation by FormulaFly</title>
+    <title>Dashboard - FormulaFly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8fafc;
+            background-color: #0b0f17;
+            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #334155;
-        }
-        
-        /* Navbar */
-        .navbar-custom {
-            background: linear-gradient(135deg, #ff5722 0%, #ff7043 100%);
-            padding: 15px 0;
-            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.2);
-        }
-        .brand-text {
-            font-size: 22px;
-            font-weight: 800;
-            color: white;
-            letter-spacing: 0.5px;
-        }
-        .user-badge {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
+            min-height: 100vh;
         }
 
-        /* Banner Card */
-        .welcome-card {
-            background: white;
+        /* Teachoo Header */
+        .navbar-teachoo {
+            background-color: #0b0f17;
+            padding: 16px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+        .brand-logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #00d2b5;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+        .user-pill {
+            background-color: #1a2234;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            padding: 6px 16px;
             border-radius: 20px;
-            border-left: 6px solid #ff5722;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Banner Box */
+        .teachoo-banner {
+            background: linear-gradient(135deg, #111827 0%, #1a2234 100%);
+            border: 1px solid #1e293b;
+            border-radius: 16px;
             padding: 30px;
             margin-top: 30px;
         }
-        .btn-unlock-banner {
-            background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
-            color: white;
-            font-weight: 700;
-            padding: 12px 24px;
-            border-radius: 30px;
-            border: none;
-            box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
-            transition: all 0.3s ease;
+        .text-green {
+            color: #00d2b5;
         }
-        .btn-unlock-banner:hover {
+        .btn-unlock-teachoo {
+            background-color: #00d2b5;
+            color: #0b0f17;
+            font-weight: 800;
+            padding: 12px 26px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-unlock-teachoo:hover {
+            background-color: #00b89f;
+            color: #0b0f17;
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(255, 87, 34, 0.4);
-            color: white;
+            box-shadow: 0 8px 20px rgba(0, 210, 181, 0.25);
         }
 
-        /* Hub Cards */
-        .resource-card {
-            background: white;
-            border-radius: 20px;
-            border: none;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* Resource Cards */
+        .teachoo-card {
+            background-color: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 14px;
+            padding: 24px;
             height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
         }
-        .resource-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        .teachoo-card:hover {
+            border-color: #00d2b5;
+            transform: translateY(-4px);
         }
-        .icon-box {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+        .card-icon {
+            font-size: 28px;
+            background: #1a2234;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px auto;
-            font-size: 24px;
+            margin-bottom: 15px;
         }
         .badge-locked {
-            background-color: #fee2e2;
-            color: #ef4444;
-            font-size: 12px;
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            font-size: 11px;
             font-weight: 700;
             padding: 4px 10px;
-            border-radius: 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
         .badge-unlocked {
-            background-color: #dcfce7;
-            color: #16a34a;
-            font-size: 12px;
+            background-color: rgba(0, 210, 181, 0.15);
+            color: #00d2b5;
+            font-size: 11px;
             font-weight: 700;
             padding: 4px 10px;
-            border-radius: 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 210, 181, 0.3);
         }
-        .btn-action {
-            background: #ff5722;
-            color: white;
+        .btn-card-action {
+            background-color: #1a2234;
+            color: #cbd5e1;
+            border: 1px solid #334155;
             font-weight: 700;
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 10px;
-            border: none;
             width: 100%;
+            text-decoration: none;
+            display: block;
+            text-align: center;
             transition: all 0.3s ease;
         }
-        .btn-action:hover {
-            background: #e64a19;
-            color: white;
+        .btn-card-action:hover {
+            background-color: #00d2b5;
+            color: #0b0f17;
+            border-color: #00d2b5;
         }
     </style>
 </head>
 <body>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-custom">
+    <nav class="navbar navbar-teachoo">
         <div class="container d-flex justify-content-between align-items-center">
-            <span class="brand-text">🚀 ExamPreparation <small class="fw-normal fs-6" style="opacity: 0.9;">- by FormulaFly</small></span>
+            <a href="/" class="brand-logo">🚀 FormulaFly</a>
             <div class="d-flex align-items-center gap-3">
-                <span class="user-badge">👋 Welcome, {{ profile.user.first_name|default:user.username }}!</span>
-                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm rounded-pill px-3">Logout ➔</a>
+                <span class="user-pill">👋 {{ profile.user.first_name|default:user.username }}</span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm rounded-3 px-3">Logout</a>
             </div>
         </div>
     </nav>
 
     <div class="container my-4">
         
-        <!-- Top Welcome & Pricing Banner -->
-        <div class="welcome-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <!-- Top Banner -->
+        <div class="teachoo-banner d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
             <div>
-                <h3 class="fw-bold text-dark mb-1">Student Progress Dashboard</h3>
-                <p class="text-muted mb-0">Access premium handwritten solutions, top-tier PDF notes, and live practice tests for <strong>Class {{ student_class }}th</strong>.</p>
+                <h2 class="fw-bold mb-2">Student Dashboard <span class="fs-5 text-muted">(Class {{ student_class }}th)</span></h2>
+                <p class="text-secondary mb-0">Learn chapter concepts with handwritten notes, NCERT solutions, and test series.</p>
             </div>
             {% if not profile.is_premium %}
             <div>
-                <!-- 💡 यहाँ अब डायनामिक प्राइस दिखेगा: ₹149 या ₹199 -->
-                <a href="{% url 'checkout' %}" class="btn btn-unlock-banner text-decoration-none">
-                    💎 Unlock All @ ₹{{ subject_price }}
+                <!-- 💡 यहाँ अब क्लास के हिसाब से ₹149 या ₹199 दिखेगा -->
+                <a href="{% url 'checkout' %}" class="btn-unlock-teachoo">
+                    Unlock All @ ₹{{ subject_price }} ➔
                 </a>
             </div>
             {% endif %}
         </div>
 
         <!-- Section Title -->
-        <h4 class="fw-bold text-dark my-4 d-flex align-items-center gap-2">
-            📚 Learning Resource Hub
+        <h4 class="fw-bold my-4 text-green d-flex align-items-center gap-2">
+            Study Material & Practice
         </h4>
 
         <!-- Cards Row -->
@@ -154,41 +170,41 @@
             
             <!-- Card 1: Practice Exams -->
             <div class="col-md-4">
-                <div class="card resource-card p-4 text-center">
-                    <div class="d-flex justify-content-end">
+                <div class="teachoo-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="card-icon">📝</div>
                         {% if profile.is_premium %}
                         <span class="badge-unlocked">Unlocked</span>
                         {% else %}
-                        <span class="badge-locked">🔒 Paid Plan</span>
+                        <span class="badge-locked">🔒 Paid</span>
                         {% endif %}
                     </div>
-                    <div class="icon-box bg-primary-subtle text-primary">📝</div>
-                    <h5 class="fw-bold text-dark">Practice Exams</h5>
-                    <p class="text-muted small">Real-time mock tests with live timers and detailed score analytics.</p>
+                    <h5 class="fw-bold mb-2">Practice Exams</h5>
+                    <p class="text-secondary small mb-4">Real-time mock tests with timers and detailed answer keys.</p>
                     <div class="mt-auto">
-                        <a href="{% url 'home' %}" class="btn btn-action text-decoration-none">Start Practice</a>
+                        <a href="{% url 'home' %}" class="btn-card-action">Start Practice ➔</a>
                     </div>
                 </div>
             </div>
 
             <!-- Card 2: Handwritten Solutions -->
             <div class="col-md-4">
-                <div class="card resource-card p-4 text-center">
-                    <div class="d-flex justify-content-end">
+                <div class="teachoo-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="card-icon">✏️</div>
                         {% if profile.is_premium %}
                         <span class="badge-unlocked">Unlocked</span>
                         {% else %}
-                        <span class="badge-locked">🔒 Paid Plan</span>
+                        <span class="badge-locked">🔒 Paid</span>
                         {% endif %}
                     </div>
-                    <div class="icon-box bg-warning-subtle text-warning">✏️</div>
-                    <h5 class="fw-bold text-dark">Handwritten Solutions</h5>
-                    <p class="text-muted small">Step-by-step, clean handwritten answers for deeply understanding core logic.</p>
+                    <h5 class="fw-bold mb-2">Handwritten Solutions</h5>
+                    <p class="text-secondary small mb-4">Clean, step-by-step solutions to master complex topics easily.</p>
                     <div class="mt-auto">
                         {% if profile.is_premium %}
-                        <a href="{% url 'solutions' %}" class="btn btn-action text-decoration-none">View Solutions</a>
+                        <a href="{% url 'solutions' %}" class="btn-card-action">View Solutions ➔</a>
                         {% else %}
-                        <a href="{% url 'checkout' %}" class="btn btn-action text-decoration-none">🔒 Unlock Now</a>
+                        <a href="{% url 'checkout' %}" class="btn-card-action">🔒 Unlock Access</a>
                         {% endif %}
                     </div>
                 </div>
@@ -196,22 +212,22 @@
 
             <!-- Card 3: Premium PDF Notes -->
             <div class="col-md-4">
-                <div class="card resource-card p-4 text-center">
-                    <div class="d-flex justify-content-end">
+                <div class="teachoo-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="card-icon">📄</div>
                         {% if profile.is_premium %}
                         <span class="badge-unlocked">Unlocked</span>
                         {% else %}
-                        <span class="badge-locked">🔒 Paid Plan</span>
+                        <span class="badge-locked">🔒 Paid</span>
                         {% endif %}
                     </div>
-                    <div class="icon-box bg-info-subtle text-info">📄</div>
-                    <h5 class="fw-bold text-dark">Premium PDF Notes</h5>
-                    <p class="text-muted small">Highly optimized, chapter-wise premium study notes without messy ads.</p>
+                    <h5 class="fw-bold mb-2">Premium PDF Notes</h5>
+                    <p class="text-secondary small mb-4">Quick chapter summaries and formula sheets for fast revision.</p>
                     <div class="mt-auto">
                         {% if profile.is_premium %}
-                        <a href="{% url 'notes' %}" class="btn btn-action text-decoration-none">Open Notes</a>
+                        <a href="{% url 'notes' %}" class="btn-card-action">Open Notes ➔</a>
                         {% else %}
-                        <a href="{% url 'checkout' %}" class="btn btn-action text-decoration-none">🔒 Unlock Now</a>
+                        <a href="{% url 'checkout' %}" class="btn-card-action">🔒 Unlock Access</a>
                         {% endif %}
                     </div>
                 </div>
