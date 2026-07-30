@@ -180,23 +180,24 @@
         <div class="row g-4 mb-5">
             
             <!-- Card 1: Practice Exams -->
-            <div class="col-md-4">
-                <div class="bw-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="card-icon">📝</div>
-                        {% if profile.is_premium %}
-                        <span class="badge-status badge-unlocked">Active</span>
-                        {% else %}
-                        <span class="badge-status badge-locked">Locked</span>
-                        {% endif %}
-                    </div>
-                    <h5 class="fw-bold mb-2">Practice Exams</h5>
-                    <p class="text-secondary small mb-4">Real-time timed tests with instant solution keys.</p>
-                    <div class="mt-auto">
-                        <a href="{% url 'dashboard' %}" class="btn-card-action">Start Practice ➔</a>
-                    </div>
-                </div>
-            </div>
+<div class="col-md-4">
+    <div class="bw-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="card-icon">📝</div>
+            {% if profile.is_premium %}
+            <span class="badge-status badge-unlocked">Active</span>
+            {% else %}
+            <span class="badge-status badge-locked">Locked</span>
+            {% endif %}
+        </div>
+        <h5 class="fw-bold mb-2">Practice Exams</h5>
+        <p class="text-secondary small mb-4">Real-time timed tests with instant solution keys.</p>
+        <div class="mt-auto">
+            <!-- 💡 यहाँ ध्यान से देखो, URL 'dashboard' ही होना चाहिए -->
+            <a href="{% url 'dashboard' %}" class="btn-card-action">Start Practice ➔</a>
+        </div>
+    </div>
+</div>
 
             <!-- Card 2: Handwritten Solutions -->
             <div class="col-md-4">
