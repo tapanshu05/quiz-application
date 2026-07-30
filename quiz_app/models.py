@@ -47,6 +47,7 @@ class StudentProfile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     mobile_number = models.CharField(max_length=15, blank=True, null=True)
+    otp = models.CharField(max_length=6, blank=True, null=True)  # 👈 OTP सेव करने के लिए फ़ील्ड
     student_class = models.CharField(max_length=2, choices=CLASS_CHOICES, default='10')
     is_premium = models.BooleanField(default=False)
     payment_id = models.CharField(max_length=100, blank=True, null=True)
