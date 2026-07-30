@@ -14,59 +14,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
             padding: 40px 0;
             margin: 0;
         }
 
-        .bg-glow {
-            position: absolute;
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(0, 210, 181, 0.15) 0%, rgba(11, 15, 23, 0) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
         .auth-card {
-            position: relative;
-            z-index: 1;
-            background: rgba(17, 24, 39, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(17, 24, 39, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 36px;
             width: 100%;
             max-width: 440px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 210, 181, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
 
         .brand-logo {
             font-size: 28px;
             font-weight: 800;
             color: #00d2b5;
-            letter-spacing: -0.5px;
             text-decoration: none;
             display: block;
             text-align: center;
             margin-bottom: 8px;
-        }
-
-        .auth-title {
-            font-weight: 700;
-            text-align: center;
-            font-size: 22px;
-            margin-bottom: 6px;
-        }
-
-        .auth-subtitle {
-            color: #94a3b8;
-            text-align: center;
-            font-size: 13px;
-            margin-bottom: 24px;
         }
 
         .form-label {
@@ -92,23 +61,6 @@
             box-shadow: 0 0 0 3px rgba(0, 210, 181, 0.15);
         }
 
-        .btn-otp {
-            background-color: #1a2234;
-            color: #00d2b5;
-            border: 1px solid #00d2b5;
-            font-weight: 600;
-            border-radius: 10px;
-            font-size: 13px;
-            padding: 0 16px;
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-
-        .btn-otp:hover {
-            background-color: #00d2b5;
-            color: #0b0f17;
-        }
-
         .btn-auth {
             background: linear-gradient(135deg, #00d2b5 0%, #00b89f 100%);
             color: #0b0f17;
@@ -117,15 +69,13 @@
             padding: 13px;
             width: 100%;
             border: none;
-            margin-top: 15px;
+            margin-top: 20px;
             font-size: 15px;
             transition: all 0.2s ease;
         }
 
         .btn-auth:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 210, 181, 0.3);
-            color: #0b0f17;
+            opacity: 0.9;
         }
 
         .auth-footer {
@@ -140,31 +90,14 @@
             text-decoration: none;
             font-weight: 600;
         }
-
-        .back-home {
-            position: absolute;
-            top: 24px;
-            left: 24px;
-            color: #64748b;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .back-home:hover {
-            color: #00d2b5;
-        }
     </style>
 </head>
 <body>
 
-    <a href="/" class="back-home">← Home Page</a>
-    <div class="bg-glow"></div>
-
     <div class="auth-card">
         <a href="/" class="brand-logo">🚀 FormulaFly</a>
-        <div class="auth-title">Create Account</div>
-        <div class="auth-subtitle">Start learning step by step for free</div>
+        <h4 class="fw-bold text-center mb-1">Create Account</h4>
+        <p class="text-secondary text-center small mb-4">Start learning step by step for free</p>
 
         {% if error %}
         <div class="alert alert-danger py-2 small rounded-3 mb-3" role="alert">
@@ -172,30 +105,18 @@
         </div>
         {% endif %}
 
-        <form method="POST">
+        <form method="POST" action="{% url 'register' %}">
             {% csrf_token %}
             
             {% for field in form %}
             <div class="mb-3">
                 <label class="form-label">{{ field.label }}</label>
                 {{ field }}
+                {% if field.errors %}
+                <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                {% endif %}
             </div>
             {% endfor %}
-
-            <!-- Mobile Field + Send OTP Button -->
-            <div class="mb-3">
-                <label class="form-label">Mobile Number</label>
-                <div class="d-flex gap-2">
-                    <input type="tel" id="phone_num" class="form-control" placeholder="10-digit number" required>
-                    <button type="button" class="btn btn-otp" onclick="sendOTP()">Send OTP</button>
-                </div>
-            </div>
-
-            <!-- OTP Input Box -->
-            <div class="mb-3">
-                <label class="form-label">Enter OTP</label>
-                <input type="text" name="otp_input" class="form-control" placeholder="4-digit OTP" required>
-            </div>
 
             <button type="submit" class="btn-auth">Register Now ➔</button>
         </form>
@@ -205,25 +126,5 @@
         </div>
     </div>
 
-    <script>
-        function sendOTP() {
-            let phone = document.getElementById('phone_num').value;
-            if(phone.length !== 10) {
-                alert('कृपया 10 अंकों का सही मोबाइल नंबर डालें!');
-                return;
-            }
-
-            fetch("/send-otp/", {
-                method: "POST",
-                headers: { "Content-Type": "json" },
-                body: JSON.stringify({ phone: phone })
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.message);
-            })
-            .catch(err => alert("Error sending OTP!"));
-        }
-    </script>
 </body>
 </html>

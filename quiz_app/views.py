@@ -44,32 +44,17 @@ def send_otp_view(request):
     return JsonResponse({'status': 'error', 'message': 'Invalid Request'}, status=400)
 
 # 3. Student Registration View with Mobile & OTP
+# Student Registration View
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
         
     if request.method == 'POST':
         form = StudentRegistrationForm(request.POST)
-        user_otp = request.POST.get('otp_input')
-        saved_otp = request.session.get('register_otp')
-        saved_phone = request.session.get('register_phone')
-        
-        # Verify OTP
-        if not user_otp or user_otp != saved_otp:
-            return render(request, 'quiz_app/register.html', {
-                'form': form, 
-                'error': 'गलत OTP दर्ज किया गया है! कृपया दोबारा प्रयास करें।'
-            })
-            
         if form.is_valid():
             user = form.save()
             profile, created = StudentProfile.objects.get_or_create(user=user)
-            profile.mobile_number = saved_phone
             profile.save()
-            
-            # OTP Verify होने के बाद सेशन क्लियर करें
-            request.session.pop('register_otp', None)
-            request.session.pop('register_phone', None)
             
             login(request, user)
             return redirect('dashboard')
