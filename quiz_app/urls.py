@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     # मुख्य खाली रास्ता अब सीधे लॉगिन पेज पर ले जाएगा
+    path('', views.landing_page_view, name='landing'),
+    
     path('', views.login_view, name='home'),  
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),

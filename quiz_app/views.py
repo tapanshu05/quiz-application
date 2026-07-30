@@ -243,3 +243,9 @@ def performance_history_view(request):
         
     past_results = UserResult.objects.filter(user=request.user).order_by('-id')
     return render(request, 'quiz_app/performance.html', {'past_results': past_results})
+def landing_page_view(request):
+    # अगर यूजर पहले से लॉगिन है तो उसे सीधे डैशबोर्ड भेजो, वरना डार्क होमपेज दिखाओ
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return render(request, 'quiz_app/home.html')
+
