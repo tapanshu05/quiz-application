@@ -89,9 +89,7 @@ def register_view(request):
     else:
         form = StudentRegistrationForm()
         
-    return render(request, 'quiz_app/register.html', {'form': form})import threading
-from django.core.mail import send_mail
-from django.conf import settings
+    return render(request, 'quiz_app/register.html', {'form': form})
 
 # 📩 Background Email Sending Function
 def send_welcome_email_async(user_email, username):
