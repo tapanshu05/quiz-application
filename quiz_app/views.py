@@ -42,39 +42,37 @@ def send_otp_view(request):
 
 
 # Registration View
+from django.core.mail import send_mail
+from django.conf import settings
+
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
         
     if request.method == 'POST':
         form = StudentRegistrationForm(request.POST)
-        user_otp = request.POST.get('otp_input')
-        saved_otp = request.session.get('register_otp')
-        saved_phone = request.session.get('register_phone')
-        
-        # Verify OTP
-        if not user_otp or user_otp != saved_otp:
-            return render(request, 'quiz_app/register.html', {
-                'form': form, 
-                'error': 'गलत OTP दर्ज किया गया है! कृपया Send OTP बटन दबाकर सही OTP डालें।'
-            })
-            
         if form.is_valid():
             user = form.save()
             profile, created = StudentProfile.objects.get_or_create(user=user)
-            profile.mobile_number = saved_phone
             profile.save()
             
-            # Reset OTP Session
-            request.session.pop('register_otp', None)
-            request.session.pop('register_phone', None)
+            # 📩 Send Welcome Email Automatically (100% FREE)
+            try:
+                subject = "🎉 Welcome to FormulaFly! Registration Successful"
+                message = f"Hello {user.first_name or user.username},\n\nCongratulations! Your registration on FormulaFly has been completed successfully.\n\nThank you for choosing us to power your learning journey!\n\nBest regards,\nTeam FormulaFly"
+                from_email = settings.EMAIL_HOST_USER
+                recipient_list = [user.email]
+                
+                send_mail(subject, message, from_email, recipient_list, fail_silently=True)
+            except Exception as e:
+                print(f"Email Error: {e}")
             
             login(request, user)
             return redirect('dashboard')
     else:
         form = StudentRegistrationForm()
         
-    return render(request, 'quiz_app/register.html', {'form': form})
+    return render(request, 'quiz_app/register.html', {'form': form})v
 # 4. Student Login View
 def login_view(request):
     if request.user.is_authenticated:
