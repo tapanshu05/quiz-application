@@ -26,26 +26,27 @@ class StudentRegistrationForm(forms.ModelForm):
         model = User
         fields = ['name', 'email', 'password']
 
+    # 💡 1. डुप्लीकेट ईमेल और यूजरनेम रोकने का वैलीडेशन
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(username=email).exists() or User.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already registered. Please login instead!")
+        return email
+
+    # 💡 2. सेफ सेव मेथड (ताकि प्रोफाइल क्रिएट होते वक्त IntegrityError न आए)
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = self.cleaned_data['email']  # ईमेल को ही यूजरनेम बना रहे हैं
+        user.email = self.cleaned_data['email']
         user.first_name = self.cleaned_data['name']
         user.set_password(self.cleaned_data['password'])
         
         if commit:
             user.save()
-            StudentProfile.objects.create(
-                user=user,
-                mobile_number=self.cleaned_data['mobile_number'],
-                student_class=self.cleaned_data['student_class']
-            )
+            # get_or_create सेफ तरीका है ताकि अगर प्रोफाइल सिग्नल से बन भी गई हो तो क्रैश न हो
+            profile, created = StudentProfile.objects.get_or_create(user=user)
+            profile.mobile_number = self.cleaned_data['mobile_number']
+            profile.student_class = self.cleaned_data['student_class']
+            profile.save()
+            
         return user
-
-
-class StudentLoginForm(forms.Form):
-    email = forms.EmailField(
-        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter Email'})
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter Password'})
-    )
