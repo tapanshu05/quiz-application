@@ -3,304 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard - Exam Prep Portal</title>
+    <title>Student Dashboard - ExamPreparation by FormulaFly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7fe;
-            color: #333;
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #334155;
         }
-
+        
+        /* Navbar */
         .navbar-custom {
-            background: linear-gradient(135deg, #5b73df 0%, #9053c7 100%);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ff5722 0%, #ff7043 100%);
+            padding: 15px 0;
+            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.2);
+        }
+        .brand-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+        .user-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
         }
 
+        /* Banner Card */
         .welcome-card {
             background: white;
+            border-radius: 20px;
+            border-left: 6px solid #ff5722;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .btn-unlock-banner {
+            background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            color: white;
+            font-weight: 700;
+            padding: 12px 24px;
+            border-radius: 30px;
             border: none;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(144, 83, 199, 0.08);
-            border-left: 6px solid #5b73df;
+            box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-unlock-banner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(255, 87, 34, 0.4);
+            color: white;
         }
 
-        /* 🌟 3 मुख्य बॉक्स के लिए स्पेशल स्टाइल्स */
-        .main-hub-card {
+        /* Hub Cards */
+        .resource-card {
             background: white;
-            border: none;
             border-radius: 20px;
-            padding: 30px 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
-            position: relative;
-            overflow: hidden;
+            border: none;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             height: 100%;
         }
-
-        .main-hub-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(91, 115, 223, 0.15);
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
         }
-
-        .hub-icon-wrapper {
-            width: 70px;
-            height: 70px;
-            border-radius: 50px;
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 1.8rem;
+            margin: 0 auto 15px auto;
+            font-size: 24px;
         }
-
-        .bg-quiz { background: #eef2ff; color: #5b73df; }
-        .bg-solution { background: #fff9db; color: #f59f00; }
-        .bg-notes { background: #e3fafc; color: #1098ad; }
-
-        /* 🔒 लॉक बैज का स्टाइल */
-        .lock-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(239, 68, 68, 0.1);
+        .badge-locked {
+            background-color: #fee2e2;
             color: #ef4444;
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .unlock-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .btn-hub {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
             border-radius: 12px;
-            padding: 10px 24px;
-            font-weight: 500;
-            width: 100%;
-            margin-top: 15px;
         }
-
-        .status-badge {
-            background-color: #e6f7ed;
-            color: #28a745;
-            font-weight: 600;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 0.9rem;
+        .badge-unlocked {
+            background-color: #dcfce7;
+            color: #16a34a;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
         }
-
-        /* Quiz & History Cards Fallback Styles */
-        .quiz-card, .history-card {
-            background: white;
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-        }
-        .btn-attempt {
-            background: #5b73df;
+        .btn-action {
+            background: #ff5722;
             color: white;
+            font-weight: 700;
             border-radius: 10px;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            transition: all 0.3s ease;
         }
-        .btn-attempt:hover {
-            background: #4a62cd;
+        .btn-action:hover {
+            background: #e64a19;
             color: white;
-        }
-        .score-badge {
-            background: #eef2ff;
-            color: #5b73df;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 600;
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-custom navbar-dark py-3 mb-5">
-        <div class="container">
-            <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
-                <i class="fa-solid fa-graduation-cap me-2 text-warning"></i> Exam Prep Portal
-            </a>
-            <div class="d-flex align-items-center">
-                <span class="text-white me-3 fw-medium">Welcome, {{ user.username }}!</span>
-                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm px-3 rounded-pill">Logout <i class="fa-solid fa-sign-out-alt ms-1"></i></a>
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-custom">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span class="brand-text">🚀 ExamPreparation <small class="fw-normal fs-6" style="opacity: 0.9;">- by FormulaFly</small></span>
+            <div class="d-flex align-items-center gap-3">
+                <span class="user-badge">👋 Welcome, {{ profile.user.first_name|default:user.username }}!</span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm rounded-pill px-3">Logout ➔</a>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <!-- 💡 Student Profile Card -->
-        <div class="card welcome-card p-4 mb-5">
-            <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-                <div>
-                    <h2 class="fw-bold mb-1 text-dark">Student Progress Dashboard</h2>
-                    <p class="text-muted mb-0">Access premium handwritten solutions, top-tier PDF notes, and live practice tests.</p>
-                </div>
-                <div class="mt-3 mt-md-0">
-                    <!-- 👑 डेटाबेस से सीधे प्रीमियम स्टेटस चेक हो रहा है -->
-                    {% if user.studentprofile.is_premium %}
-                        <span class="status-badge"><i class="fa-solid fa-crown me-1 text-warning"></i> Premium Access: Active</span>
-                    {% else %}
-                        <a href="/checkout/" class="btn btn-warning fw-bold rounded-pill px-4 shadow-sm text-dark">
-                            <i class="fa-solid fa-gem me-1"></i> Unlock All @ ₹59
-                        </a>
-                    {% endif %}
-                </div>
+    <div class="container my-4">
+        
+        <!-- Top Welcome & Pricing Banner -->
+        <div class="welcome-card d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <h3 class="fw-bold text-dark mb-1">Student Progress Dashboard</h3>
+                <p class="text-muted mb-0">Access premium handwritten solutions, top-tier PDF notes, and live practice tests for <strong>Class {{ student_class }}th</strong>.</p>
             </div>
+            {% if not profile.is_premium %}
+            <div>
+                <!-- 💡 यहाँ अब डायनामिक प्राइस दिखेगा: ₹149 या ₹199 -->
+                <a href="{% url 'checkout' %}" class="btn btn-unlock-banner text-decoration-none">
+                    💎 Unlock All @ ₹{{ subject_price }}
+                </a>
+            </div>
+            {% endif %}
         </div>
 
-        <!-- 🚀 3 MAIN BOXES SECTION -->
-        <h4 class="fw-bold text-secondary mb-4"><i class="fa-solid fa-layer-group me-2 text-primary"></i> Learning Resource Hub</h4>
+        <!-- Section Title -->
+        <h4 class="fw-bold text-dark my-4 d-flex align-items-center gap-2">
+            📚 Learning Resource Hub
+        </h4>
+
+        <!-- Cards Row -->
         <div class="row g-4 mb-5">
             
-            <!-- 1. QUIZZES BOX -->
-        <div class="col-md-4">
-          <div class="card main-hub-card">
-            {% if user.studentprofile.is_premium %}
-              <span class="unlock-badge"><i class="fa-solid fa-unlock me-1"></i> Unlocked</span>
-            {% else %}
-              <span class="lock-badge"><i class="fa-solid fa-lock me-1"></i> Paid Plan</span>
-            {% endif %}
-            
-            <div class="hub-icon-wrapper bg-quiz">
-              <i class="fa-regular fa-clipboard"></i>
-            </div>
-            <h4 class="fw-bold text-dark mb-2">Practice Exams</h4>
-            <p class="text-muted small">Real-time mock tests with live timers and strict anti-cheat tracking.</p>
-            
-            {% if user.studentprofile.is_premium %}
-              <a href="#quizzes-section" class="btn btn-primary btn-hub">Go to Tests →</a>
-            {% else %}
-              <a href="/checkout/" class="btn btn-warning text-dark btn-hub"><i class="fa-solid fa-lock me-1"></i> Unlock Now</a>
-            {% endif %}
-          </div>
-        </div>
-
-            <!-- 2. SOLUTIONS BOX -->
+            <!-- Card 1: Practice Exams -->
             <div class="col-md-4">
-                <div class="card main-hub-card">
-                    {% if user.studentprofile.is_premium %}
-                        <span class="unlock-badge"><i class="fa-solid fa-unlock me-1"></i> Unlocked</span>
-                    {% else %}
-                        <span class="lock-badge"><i class="fa-solid fa-lock me-1"></i> Paid Plan</span>
-                    {% endif %}
-                    
-                    <div class="hub-icon-wrapper bg-solution">
-                        <i class="fa-solid fa-pen-fancy"></i>
+                <div class="card resource-card p-4 text-center">
+                    <div class="d-flex justify-content-end">
+                        {% if profile.is_premium %}
+                        <span class="badge-unlocked">Unlocked</span>
+                        {% else %}
+                        <span class="badge-locked">🔒 Paid Plan</span>
+                        {% endif %}
                     </div>
-                    <h4 class="fw-bold text-dark mb-2">Handwritten Solutions</h4>
+                    <div class="icon-box bg-primary-subtle text-primary">📝</div>
+                    <h5 class="fw-bold text-dark">Practice Exams</h5>
+                    <p class="text-muted small">Real-time mock tests with live timers and detailed score analytics.</p>
+                    <div class="mt-auto">
+                        <a href="{% url 'home' %}" class="btn btn-action text-decoration-none">Start Practice</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Handwritten Solutions -->
+            <div class="col-md-4">
+                <div class="card resource-card p-4 text-center">
+                    <div class="d-flex justify-content-end">
+                        {% if profile.is_premium %}
+                        <span class="badge-unlocked">Unlocked</span>
+                        {% else %}
+                        <span class="badge-locked">🔒 Paid Plan</span>
+                        {% endif %}
+                    </div>
+                    <div class="icon-box bg-warning-subtle text-warning">✏️</div>
+                    <h5 class="fw-bold text-dark">Handwritten Solutions</h5>
                     <p class="text-muted small">Step-by-step, clean handwritten answers for deeply understanding core logic.</p>
-                    
-                    {% if user.studentprofile.is_premium %}
-                        <!-- 💡 अनलॉक होने के बाद यहाँ अपना असली सॉल्यूशन्स वाला यूआरएल पाथ (जैसे /solutions/) डाल सकते हो -->
-                        <a href="/solutions/" class="btn btn-success text-white btn-hub">View Solutions →</a>
-                    {% else %}
-                        <a href="/checkout/" class="btn btn-warning text-dark btn-hub"><i class="fa-solid fa-lock me-1"></i> Unlock Now</a>
-                    {% endif %}
+                    <div class="mt-auto">
+                        {% if profile.is_premium %}
+                        <a href="{% url 'solutions' %}" class="btn btn-action text-decoration-none">View Solutions</a>
+                        {% else %}
+                        <a href="{% url 'checkout' %}" class="btn btn-action text-decoration-none">🔒 Unlock Now</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
-            <!-- 3. NOTES BOX -->
+            <!-- Card 3: Premium PDF Notes -->
             <div class="col-md-4">
-                <div class="card main-hub-card">
-                    {% if user.studentprofile.is_premium %}
-                        <span class="unlock-badge"><i class="fa-solid fa-unlock me-1"></i> Unlocked</span>
-                    {% else %}
-                        <span class="lock-badge"><i class="fa-solid fa-lock me-1"></i> Paid Plan</span>
-                    {% endif %}
-                    
-                    <div class="hub-icon-wrapper bg-notes">
-                        <i class="fa-regular fa-file-pdf"></i>
+                <div class="card resource-card p-4 text-center">
+                    <div class="d-flex justify-content-end">
+                        {% if profile.is_premium %}
+                        <span class="badge-unlocked">Unlocked</span>
+                        {% else %}
+                        <span class="badge-locked">🔒 Paid Plan</span>
+                        {% endif %}
                     </div>
-                    <h4 class="fw-bold text-dark mb-2">Premium PDF Notes</h4>
+                    <div class="icon-box bg-info-subtle text-info">📄</div>
+                    <h5 class="fw-bold text-dark">Premium PDF Notes</h5>
                     <p class="text-muted small">Highly optimized, chapter-wise premium study notes without messy ads.</p>
-                    
-                    {% if user.studentprofile.is_premium %}
-                        <!-- 💡 अनलॉक होने के बाद यहाँ अपना असली नोट्स वाला यूआरएल पाथ (जैसे /notes/) डाल सकते हो -->
-                        <a href="/notes/" class="btn btn-info text-white btn-hub">Download Notes →</a>
-                    {% else %}
-                        <a href="/checkout/" class="btn btn-warning text-dark btn-hub"><i class="fa-solid fa-lock me-1"></i> Unlock Now</a>
-                    {% endif %}
+                    <div class="mt-auto">
+                        {% if profile.is_premium %}
+                        <a href="{% url 'notes' %}" class="btn btn-action text-decoration-none">Open Notes</a>
+                        {% else %}
+                        <a href="{% url 'checkout' %}" class="btn btn-action text-decoration-none">🔒 Unlock Now</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        <hr class="my-5" style="opacity: 0.1;">
-
-        <!-- 📋 EXISTING PARTS (AVAILABLE QUIZZES & HISTORY) -->
-        <!-- 📋 यहाँ से क्विज़ और परफ़ॉर्मेंस हिस्ट्री सेक्शन शुरू होता है -->
-        {% if user.studentprofile.is_premium %}
-        <div class="row g-4" id="quizzes-section">
-            <div class="col-lg-7">
-                <h4 class="fw-bold text-secondary mb-4"><i class="fa-solid fa-play me-2 text-success"></i> Start Your Active Test</h4>
-                <div class="row g-3">
-                    {% for quiz in available_quizzes %}
-                    <div class="col-md-6">
-                        <div class="card quiz-card h-100 p-3">
-                            <div class="card-body d-flex flex-column justify-content-between">
-                                <div>
-                                    <h5 class="fw-bold text-dark text-capitalize mb-2">{{ quiz }}</h5>
-                                    <p class="text-muted small mb-4">No description provided for this mock test.</p>
-                                </div>
-                                <a href="/quiz/{{ quiz.id }}/" class="btn btn-attempt w-100 shadow-sm text-center">
-                                    <i class="fa-solid fa-play me-1 small"></i> Attempt Quiz
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <div class="col-12">
-                        <p class="text-muted">No quizzes available at the moment.</p>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="col-lg-5">
-                <h4 class="fw-bold text-secondary mb-4"><i class="fa-solid fa-chart-line me-2 text-info"></i> Performance Analytics</h4>
-                <div class="card history-card p-4 text-center border-0 shadow-sm rounded-4 bg-white">
-                    <div class="my-3">
-                        <i class="fa-solid fa-receipt text-info mb-3" style="font-size: 3.5rem; opacity: 0.8;"></i>
-                        <h5 class="fw-bold text-dark mb-2">Track Your Progress</h5>
-                        <p class="text-muted small mx-auto" style="max-width: 300px;">
-                            Check your detailed scorecard, previous attempts, marks metrics, and analysis for all taken mock tests.
-                        </p>
-                    </div>
-                    <a href="{% url 'performance_history' %}" class="btn btn-info text-white fw-bold rounded-pill py-2.5 px-4 shadow-sm w-100 mt-2">
-                        <i class="fa-solid fa-eye me-2"></i> View Performance History
-                    </a>
-                </div>
-            </div>
-        <!-- 🔒 अगर यूजर प्रीमियम नहीं है, तो उसे यह सुंदर सा लॉक मैसेज दिखेगा -->
-        <div class="text-center py-5 bg-white rounded-4 shadow-sm mt-4 mb-5 border">
-            <i class="fa-solid fa-lock text-danger mb-3" style="font-size: 3rem; opacity: 0.8;"></i>
-            <h4 class="fw-bold text-dark mb-2">Practice Exams & History are Locked</h4>
-            <p class="text-muted small mx-auto px-3" style="max-width: 500px;">
-                Please unlock premium access to view and practice live mock tests, see your performance history, and track detailed analytics.
-            </p>
-            <a href="/checkout/" class="btn btn-warning fw-bold text-dark rounded-pill px-4 mt-3 shadow-sm">
-                <i class="fa-solid fa-gem me-1"></i> Unlock Everything Now
-            </a>
-        </div>
-        {% endif %}
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
