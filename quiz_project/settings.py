@@ -209,3 +209,5 @@ ANYMAIL = {
 DEFAULT_FROM_EMAIL = "FormulaFly <formulafly.online@gmail.com>"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
