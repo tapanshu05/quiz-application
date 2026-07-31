@@ -196,10 +196,11 @@ CSRF_COOKIE_SECURE = True
 
 
 # Brevo (Sendinblue) Email Configuration - 100% Deliverability
+# Brevo Email Configuration (100% Guaranteed Email)
 INSTALLED_APPS += ['anymail']
 
 EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
 ANYMAIL = {
-    "BREVO_API_KEY": "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",  # 👈 Brevo से मिली API Key यहाँ चिपकाएँ
+    "BREVO_API_KEY": "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",  # 👈 यहाँ अपनी पूरी कॉपी की हुई key डालें
 }
 DEFAULT_FROM_EMAIL = "FormulaFly <formulafly.online@gmail.com>"
