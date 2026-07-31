@@ -195,13 +195,11 @@ CSRF_COOKIE_SECURE = True
 
 
 
-# Email Configuration (Gmail SMTP - Production Ready)
-# Email Configuration (Production Ready SSL)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = False
-EMAIL_HOST_USER = 'formulafly.online@gmail.com'
-EMAIL_HOST_PASSWORD = 'bclywoohwqndehtm'
-DEFAULT_FROM_EMAIL = 'FormulaFly <formulafly.online@gmail.com>'
+# Brevo (Sendinblue) Email Configuration - 100% Deliverability
+INSTALLED_APPS += ['anymail']
+
+EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
+ANYMAIL = {
+    "BREVO_API_KEY": "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",  # 👈 Brevo से मिली API Key यहाँ चिपकाएँ
+}
+DEFAULT_FROM_EMAIL = "FormulaFly <formulafly.online@gmail.com>"
