@@ -29,8 +29,9 @@
         .nav-link-custom {
             color: #cbd5e1;
             font-weight: 600;
-            margin: 0 12px;
+            margin: 0 10px;
             text-decoration: none;
+            font-size: 14px;
         }
         .nav-link-custom:hover {
             color: #00d2b5;
@@ -93,13 +94,23 @@
             background-color: #1a2234;
             color: #cbd5e1;
             border: 1px solid #334155;
-            padding: 8px 22px;
+            padding: 8px 20px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 14px;
             margin: 5px;
             display: inline-block;
             text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .badge-chip:hover {
+            border-color: #00d2b5;
+            color: #00d2b5;
+        }
+        .badge-chip span {
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 500;
         }
 
         /* Stats Bar */
@@ -162,9 +173,10 @@
             <a href="/" class="brand-logo">🚀 FormulaFly</a>
             <div class="d-none d-md-block">
                 <a href="#" class="nav-link-custom">Maths</a>
-                <a href="#" class="nav-link-custom">Science</a>
+                <a href="#" class="nav-link-custom">Science (9-10)</a>
+                <a href="#" class="nav-link-custom">Physics (11-12)</a>
+                <a href="#" class="nav-link-custom">Chemistry (11-12)</a>
                 <a href="#" class="nav-link-custom">English</a>
-                <a href="#" class="nav-link-custom">Class 9-12</a>
             </div>
             <div class="d-flex gap-2">
                 {% if user.is_authenticated %}
@@ -188,12 +200,13 @@
             
             <a href="{% url 'register' %}" class="btn btn-start">Start Free ➔</a>
 
+            <!-- Updated Subject Chips -->
             <div class="mt-4">
                 <a href="#" class="badge-chip">Maths</a>
-                <a href="#" class="badge-chip">Science</a>
+                <a href="#" class="badge-chip">Science <span>(Class 9-10)</span></a>
+                <a href="#" class="badge-chip">Physics <span>(Class 11-12)</span></a>
+                <a href="#" class="badge-chip">Chemistry <span>(Class 11-12)</span></a>
                 <a href="#" class="badge-chip">English</a>
-                <a href="#" class="badge-chip">Physics</a>
-                <a href="#" class="badge-chip">Chemistry</a>
             </div>
         </div>
     </section>
