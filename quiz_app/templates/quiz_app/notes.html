@@ -2,14 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Premium PDF Notes - Exam Prep Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ request.GET.subject }} Class {{ request.GET.class }} Notes - FormulaFly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0b0f17; color: #ffffff; font-family: sans-serif; }
+        .navbar-teachoo { background-color: #0b0f17; padding: 18px 0; border-bottom: 1px solid #1e293b; }
+        .brand-logo { font-size: 24px; font-weight: 800; color: #00d2b5; text-decoration: none; }
+        .chapter-card {
+            background: #121824;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .preview-box {
+            background: #151d2c;
+            border: 1px dashed #334155;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .blur-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 70%;
+            background: linear-gradient(to bottom, rgba(18,24,36,0.2), #121824);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 25px;
+        }
+        .btn-pay {
+            background: #00d2b5; color: #0b0f17; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container text-center py-5">
-        <h1 class="fw-bold text-info mb-3">📚 Premium PDF Notes</h1>
-        <p class="text-muted">Welcome to the Premium Section! Your study materials and PDFs will appear here.</p>
-        <a href="/dashboard/" class="btn btn-primary mt-3">Back to Dashboard</a>
+<body>
+
+    <nav class="navbar navbar-teachoo">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="brand-logo">🚀 FormulaFly</a>
+            <a href="{% url 'dashboard' %}" class="btn text-white border-secondary">⬅ Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="mb-4">
+            <span class="badge px-3 py-2 fw-bold" style="background: rgba(0,210,181,0.15); color: #00d2b5;">
+                CLASS {{ request.GET.class }}th • {{ request.GET.subject|upper }}
+            </span>
+            <h2 class="fw-bold mt-2">Chapter Wise Revision Notes</h2>
+        </div>
+
+        <!-- Free Preview Area -->
+        <div class="preview-box mb-5">
+            <h4 class="fw-bold text-white mb-2">📖 Chapter 1: Free Sample Notes Preview</h4>
+            <p class="text-secondary">Important Formulas, Definitions & Quick Revision Points...</p>
+            <div class="text-start text-secondary small p-3 bg-dark rounded mb-3">
+                1. Fundamental concepts and key definitions.<br>
+                2. Standard formulas and operational methods.<br>
+                3. High-yield exam prep points...
+            </div>
+
+            <!-- Blurred Lock Banner -->
+            <div class="blur-overlay">
+                <h5 class="fw-bold text-white mb-2">🔒 Unlock Complete Notes & PDF Storage</h5>
+                <p class="text-secondary small mb-3">Save all chapter notes directly to your FormulaFly Student Profile forever.</p>
+                <a href="{% url 'checkout' %}" class="btn-pay">Save Full Notes to Profile @ ₹199 ➔</a>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>

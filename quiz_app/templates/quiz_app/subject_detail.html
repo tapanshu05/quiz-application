@@ -13,17 +13,16 @@
             min-height: 100vh;
         }
 
-        /* Header Navbar */
         .navbar-teachoo {
             background-color: #0b0f17;
             padding: 18px 0;
             border-bottom: 1px solid #1e293b;
         }
-        .brand-logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: #00d2b5;
-            text-decoration: none;
+        .brand-logo { 
+            font-size: 24px; 
+            font-weight: 800; 
+            color: #00d2b5; 
+            text-decoration: none; 
         }
         .btn-back {
             background: #1a2234;
@@ -34,114 +33,72 @@
             font-weight: 600;
             text-decoration: none;
             font-size: 14px;
+            transition: all 0.2s ease;
         }
         .btn-back:hover {
             color: #00d2b5;
             border-color: #00d2b5;
         }
 
-        /* Banner */
-        .subject-header {
+        /* Banner Box */
+        .hero-banner {
             background: #121824;
             border: 1px solid #1e293b;
             border-radius: 16px;
             padding: 30px;
-            margin-top: 40px;
             margin-bottom: 40px;
         }
-        .class-badge {
-            background: rgba(0, 210, 181, 0.1);
-            color: #00d2b5;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
 
-        /* Big Feature Cards */
-        .module-card {
+        /* Content Cards */
+        .card-custom {
             background: #121824;
             border: 1px solid #1e293b;
-            border-radius: 20px;
-            padding: 40px 30px;
+            border-radius: 16px;
+            padding: 32px;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             transition: all 0.3s ease;
         }
-        .module-card:hover {
+        .card-custom:hover {
             border-color: #00d2b5;
-            transform: translateY(-6px);
+            transform: translateY(-4px);
             box-shadow: 0 12px 30px rgba(0, 210, 181, 0.1);
         }
-        .module-icon {
-            width: 64px;
-            height: 64px;
-            background: #1a2234;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin-bottom: 24px;
-        }
-        .module-title {
-            font-size: 26px;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
-        .module-desc {
-            color: #94a3b8;
-            font-size: 15px;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-        .btn-module {
-            background: #ffffff;
-            color: #0b0f17;
-            font-weight: 800;
-            font-size: 16px;
-            padding: 14px;
-            border-radius: 10px;
-            border: none;
-            text-decoration: none;
-            text-align: center;
-            display: block;
-            transition: all 0.2s;
-        }
-        .btn-module:hover {
-            background: #00d2b5;
-            color: #0b0f17;
+
+        .card-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            width: fit-content;
+            padding: 10px 14px;
+            border-radius: 12px;
         }
 
-        /* SST Sub-Category Buttons */
-        .sst-sub-btn {
-            background: #1a2234;
-            color: #cbd5e1;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 12px 16px;
+        .btn-action {
+            background-color: #ffffff;
+            color: #0b0f17;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
+            padding: 12px 20px;
+            border-radius: 10px;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
             transition: all 0.2s ease;
+            border: none;
         }
-        .sst-sub-btn:hover {
-            border-color: #00d2b5;
-            color: #00d2b5;
-            background: #1e293b;
+        .btn-action:hover {
+            background-color: #00d2b5;
+            color: #0b0f17;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Navbar -->
+    <!-- Header Navigation -->
     <nav class="navbar navbar-teachoo">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="/" class="brand-logo">🚀 FormulaFly</a>
@@ -149,84 +106,53 @@
         </div>
     </nav>
 
-    <div class="container pb-5">
-        <!-- Header Banner -->
-        <div class="subject-header">
-            <span class="class-badge">Class {{ student_class }}th • {{ subject_name }}</span>
-            <h2 class="fw-bold mb-1">{{ subject_name }} Study Material</h2>
-            <p class="text-secondary mb-0">Choose whether you want to read theory notes or check step-by-step NCERT solutions.</p>
+    <div class="container py-5">
+        
+        <!-- Header Subject Info Banner -->
+        <div class="hero-banner">
+            <span class="badge px-3 py-2 fw-bold" style="background-color: rgba(0, 210, 181, 0.15); color: #00d2b5; font-size: 13px;">
+                Class {{ student_class }}th • {{ subject_name }}
+            </span>
+            <h1 class="fw-bold mt-3 mb-2">{{ subject_name }} Study Material</h1>
+            <p class="text-secondary m-0">
+                Choose whether you want to read theory notes or check step-by-step NCERT solutions.
+            </p>
         </div>
 
-        <!-- 2 Big Boxes -->
+        <!-- Cards Section -->
         <div class="row g-4">
             
-            <!-- Box 1: NCERT Notes -->
+            <!-- Card 1: NCERT Notes -->
             <div class="col-12 col-md-6">
-                <div class="module-card">
+                <div class="card-custom">
                     <div>
-                        <div class="module-icon">📚</div>
-                        <div class="module-title">NCERT Notes</div>
-                        <div class="module-desc">
+                        <div class="card-icon">📚</div>
+                        <h3 class="fw-bold text-white mb-2">NCERT Notes</h3>
+                        <p class="text-secondary small mb-4">
                             Crisp chapter summaries, key definitions, timelines, and high-yield concepts designed for fast revision.
-                        </div>
-
-                        {% if subject_name == 'SST' %}
-                        <!-- SST Sub-Categories for Notes -->
-                        <div class="d-flex flex-column gap-2 mb-4">
-                            <a href="{% url 'notes' %}?sub=history" class="sst-sub-btn">
-                                <span>🏛️ History Notes</span> ➔
-                            </a>
-                            <a href="{% url 'notes' %}?sub=geography" class="sst-sub-btn">
-                                <span>🌍 Geography Notes</span> ➔
-                            </a>
-                            <a href="{% url 'notes' %}?sub=civics" class="sst-sub-btn">
-                                <span>⚖️ Political Science (Civics)</span> ➔
-                            </a>
-                            <a href="{% url 'notes' %}?sub=economics" class="sst-sub-btn">
-                                <span>📊 Economics Notes</span> ➔
-                            </a>
-                        </div>
-                        {% endif %}
+                        </p>
                     </div>
-
-                    {% if subject_name != 'SST' %}
-                    <a href="{% url 'notes' %}" class="btn-module">Open NCERT Notes ➔</a>
-                    {% endif %}
+                    <!-- Redirects to Preview Page first -->
+                    <a href="{% url 'notes' %}?subject={{ subject_name }}&class={{ student_class }}" class="btn-action">
+                        Open NCERT Notes ➔
+                    </a>
                 </div>
             </div>
 
-            <!-- Box 2: NCERT Solutions -->
+            <!-- Card 2: NCERT Solutions -->
             <div class="col-12 col-md-6">
-                <div class="module-card">
+                <div class="card-custom">
                     <div>
-                        <div class="module-icon">✍️</div>
-                        <div class="module-title">NCERT Solutions</div>
-                        <div class="module-desc">
+                        <div class="card-icon">✍️</div>
+                        <h3 class="fw-bold text-white mb-2">NCERT Solutions</h3>
+                        <p class="text-secondary small mb-4">
                             Comprehensive, step-by-step exercise solutions for textbook & exemplar questions with clear maps and answers.
-                        </div>
-
-                        {% if subject_name == 'SST' %}
-                        <!-- SST Sub-Categories for Solutions -->
-                        <div class="d-flex flex-column gap-2 mb-4">
-                            <a href="{% url 'solutions' %}?sub=history" class="sst-sub-btn">
-                                <span>🏛️ History Solutions</span> ➔
-                            </a>
-                            <a href="{% url 'solutions' %}?sub=geography" class="sst-sub-btn">
-                                <span>🌍 Geography Solutions</span> ➔
-                            </a>
-                            <a href="{% url 'solutions' %}?sub=civics" class="sst-sub-btn">
-                                <span>⚖️ Political Science (Civics)</span> ➔
-                            </a>
-                            <a href="{% url 'solutions' %}?sub=economics" class="sst-sub-btn">
-                                <span>📊 Economics Solutions</span> ➔
-                            </a>
-                        </div>
-                        {% endif %}
+                        </p>
                     </div>
-
-                    {% if subject_name != 'SST' %}
-                    <a href="{% url 'solutions' %}" class="btn-module">Open NCERT Solutions ➔</a>
-                    {% endif %}
+                    <!-- Redirects to Preview Page first -->
+                    <a href="{% url 'solutions' %}?subject={{ subject_name }}&class={{ student_class }}" class="btn-action">
+                        Open NCERT Solutions ➔
+                    </a>
                 </div>
             </div>
 
