@@ -41,6 +41,10 @@
         }
         .btn-pay {
             background: #00d2b5; color: #0b0f17; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-pay:hover {
+            background: #00b39b;
         }
     </style>
 </head>
@@ -71,11 +75,18 @@
                 3. High-yield exam prep points...
             </div>
 
-            <!-- Blurred Lock Banner -->
+            <!-- Dynamic Lock Banner -->
             <div class="blur-overlay">
                 <h5 class="fw-bold text-white mb-2">🔒 Unlock Complete Notes & PDF Storage</h5>
                 <p class="text-secondary small mb-3">Save all chapter notes directly to your FormulaFly Student Profile forever.</p>
-                <a href="{% url 'checkout' %}" class="btn-pay">Save Full Notes to Profile @ ₹199 ➔</a>
+                
+                <a href="{% url 'checkout' %}" class="btn-pay">
+                    {% if request.GET.class == '9' or request.GET.class == '10' %}
+                        Save Full Notes to Profile @ ₹149 ➔
+                    {% else %}
+                        Save Full Notes to Profile @ ₹199 ➔
+                    {% endif %}
+                </a>
             </div>
         </div>
     </div>
