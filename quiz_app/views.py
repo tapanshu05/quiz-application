@@ -243,3 +243,16 @@ def subject_detail_view(request, subject_name):
         'student_class': student_class,
     }
     return render(request, 'quiz_app/subject_detail.html', context)
+# 15. Student Profile View
+@login_required
+def profile_view(request):
+    profile, created = StudentProfile.objects.get_or_create(user=request.user)
+    student_class = getattr(profile, 'student_class', '10') or '10'
+    phone = getattr(profile, 'phone', 'Not Provided') or 'Not Provided'
+    
+    context = {
+        'profile': profile,
+        'student_class': student_class,
+        'phone': phone,
+    }
+    return render(request, 'quiz_app/profile.html', context)

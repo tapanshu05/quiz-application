@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - FormulaFly</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b0f17;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar-teachoo {
+            background-color: #0b0f17;
+            padding: 18px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+        .brand-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #00d2b5;
+            text-decoration: none;
+        }
+        .btn-back {
+            background: #1a2234;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 6px 16px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .btn-back:hover {
+            color: #00d2b5;
+            border-color: #00d2b5;
+        }
+
+        /* Profile Card Styling */
+        .profile-card {
+            background: #121824;
+            border: 1px solid #1e293b;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 60px auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 210, 181, 0.15);
+            border: 2px solid #00d2b5;
+            color: #00d2b5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0 auto 20px auto;
+        }
+        .profile-info-item {
+            background: #1a2234;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .info-label {
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .info-value {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-teachoo">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="brand-logo">🚀 FormulaFly</a>
+            <a href="{% url 'dashboard' %}" class="btn-back">⬅ Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-card">
+            <div class="avatar-circle">
+                {{ user.username|slice:":1"|upper }}
+            </div>
+            <h3 class="text-center fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h3>
+            <p class="text-center text-secondary mb-4">Student Profile</p>
+
+            <div class="profile-info-item">
+                <span class="info-label">👤 Username</span>
+                <span class="info-value">{{ user.username }}</span>
+            </div>
+
+            <div class="profile-info-item">
+                <span class="info-label">🎓 Class</span>
+                <span class="info-value">Class {{ student_class }}th</span>
+            </div>
+
+            <div class="profile-info-item">
+                <span class="info-label">📞 Mobile Number</span>
+                <span class="info-value">{{ phone }}</span>
+            </div>
+
+            <div class="profile-info-item">
+                <span class="info-label">✉️ Email Address</span>
+                <span class="info-value">{{ user.email|default:"Not Provided" }}</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -21,4 +21,5 @@ urlpatterns = [
     path('payment/success/', views.payment_success_view, name='payment_success'),
     path('send-otp/', views.send_otp_view, name='send_otp'),
     path('subject/<str:subject_name>/', views.subject_detail_view, name='subject_detail'),
+    path('profile/', views.profile_view, name='profile'),
 ]
