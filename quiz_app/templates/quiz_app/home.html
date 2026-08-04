@@ -168,46 +168,46 @@
 <body>
 
     <!-- Header Navbar (Only Maths, Science, English) -->
-    <nav class="navbar navbar-teachoo">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="/" class="brand-logo">🚀 FormulaFly</a>
-            <div class="d-none d-md-block">
-                <a href="#" class="nav-link-custom">Maths</a>
-                <a href="#" class="nav-link-custom">Science</a>
-                <a href="#" class="nav-link-custom">English</a>
-            </div>
-            <div class="d-flex gap-2">
-                {% if user.is_authenticated %}
-                    <a href="{% url 'dashboard' %}" class="btn btn-header-login">Dashboard ➔</a>
-                {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm px-3 py-2 rounded-2 fw-semibold">Login</a>
-                    <a href="{% url 'register' %}" class="btn btn-header-login">Register Free</a>
-                {% endif %}
-            </div>
+<nav class="navbar navbar-teachoo">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a href="/" class="brand-logo">🚀 FormulaFly</a>
+        <div class="d-none d-md-block">
+            <a href="{% url 'subject_detail' subject_name='Mathematics' %}" class="nav-link-custom">Maths</a>
+            <a href="{% url 'subject_detail' subject_name='Science' %}" class="nav-link-custom">Science</a>
+            <a href="{% url 'subject_detail' subject_name='English' %}" class="nav-link-custom">English</a>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container">
-            <h1 class="hero-title">
-                Learn anything.
-                <span class="hero-title-highlight">Step by step.</span>
-            </h1>
-            <p class="hero-subtitle">Handwritten Solutions • NCERT Notes • Live Practice Tests</p>
-            
-            <a href="{% url 'register' %}" class="btn btn-start">Start Free ➔</a>
-
-            <!-- Subject Chips -->
-            <div class="mt-4">
-                <a href="#" class="badge-chip">Maths</a>
-                <a href="#" class="badge-chip">Science <span>(Class 9-10)</span></a>
-                <a href="#" class="badge-chip">Physics <span>(Class 11-12)</span></a>
-                <a href="#" class="badge-chip">Chemistry <span>(Class 11-12)</span></a>
-                <a href="#" class="badge-chip">English</a>
-            </div>
+        <div class="d-flex gap-2">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn btn-header-login">Dashboard ➔</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm px-3 py-2 rounded-2 fw-semibold">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-header-login">Register Free</a>
+            {% endif %}
         </div>
-    </section>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <h1 class="hero-title">
+            Learn anything.
+            <span class="hero-title-highlight">Step by step.</span>
+        </h1>
+        <p class="hero-subtitle">Handwritten Solutions • NCERT Notes • Live Practice Tests</p>
+        
+        <a href="{% url 'register' %}" class="btn btn-start">Start Free ➔</a>
+
+        <!-- Subject Chips -->
+        <div class="mt-4">
+            <a href="{% url 'subject_detail' subject_name='Mathematics' %}" class="badge-chip">Maths</a>
+            <a href="{% url 'subject_detail' subject_name='Science' %}" class="badge-chip">Science <span>(Class 9-10)</span></a>
+            <a href="{% url 'subject_detail' subject_name='Physics' %}" class="badge-chip">Physics <span>(Class 11-12)</span></a>
+            <a href="{% url 'subject_detail' subject_name='Chemistry' %}" class="badge-chip">Chemistry <span>(Class 11-12)</span></a>
+            <a href="{% url 'subject_detail' subject_name='English' %}" class="badge-chip">English</a>
+        </div>
+    </div>
+</section>
 
     <!-- Real Stats / Value Bar -->
     <section class="stats-bar">
