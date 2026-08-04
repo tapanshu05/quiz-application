@@ -1,56 +1,88 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
-# 1. Quiz Table
-class Quiz(models.Model):
-    title = models.CharField(max_length=200)       # Name of the quiz (e.g., Python Basics)
-    time_limit = models.IntegerField()             # Time allowed in minutes (e.g., 5)
-
-    def __str__(self):
-        return self.title
-
-
-# 2. Table to store Questions and their 4 multiple-choice options
-class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE) # Links this question to a specific quiz
-    question_text = models.TextField()                       # The actual question
-    option_a = models.CharField(max_length=200)
-    option_b = models.CharField(max_length=200)
-    option_c = models.CharField(max_length=200)
-    option_d = models.CharField(max_length=200)
-    correct_option = models.CharField(max_length=1)          # Stores 'A', 'B', 'C', or 'D'
-    solution = models.TextField(blank=True, null=True, help_text="Write step-by-step LaTeX solution here")
-
-    def __str__(self):
-        return self.question_text[:50]
-
-
-# 3. Table to store User Performance/Results
-class UserResult(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE) # Which user took the test
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE) # Which quiz they took
-    score = models.IntegerField()                            # Marks obtained
-    total_questions = models.IntegerField()                  # Total questions present
-
-    def __str__(self):
-        return f"{self.user.username} - {self.quiz.title} ({self.score}/{self.total_questions})"
-
-
-# 4. Student Profile Table (All-in-one merged)
+# 1. Student Profile Model
 class StudentProfile(models.Model):
-    CLASS_CHOICES = [
+    CLASS_CHOICES = (
         ('9', 'Class 9th'),
         ('10', 'Class 10th'),
         ('11', 'Class 11th'),
         ('12', 'Class 12th'),
-    ]
+    )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    mobile_number = models.CharField(max_length=15, blank=True, null=True)
-    otp = models.CharField(max_length=6, blank=True, null=True)  # 👈 OTP सेव करने के लिए फ़ील्ड
-    student_class = models.CharField(max_length=2, choices=CLASS_CHOICES, default='10')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
+    student_class = models.CharField(max_length=10, choices=CLASS_CHOICES, default='10')
+    phone = models.CharField(max_length=15, blank=True, null=True)
     is_premium = models.BooleanField(default=False)
-    payment_id = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.user.username} - Class {self.student_class}"
+
+
+# 2. Quiz Model
+class Quiz(models.Model):
+    title = models.CharField(max_length=200, default="Quiz")
+    subject = models.CharField(max_length=100, default="Mathematics")
+    student_class = models.CharField(max_length=10, default='10')
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.title} ({self.subject} - Class {self.student_class})"
+
+
+# 3. Question Model
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions', null=True, blank=True)
+    subject = models.CharField(max_length=100, default="Mathematics")
+    student_class = models.CharField(max_length=10, default='10')
+    chapter_name = models.CharField(max_length=200, blank=True, null=True)
+    question_text = models.TextField()
+    option_a = models.CharField(max_length=200)
+    option_b = models.CharField(max_length=200)
+    option_c = models.CharField(max_length=200)
+    option_d = models.CharField(max_length=200)
+    correct_option = models.CharField(
+        max_length=1, 
+        choices=[('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')]
+    )
+    explanation = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.subject} (Class {self.student_class}) - {self.question_text[:50]}"
+
+
+# 4. User Result Model
+class UserResult(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=100, default="Mathematics")
+    score = models.IntegerField()
+    total_questions = models.IntegerField()
+    percentage = models.FloatField(default=0.0)
+    date_attempted = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.subject}: {self.score}/{self.total_questions}"
+
+
+# 5. Payment Order Model
+class PaymentOrder(models.Model):
+    PLAN_CHOICES = (
+        ('single', 'Single Subject'),
+        ('maths_science', 'Maths + Science Combo'),
+        ('all_subjects', 'All Subjects Super Combo'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    plan_type = models.CharField(max_length=20, choices=PLAN_CHOICES)
+    subject_name = models.CharField(max_length=100, blank=True, null=True)
+    student_class = models.CharField(max_length=10)
+    amount = models.IntegerField()
+    razorpay_order_id = models.CharField(max_length=100, blank=True, null=True)
+    razorpay_payment_id = models.CharField(max_length=100, blank=True, null=True)
+    is_paid = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.get_plan_type_display()} - Class {self.student_class} (Paid: {self.is_paid})"
