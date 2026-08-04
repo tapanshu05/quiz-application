@@ -44,8 +44,15 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://exampreperation.online',
     'https://www.exampreperation.online',
-    'https://quiz-application-dbo8.onrender.com', # पुराना रेंडर लिंक भी सेफ रखने के लिए
+    'http://exampreperation.online',
+    'http://www.exampreperation.online',
+    'https://*.onrender.com',
 ]
+
+# Security settings for HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False
 
 
 # Application definition
