@@ -7,246 +7,226 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #000000;
+            background-color: #0b0f17;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
         }
 
-        /* Black & White Header */
-        .navbar-bw {
-            background-color: #000000;
-            padding: 20px 0;
-            border-bottom: 1px solid #222222;
+        /* Navbar */
+        .navbar-teachoo {
+            background-color: #0b0f17;
+            padding: 18px 0;
+            border-bottom: 1px solid #1e293b;
         }
         .brand-logo {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
-            color: #ffffff;
+            color: #00d2b5;
             letter-spacing: -0.5px;
             text-decoration: none;
         }
-        .user-pill {
-            background-color: #111111;
-            color: #888888;
-            border: 1px solid #222222;
+        .user-badge {
+            background: #1a2234;
+            border: 1px solid #334155;
+            color: #cbd5e1;
             padding: 6px 16px;
             border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Welcome Banner */
+        .dashboard-header {
+            background: #121824;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        .class-tag {
+            background: rgba(0, 210, 181, 0.1);
+            color: #00d2b5;
             font-size: 13px;
-            font-weight: 500;
-        }
-
-        /* Top Minimal Banner */
-        .bw-banner {
-            background-color: #0a0a0a;
-            border: 1px solid #222222;
-            border-radius: 12px;
-            padding: 32px;
-            margin-top: 30px;
-        }
-        .btn-unlock-bw {
-            background-color: #ffffff;
-            color: #000000;
             font-weight: 700;
-            padding: 12px 24px;
-            border-radius: 8px;
-            border: none;
-            transition: all 0.2s ease;
-            text-decoration: none;
+            padding: 4px 12px;
+            border-radius: 6px;
             display: inline-block;
-        }
-        .btn-unlock-bw:hover {
-            background-color: #e5e5e5;
-            color: #000000;
-            transform: translateY(-2px);
+            margin-bottom: 10px;
         }
 
-        /* Minimal Cards */
-        .bw-card {
-            background-color: #0a0a0a;
-            border: 1px solid #222222;
-            border-radius: 12px;
+        /* Section Headings */
+        .section-title {
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #64748b;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Subject Cards */
+        .subject-card {
+            background: #121824;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
             padding: 24px;
             height: 100%;
             display: flex;
             flex-direction: column;
-            transition: border-color 0.2s ease;
+            justify-content: space-between;
+            transition: all 0.3s ease;
         }
-        .bw-card:hover {
-            border-color: #ffffff;
+        .subject-card:hover {
+            border-color: #00d2b5;
+            transform: translateY(-4px);
         }
-        .card-icon {
-            font-size: 24px;
-            background: #111111;
-            border: 1px solid #222222;
+        .subject-icon {
             width: 48px;
             height: 48px;
-            border-radius: 8px;
+            background: #1a2234;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 22px;
             margin-bottom: 16px;
         }
-        .badge-status {
+        .subject-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .subject-desc {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons & Badges */
+        .badge-active {
+            background: rgba(0, 210, 181, 0.15);
+            color: #00d2b5;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 800;
             padding: 4px 10px;
             border-radius: 20px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         .badge-locked {
-            background-color: #111111;
-            color: #666666;
-            border: 1px solid #222222;
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
         }
-        .badge-unlocked {
-            background-color: #ffffff;
-            color: #000000;
-        }
-        .btn-card-action {
-            background-color: #ffffff;
-            color: #000000;
-            border: none;
+        .btn-action {
+            background: #ffffff;
+            color: #0b0f17;
             font-weight: 700;
-            border-radius: 8px;
-            padding: 12px;
             width: 100%;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            transition: background-color 0.2s ease;
-        }
-        .btn-card-action:hover {
-            background-color: #cccccc;
-            color: #000000;
-        }
-        .btn-card-secondary {
-            background-color: #111111;
-            color: #ffffff;
-            border: 1px solid #222222;
-            font-weight: 600;
+            padding: 10px;
             border-radius: 8px;
-            padding: 12px;
-            width: 100%;
+            border: none;
             text-decoration: none;
-            display: block;
             text-align: center;
-            transition: all 0.2s ease;
+            display: block;
+            transition: all 0.2s;
         }
-        .btn-card-secondary:hover {
-            border-color: #ffffff;
-            color: #ffffff;
+        .btn-action:hover {
+            background: #00d2b5;
+            color: #0b0f17;
+        }
+        .btn-buy {
+            background: #00d2b5;
+            color: #0b0f17;
+            font-weight: 700;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            text-decoration: none;
+            text-align: center;
+            display: block;
         }
     </style>
 </head>
 <body>
 
-    <!-- Minimal Header -->
-    <nav class="navbar navbar-bw">
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-teachoo">
         <div class="container d-flex justify-content-between align-items-center">
-            <a href="/" class="brand-logo">FormulaFly.</a>
+            <a href="/" class="brand-logo">🚀 FormulaFly</a>
             <div class="d-flex align-items-center gap-3">
-                <span class="user-pill">{{ profile.user.first_name|default:user.username }}</span>
-                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm rounded-2 px-3 style="font-size: 13px;">Logout</a>
+                <span class="user-badge">👤 {{ user.username|default:"Student" }}</span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm px-3 rounded-2 fw-semibold">Logout</a>
             </div>
         </div>
     </nav>
 
-    <div class="container my-4">
-        
-        <!-- Top Banner -->
-        <div class="bw-banner d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-            <div>
-                <h3 class="fw-bold mb-1">Student Dashboard</h3>
-                <p class="text-secondary mb-0">Class {{ student_class }}th • Course Materials & Practice Portal</p>
-            </div>
-            {% if not profile.is_premium %}
-            <div>
-                <!-- 💡 क्लास के अनुसार ₹149 या ₹199 का बटन -->
-                <a href="{% url 'checkout' %}" class="btn-unlock-bw">
-                    Unlock All Access — ₹{{ subject_price }}
-                </a>
-            </div>
-            {% endif %}
+    <div class="container pb-5">
+        <!-- Welcome Banner -->
+        <div class="dashboard-header">
+            <span class="class-tag">Class 10th • CBSE</span>
+            <h2 class="fw-bold mb-1">Student Dashboard</h2>
+            <p class="text-secondary mb-0">Select a subject to access practice tests, handwritten notes, and solutions.</p>
         </div>
 
         <!-- Section Title -->
-        <h5 class="fw-bold my-4 text-uppercase tracking-wider text-secondary" style="font-size: 13px; letter-spacing: 1px;">
-            Resource Modules
-        </h5>
+        <div class="section-title">Your Enrolled Subjects</div>
 
-        <!-- Cards Row -->
-        <div class="row g-4 mb-5">
+        <!-- Subjects Grid -->
+        <div class="row g-4">
             
-            <!-- Card 1: Practice Exams -->
-<div class="col-md-4">
-    <div class="bw-card">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="card-icon">📝</div>
-            {% if profile.is_premium %}
-            <span class="badge-status badge-unlocked">Active</span>
-            {% else %}
-            <span class="badge-status badge-locked">Locked</span>
-            {% endif %}
-        </div>
-        <h5 class="fw-bold mb-2">Practice Exams</h5>
-        <p class="text-secondary small mb-4">Real-time timed tests with instant solution keys.</p>
-        <div class="mt-auto">
-            <!-- 💡 यहाँ ध्यान से देखो, URL 'dashboard' ही होना चाहिए -->
-            <a href="{% url 'dashboard' %}" class="btn-card-action">Start Practice ➔</a>
-        </div>
-    </div>
-</div>
-
-            <!-- Card 2: Handwritten Solutions -->
-            <div class="col-md-4">
-                <div class="bw-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="card-icon">✏️</div>
-                        {% if profile.is_premium %}
-                        <span class="badge-status badge-unlocked">Active</span>
-                        {% else %}
-                        <span class="badge-status badge-locked">Locked</span>
-                        {% endif %}
+            <!-- Subject 1: Maths (Unlocked) -->
+            <div class="col-12 col-md-4">
+                <div class="subject-card">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="subject-icon">📐</div>
+                            <span class="badge-active">ACTIVE</span>
+                        </div>
+                        <div class="subject-title">Mathematics</div>
+                        <div class="subject-desc">Complete NCERT step-by-step solutions, formula sheets & timed quizzes.</div>
                     </div>
-                    <h5 class="fw-bold mb-2">Handwritten Solutions</h5>
-                    <p class="text-secondary small mb-4">Step-by-step written answers for NCERT & Exemplar.</p>
-                    <div class="mt-auto">
-                        {% if profile.is_premium %}
-                        <a href="{% url 'solutions' %}" class="btn-card-action">View Solutions ➔</a>
-                        {% else %}
-                        <a href="{% url 'checkout' %}" class="btn-card-secondary">Unlock Module</a>
-                        {% endif %}
-                    </div>
+                    <a href="#" class="btn-action">Open Maths Portal ➔</a>
                 </div>
             </div>
 
-            <!-- Card 3: Premium PDF Notes -->
-            <div class="col-md-4">
-                <div class="bw-card">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="card-icon">📄</div>
-                        {% if profile.is_premium %}
-                        <span class="badge-status badge-unlocked">Active</span>
-                        {% else %}
-                        <span class="badge-status badge-locked">Locked</span>
-                        {% endif %}
+            <!-- Subject 2: Science (Unlocked) -->
+            <div class="col-12 col-md-4">
+                <div class="subject-card">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="subject-icon">🧪</div>
+                            <span class="badge-active">ACTIVE</span>
+                        </div>
+                        <div class="subject-title">Science</div>
+                        <div class="subject-desc">Physics, Chemistry & Biology notes with diagrammatic solutions.</div>
                     </div>
-                    <h5 class="fw-bold mb-2">PDF Revision Notes</h5>
-                    <p class="text-secondary small mb-4">Crisp chapter summaries designed for last-minute study.</p>
-                    <div class="mt-auto">
-                        {% if profile.is_premium %}
-                        <a href="{% url 'notes' %}" class="btn-card-action">Open Notes ➔</a>
-                        {% else %}
-                        <a href="{% url 'checkout' %}" class="btn-card-secondary">Unlock Module</a>
-                        {% endif %}
+                    <a href="#" class="btn-action">Open Science Portal ➔</a>
+                </div>
+            </div>
+
+            <!-- Subject 3: English (Locked / Buy Option) -->
+            <div class="col-12 col-md-4">
+                <div class="subject-card">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="subject-icon">📚</div>
+                            <span class="badge-locked">LOCKED</span>
+                        </div>
+                        <div class="subject-title">English</div>
+                        <div class="subject-desc">Grammar rules, chapter summaries & solved question papers.</div>
                     </div>
+                    <a href="#" class="btn-buy">Unlock for ₹149 🔒</a>
                 </div>
             </div>
 
         </div>
-
     </div>
 
 </body>
