@@ -1,0 +1,126 @@
+<style>
+    /* Footer Styling */
+    .site-footer {
+        background-color: #080c14;
+        color: #94a3b8;
+        border-top: 1px solid #1e293b;
+        padding-top: 50px;
+        padding-bottom: 30px;
+        font-size: 14px;
+    }
+    .footer-heading {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 15px;
+        margin-bottom: 16px;
+    }
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+    .footer-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    .footer-links a:hover {
+        color: #00d2b5;
+    }
+    .footer-bottom-bar {
+        border-top: 1px solid #1e293b;
+        margin-top: 40px;
+        padding-top: 25px;
+        color: #64748b;
+        font-size: 13px;
+    }
+    .legal-link {
+        color: #64748b;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+    .legal-link:hover {
+        color: #00d2b5;
+    }
+</style>
+
+<footer class="site-footer">
+    <div class="container">
+        
+        <!-- Tagline -->
+        <div class="mb-5 text-center text-md-start">
+            <h4 class="fw-bold text-white mb-1">
+                <span style="color: #00d2b5;">FormulaFly</span> is the best place to learn Maths and Science
+            </h4>
+            <p class="text-secondary small">Step-by-step NCERT Solutions, Handwritten Notes & Practice Tests.</p>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- Column 1: Maths Links -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="footer-heading">Maths - Useful Links</div>
+                <ul class="footer-links">
+                    <li><a href="{% url 'subject_detail' 'Mathematics' %}">Class 9 Maths NCERT Solutions</a></li>
+                    <li><a href="{% url 'subject_detail' 'Mathematics' %}">Class 10 Maths NCERT Solutions</a></li>
+                    <li><a href="{% url 'subject_detail' 'Mathematics' %}">Class 11 Maths NCERT Solutions</a></li>
+                    <li><a href="{% url 'subject_detail' 'Mathematics' %}">Class 12 Maths NCERT Solutions</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 2: Science Links -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="footer-heading">Science - Useful Links</div>
+                <ul class="footer-links">
+                    <li><a href="{% url 'subject_detail' 'Science' %}">Class 9 Science NCERT Solutions</a></li>
+                    <li><a href="{% url 'subject_detail' 'Science' %}">Class 10 Science NCERT Solutions</a></li>
+                    <li><a href="{% url 'subject_detail' 'Physics' %}">Class 11 Physics Notes</a></li>
+                    <li><a href="{% url 'subject_detail' 'Chemistry' %}">Class 11 Chemistry Notes</a></li>
+                    <li><a href="{% url 'subject_detail' 'Biology' %}">Class 12 Biology Notes</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Quick Resources -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="footer-heading">Useful Resources</div>
+                <ul class="footer-links">
+                    <li><a href="{% url 'dashboard' %}">Student Dashboard</a></li>
+                    <li><a href="{% url 'notes' %}">Handwritten Revision Notes</a></li>
+                    <li><a href="{% url 'solutions' %}">NCERT Exemplar Solutions</a></li>
+                    <li><a href="{% url 'performance_history' %}">Quiz & Test Series</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Legal & Policies -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="footer-heading">Company & Policies</div>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refund & Cancellation Policy</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Bottom Copyright Bar -->
+        <div class="footer-bottom-bar d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <div>
+                © 2026 FormulaFly. All rights reserved.
+            </div>
+            <div class="text-center">
+                <a href="#" class="legal-link">About Us</a> •
+                <a href="#" class="legal-link">Contact</a> •
+                <a href="#" class="legal-link">Terms</a> •
+                <a href="#" class="legal-link">Privacy</a> •
+                <a href="#" class="legal-link">Refund Policy</a>
+            </div>
+        </div>
+
+    </div>
+</footer>
