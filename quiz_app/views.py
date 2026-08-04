@@ -231,3 +231,15 @@ def payment_success_view(request):
     profile.is_premium = True
     profile.save()
     return render(request, 'quiz_app/payment_success.html')
+
+# 14. Subject Detail Page (Notes & Solutions)
+@login_required
+def subject_detail_view(request, subject_name):
+    profile, created = StudentProfile.objects.get_or_create(user=request.user)
+    student_class = str(getattr(profile, 'student_class', '10') or '10')
+
+    context = {
+        'subject_name': subject_name,
+        'student_class': student_class,
+    }
+    return render(request, 'quiz_app/subject_detail.html', context)

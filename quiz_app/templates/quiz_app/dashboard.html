@@ -170,7 +170,7 @@
                         <div class="subject-title">{{ subject.name }}</div>
                         <div class="subject-desc">{{ subject.desc }}</div>
                     </div>
-                    <a href="#" class="btn-action">Open {{ subject.name }} ➔</a>
+                    <a href="{% url 'subject_detail' subject.name %}" class="btn-action">Open {{ subject.name }} ➔</a>
                 </div>
             </div>
             {% empty %}
