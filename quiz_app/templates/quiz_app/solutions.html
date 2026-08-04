@@ -2,14 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Handwritten Solutions - Premium Only</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ request.GET.subject }} Class {{ request.GET.class }} Solutions - FormulaFly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0b0f17; color: #ffffff; font-family: sans-serif; }
+        .navbar-teachoo { background-color: #0b0f17; padding: 18px 0; border-bottom: 1px solid #1e293b; }
+        .brand-logo { font-size: 24px; font-weight: 800; color: #00d2b5; text-decoration: none; }
+        .preview-box {
+            background: #151d2c;
+            border: 1px dashed #334155;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .blur-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 70%;
+            background: linear-gradient(to bottom, rgba(18,24,36,0.2), #121824);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 25px;
+        }
+        .btn-pay {
+            background: #00d2b5; color: #0b0f17; font-weight: 700; padding: 12px 24px; border-radius: 8px; text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-pay:hover {
+            background: #00b39b;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container text-center py-5">
-        <h1 class="fw-bold text-success mb-3">🎉 Handwritten Solutions</h1>
-        <p class="text-muted">Welcome to the Premium Section! Your solutions will appear here.</p>
-        <a href="/dashboard/" class="btn btn-primary mt-3">Back to Dashboard</a>
+<body>
+
+    <nav class="navbar navbar-teachoo">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="brand-logo">🚀 FormulaFly</a>
+            <a href="{% url 'dashboard' %}" class="btn text-white border-secondary">⬅ Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="mb-4">
+            <span class="badge px-3 py-2 fw-bold" style="background: rgba(0,210,181,0.15); color: #00d2b5;">
+                CLASS {{ request.GET.class }}th • {{ request.GET.subject|upper }}
+            </span>
+            <h2 class="fw-bold mt-2">Step-by-Step NCERT Solutions</h2>
+        </div>
+
+        <!-- Free Preview Area -->
+        <div class="preview-box mb-5">
+            <h4 class="fw-bold text-white mb-2">✍️ Chapter 1: Sample Exercise Solutions</h4>
+            <p class="text-secondary">Handwritten & Verified Step-by-Step Exercise Answers...</p>
+            <div class="text-start text-secondary small p-3 bg-dark rounded mb-3">
+                1. Exercise 1.1 - Detailed Question Answers.<br>
+                2. Exercise 1.2 - Worked out examples with formulas.<br>
+                3. High-yield board exam practice problems...
+            </div>
+
+            <!-- Dynamic Lock Banner -->
+            <div class="blur-overlay">
+                <h5 class="fw-bold text-white mb-2">🔒 Unlock All Chapter Solutions</h5>
+                <p class="text-secondary small mb-3">Get full step-by-step NCERT solutions saved to your FormulaFly Profile.</p>
+                
+                <a href="{% url 'checkout' %}" class="btn-pay">
+                    {% if request.GET.class == '9' or request.GET.class == '10' %}
+                        Save Full Solutions to Profile @ ₹149 ➔
+                    {% else %}
+                        Save Full Solutions to Profile @ ₹199 ➔
+                    {% endif %}
+                </a>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>
