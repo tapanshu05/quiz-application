@@ -14,14 +14,51 @@ from .forms import StudentRegistrationForm
 from .models import StudentProfile, Quiz, Question
 
 
-# 1. Teachoo Style Dark Landing Page
+# 📚 Class Wise Dynamic Subjects Mapping
+CLASS_SUBJECTS = {
+    '9': [
+        {'name': 'Mathematics', 'icon': '📐', 'desc': 'NCERT step-by-step solutions & practice tests.'},
+        {'name': 'Science', 'icon': '🧪', 'desc': 'Physics, Chemistry & Biology concepts.'},
+        {'name': 'English', 'icon': '📚', 'desc': 'Grammar, prose & poetry notes.'},
+        {'name': 'SST', 'icon': '🌍', 'desc': 'History, Geography, Civics & Economics.'},
+        {'name': 'Hindi', 'icon': '✍️', 'desc': 'Kritika & Kshitij chapter notes.'},
+        {'name': 'Physical Education', 'icon': '⚽', 'desc': 'Physical education study guides.'},
+    ],
+    '10': [
+        {'name': 'Mathematics', 'icon': '📐', 'desc': 'Board exam targeted solutions & formulas.'},
+        {'name': 'Science', 'icon': '🧪', 'desc': 'Physics, Chemistry & Biology board prep.'},
+        {'name': 'English', 'icon': '📚', 'desc': 'First Flight & Footprints solved notes.'},
+        {'name': 'SST', 'icon': '🌍', 'desc': 'History, Geography, Civics & Economics.'},
+        {'name': 'Hindi', 'icon': '✍️', 'desc': 'Complete Hindi syllabus & solutions.'},
+        {'name': 'Physical Education', 'icon': '⚽', 'desc': 'Physical education study guides.'},
+    ],
+    '11': [
+        {'name': 'Mathematics', 'icon': '📐', 'desc': 'Algebra, Calculus & Coordinate Geometry.'},
+        {'name': 'Physics', 'icon': '⚡', 'desc': 'Mechanics, Thermodynamics & Waves.'},
+        {'name': 'Chemistry', 'icon': '🧪', 'desc': 'Organic, Inorganic & Physical Chemistry.'},
+        {'name': 'Biology', 'icon': '🧬', 'desc': 'Botany, Zoology & Key Diagrams.'},
+        {'name': 'English', 'icon': '📚', 'desc': 'Hornbill & Snapshots core literature.'},
+        {'name': 'Physical Education', 'icon': '⚽', 'desc': 'Theory & Practical study material.'},
+    ],
+    '12': [
+        {'name': 'Mathematics', 'icon': '📐', 'desc': 'Calculus, Vectors & 3D Geometry.'},
+        {'name': 'Physics', 'icon': '⚡', 'desc': 'Electrostatics, Optics & Modern Physics.'},
+        {'name': 'Chemistry', 'icon': '🧪', 'desc': 'Complete Board exam revision notes.'},
+        {'name': 'Biology', 'icon': '🧬', 'desc': 'Genetics, Biotechnology & Ecology.'},
+        {'name': 'English', 'icon': '📚', 'desc': 'Flamingo & Vistas solved notes.'},
+        {'name': 'Physical Education', 'icon': '⚽', 'desc': 'Theory & Practical study material.'},
+    ]
+}
+
+
+# 1. Landing Page
 def landing_page_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
     return render(request, 'quiz_app/home.html')
 
 
-# Send OTP API
+# 2. Send OTP API
 @csrf_exempt
 def send_otp_view(request):
     if request.method == 'POST':
@@ -66,7 +103,7 @@ def send_welcome_email_async(user_email, username):
         print(f"❌ EMAIL ERROR: Failed to send to {user_email}. Reason: {e}")
 
 
-# Registration View
+# 3. Registration View
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
@@ -76,6 +113,11 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             profile, created = StudentProfile.objects.get_or_create(user=user)
+            
+            # अगर URL query में class आयी थी तो उसे भी सेव कर लो
+            selected_class = request.GET.get('class')
+            if selected_class and hasattr(profile, 'student_class'):
+                profile.student_class = selected_class
             profile.save()
             
             # 🚀 Threading Call
@@ -92,6 +134,7 @@ def register_view(request):
         form = StudentRegistrationForm()
         
     return render(request, 'quiz_app/register.html', {'form': form})
+
 
 # 4. Student Login View
 def login_view(request):
@@ -115,18 +158,19 @@ def logout_view(request):
     return redirect('landing')
 
 
-# 6. Dashboard View
+# 6. Dynamic Student Dashboard View
 @login_required
 def student_dashboard(request):
     profile, created = StudentProfile.objects.get_or_create(user=request.user)
-    student_class = getattr(profile, 'student_class', '10') or '10'
+    student_class = str(getattr(profile, 'student_class', '10') or '10')
     
-    subject_price = 149 if student_class in ['9', '10'] else 199
+    # स्टूडेंट की क्लास के हिसाब से ऑटोमैटिक सब्जेक्ट्स लोड होंगे
+    subjects = CLASS_SUBJECTS.get(student_class, CLASS_SUBJECTS['10'])
 
     context = {
         'profile': profile,
         'student_class': student_class,
-        'subject_price': subject_price,
+        'subjects': subjects,
     }
     return render(request, 'quiz_app/dashboard.html', context)
 

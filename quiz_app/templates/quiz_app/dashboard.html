@@ -147,64 +147,37 @@
     </nav>
 
     <div class="container pb-5">
-        <!-- Welcome Banner -->
+        <!-- Dynamic Welcome Banner -->
         <div class="dashboard-header">
-            <span class="class-tag">Class 10th • CBSE</span>
+            <span class="class-tag">Class {{ student_class }}th • CBSE</span>
             <h2 class="fw-bold mb-1">Student Dashboard</h2>
             <p class="text-secondary mb-0">Select a subject to access practice tests, handwritten notes, and solutions.</p>
         </div>
 
         <!-- Section Title -->
-        <div class="section-title">Your Enrolled Subjects</div>
+        <div class="section-title">Class {{ student_class }}th Subjects</div>
 
-        <!-- Subjects Grid -->
+        <!-- Dynamic Subjects Grid -->
         <div class="row g-4">
-            
-            <!-- Subject 1: Maths -->
+            {% for subject in subjects %}
             <div class="col-12 col-md-4">
                 <div class="subject-card">
                     <div>
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="subject-icon">📐</div>
+                            <div class="subject-icon">{{ subject.icon }}</div>
                             <span class="badge-active">ACTIVE</span>
                         </div>
-                        <div class="subject-title">Mathematics</div>
-                        <div class="subject-desc">Complete NCERT step-by-step solutions, formula sheets & timed quizzes.</div>
+                        <div class="subject-title">{{ subject.name }}</div>
+                        <div class="subject-desc">{{ subject.desc }}</div>
                     </div>
-                    <a href="#" class="btn-action">Open Maths Portal ➔</a>
+                    <a href="#" class="btn-action">Open {{ subject.name }} ➔</a>
                 </div>
             </div>
-
-            <!-- Subject 2: Science -->
-            <div class="col-12 col-md-4">
-                <div class="subject-card">
-                    <div>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="subject-icon">🧪</div>
-                            <span class="badge-active">ACTIVE</span>
-                        </div>
-                        <div class="subject-title">Science</div>
-                        <div class="subject-desc">Physics, Chemistry & Biology notes with diagrammatic solutions.</div>
-                    </div>
-                    <a href="#" class="btn-action">Open Science Portal ➔</a>
-                </div>
+            {% empty %}
+            <div class="col-12 text-center text-muted py-5">
+                No subjects available for this class yet.
             </div>
-
-            <!-- Subject 3: English (Now Active & Free) -->
-            <div class="col-12 col-md-4">
-                <div class="subject-card">
-                    <div>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="subject-icon">📚</div>
-                            <span class="badge-active">ACTIVE</span>
-                        </div>
-                        <div class="subject-title">English</div>
-                        <div class="subject-desc">Grammar rules, chapter summaries & solved question papers.</div>
-                    </div>
-                    <a href="#" class="btn-action">Open English Portal ➔</a>
-                </div>
-            </div>
-
+            {% endfor %}
         </div>
     </div>
 
