@@ -96,7 +96,7 @@
         .module-desc {
             color: #94a3b8;
             font-size: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             line-height: 1.6;
         }
         .btn-module {
@@ -115,6 +115,27 @@
         .btn-module:hover {
             background: #00d2b5;
             color: #0b0f17;
+        }
+
+        /* SST Sub-Category Buttons */
+        .sst-sub-btn {
+            background: #1a2234;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+        .sst-sub-btn:hover {
+            border-color: #00d2b5;
+            color: #00d2b5;
+            background: #1e293b;
         }
     </style>
 </head>
@@ -146,10 +167,31 @@
                         <div class="module-icon">📚</div>
                         <div class="module-title">NCERT Notes</div>
                         <div class="module-desc">
-                            Crisp chapter summaries, key definitions, formulas, and high-yield concepts designed for fast revision before exams.
+                            Crisp chapter summaries, key definitions, timelines, and high-yield concepts designed for fast revision.
                         </div>
+
+                        {% if subject_name == 'SST' %}
+                        <!-- SST Sub-Categories for Notes -->
+                        <div class="d-flex flex-column gap-2 mb-4">
+                            <a href="{% url 'notes' %}?sub=history" class="sst-sub-btn">
+                                <span>🏛️ History Notes</span> ➔
+                            </a>
+                            <a href="{% url 'notes' %}?sub=geography" class="sst-sub-btn">
+                                <span>🌍 Geography Notes</span> ➔
+                            </a>
+                            <a href="{% url 'notes' %}?sub=civics" class="sst-sub-btn">
+                                <span>⚖️ Political Science (Civics)</span> ➔
+                            </a>
+                            <a href="{% url 'notes' %}?sub=economics" class="sst-sub-btn">
+                                <span>📊 Economics Notes</span> ➔
+                            </a>
+                        </div>
+                        {% endif %}
                     </div>
+
+                    {% if subject_name != 'SST' %}
                     <a href="{% url 'notes' %}" class="btn-module">Open NCERT Notes ➔</a>
+                    {% endif %}
                 </div>
             </div>
 
@@ -160,10 +202,31 @@
                         <div class="module-icon">✍️</div>
                         <div class="module-title">NCERT Solutions</div>
                         <div class="module-desc">
-                            Comprehensive, step-by-step exercise solutions for NCERT textbook & exemplar questions with clear diagrams.
+                            Comprehensive, step-by-step exercise solutions for textbook & exemplar questions with clear maps and answers.
                         </div>
+
+                        {% if subject_name == 'SST' %}
+                        <!-- SST Sub-Categories for Solutions -->
+                        <div class="d-flex flex-column gap-2 mb-4">
+                            <a href="{% url 'solutions' %}?sub=history" class="sst-sub-btn">
+                                <span>🏛️ History Solutions</span> ➔
+                            </a>
+                            <a href="{% url 'solutions' %}?sub=geography" class="sst-sub-btn">
+                                <span>🌍 Geography Solutions</span> ➔
+                            </a>
+                            <a href="{% url 'solutions' %}?sub=civics" class="sst-sub-btn">
+                                <span>⚖️ Political Science (Civics)</span> ➔
+                            </a>
+                            <a href="{% url 'solutions' %}?sub=economics" class="sst-sub-btn">
+                                <span>📊 Economics Solutions</span> ➔
+                            </a>
+                        </div>
+                        {% endif %}
                     </div>
+
+                    {% if subject_name != 'SST' %}
                     <a href="{% url 'solutions' %}" class="btn-module">Open NCERT Solutions ➔</a>
+                    {% endif %}
                 </div>
             </div>
 
