@@ -131,8 +131,9 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # Razorpay Credentials
-RAZORPAY_KEY_ID = "rzp_live_TCbTR7gZLySuQZ"
-RAZORPAY_KEY_SECRET = "Pmlmaxqa36LvUt1tEzFB4wbV"
+# Razorpay Credentials
+RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET")
 
 # Brevo (Sendinblue) Email Configuration
 EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
