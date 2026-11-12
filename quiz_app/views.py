@@ -12,6 +12,8 @@ from django.conf import settings
 
 from .forms import StudentRegistrationForm
 from .models import StudentProfile, Quiz, Question
+import razorpay
+from django.conf import settings
 
 
 # 📚 Class Wise Dynamic Subjects Mapping
