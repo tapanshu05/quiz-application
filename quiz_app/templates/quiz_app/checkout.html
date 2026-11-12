@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unlock FormulaFly Premium</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 💳 Razorpay Checkout SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
     <style>
         body {
             background-color: #0b0f17;
@@ -84,6 +87,7 @@
             border: none;
             width: 100%;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
         .btn-pay:hover {
             background-color: #00b89f;
@@ -146,7 +150,11 @@
                         </ul>
                     </div>
 
-                    <button class="btn-pay mt-4">Buy Single Subject ➔</button>
+                    <button class="btn-pay mt-4 pay-btn" 
+                            data-plan="single" 
+                            data-amount="{% if student_class == '9' or student_class == '10' %}149{% else %}199{% endif %}">
+                        Buy Single Subject ➔
+                    </button>
                 </div>
             </div>
 
@@ -173,7 +181,11 @@
                         </ul>
                     </div>
 
-                    <button class="btn-pay mt-4">Get Combo Offer ➔</button>
+                    <button class="btn-pay mt-4 pay-btn" 
+                            data-plan="combo" 
+                            data-amount="{% if student_class == '9' or student_class == '10' %}250{% else %}329{% endif %}">
+                        Get Combo Offer ➔
+                    </button>
                 </div>
             </div>
 
@@ -199,12 +211,44 @@
                         </ul>
                     </div>
 
-                    <button class="btn-pay mt-4">Unlock Everything ➔</button>
+                    <button class="btn-pay mt-4 pay-btn" 
+                            data-plan="all" 
+                            data-amount="{% if student_class == '9' or student_class == '10' %}350{% else %}450{% endif %}">
+                        Unlock Everything ➔
+                    </button>
                 </div>
             </div>
 
         </div>
     </div>
 
-</body>
-</html>
+    <!-- Hidden CSRF Token for Secure AJAX Requests -->
+    <form id="csrf-form" style="display:none;">
+        {% csrf_token %}
+    </form>
+
+    <script>
+    const options = {
+        "key": "{{ razorpay_key_id }}",
+        "amount": "{{ amount }}",
+        "currency": "INR",
+        "name": "FormulaFly",
+        "description": "Learning Pass - Class {{ student_class }}",
+        "order_id": "{{ razorpay_order_id }}",
+        "handler": function (response) {
+            window.location.href = "{% url 'payment_success' %}";
+        },
+        "theme": {
+            "color": "#00d2b5"
+        }
+    };
+
+    const rzp = new Razorpay(options);
+
+    document.querySelectorAll('.btn-pay').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            rzp.open();
+        });
+    });
+</script>

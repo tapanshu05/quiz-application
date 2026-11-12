@@ -214,14 +214,35 @@ def notes_view(request):
     return render(request, 'quiz_app/notes.html')
 
 
-# 12. Checkout
+# 1# 12. Checkout
 @login_required
 def checkout_view(request):
     profile = get_object_or_404(StudentProfile, user=request.user)
     student_class = getattr(profile, 'student_class', '10') or '10'
+    
+    # Base price calculation
     price = 149 if student_class in ['9', '10'] else 199
     
-    return render(request, 'quiz_app/checkout.html', {'price': price, 'student_class': student_class})
+    # Razorpay client setup
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+    
+    # Order creation
+    order_amount = price * 100  # Paise mein convert karne ke liye
+    order_data = {
+        'amount': order_amount,
+        'currency': 'INR',
+        'payment_capture': '1'
+    }
+    razorpay_order = client.order.create(data=order_data)
+    
+    context = {
+        'price': price,
+        'student_class': student_class,
+        'razorpay_order_id': razorpay_order['id'],
+        'razorpay_key_id': settings.RAZORPAY_KEY_ID,
+        'amount': order_amount,
+    }
+    return render(request, 'quiz_app/checkout.html', context)
 
 
 # 13. Payment Success
