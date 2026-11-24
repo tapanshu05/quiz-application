@@ -169,10 +169,16 @@ def student_dashboard(request):
     # स्टूडेंट की क्लास के हिसाब से ऑटोमैटिक सब्जेक्ट्स लोड होंगे
     subjects = CLASS_SUBJECTS.get(student_class, CLASS_SUBJECTS['10'])
 
+    # स्टूडेंट की क्लास के क्विज़ लोड करें (अगर क्लास का न हो तो सभी उपलब्ध क्विज़ दिखाएं)
+    quizzes = Quiz.objects.filter(student_class=student_class).order_by('-created_at')
+    if not quizzes.exists():
+        quizzes = Quiz.objects.all().order_by('-created_at')
+
     context = {
         'profile': profile,
         'student_class': student_class,
         'subjects': subjects,
+        'quizzes': quizzes,
     }
     return render(request, 'quiz_app/dashboard.html', context)
 
