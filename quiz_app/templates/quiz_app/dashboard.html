@@ -6,130 +6,299 @@
     <title>Dashboard - FormulaFly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        :root {
+            --bg-main: #090d14;
+            --bg-card: #111723;
+            --bg-card-hover: #151d2b;
+            --border-subtle: #1e293b;
+            --accent-teal: #00d2b5;
+            --accent-teal-glow: rgba(0, 210, 181, 0.16);
+        }
+
         body {
-            background-color: #0b0f17;
+            background-color: var(--bg-main);
+            background-image: radial-gradient(circle at 15% 0%, rgba(0, 210, 181, 0.06) 0%, transparent 45%);
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Navbar */
         .navbar-teachoo {
-            background-color: #0b0f17;
-            padding: 18px 0;
-            border-bottom: 1px solid #1e293b;
+            background-color: rgba(9, 13, 20, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .brand-logo {
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 800;
-            color: #00d2b5;
+            color: var(--accent-teal);
             letter-spacing: -0.5px;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         .user-badge {
-            background: #1a2234;
-            border: 1px solid #334155;
-            color: #cbd5e1;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 14px;
+            background: #161f30;
+            border: 1px solid #2b384e;
+            color: #e2e8f0;
+            padding: 7px 16px;
+            border-radius: 50px;
+            font-size: 13.5px;
             font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .user-badge:hover {
+            border-color: var(--accent-teal);
+            color: #ffffff;
         }
 
-        /* Welcome Banner */
+        /* Hero Welcome Banner */
         .dashboard-header {
-            background: #121824;
-            border: 1px solid #1e293b;
-            border-radius: 16px;
-            padding: 30px;
-            margin-top: 40px;
-            margin-bottom: 40px;
+            background: linear-gradient(135deg, #111826 0%, #152132 100%);
+            border: 1px solid #223046;
+            border-radius: 20px;
+            padding: 34px;
+            margin-top: 32px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+        .dashboard-header::after {
+            content: "";
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle, rgba(0, 210, 181, 0.14) 0%, transparent 70%);
+            pointer-events: none;
         }
         .class-tag {
-            background: rgba(0, 210, 181, 0.1);
-            color: #00d2b5;
-            font-size: 13px;
+            background: rgba(0, 210, 181, 0.12);
+            border: 1px solid rgba(0, 210, 181, 0.3);
+            color: var(--accent-teal);
+            font-size: 12px;
             font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 6px;
+            letter-spacing: 0.5px;
+            padding: 5px 14px;
+            border-radius: 50px;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+        }
+        .btn-pro {
+            background: linear-gradient(135deg, #00d2b5 0%, #00a896 100%);
+            color: #061018;
+            font-weight: 800;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 20px rgba(0, 210, 181, 0.25);
+        }
+        .btn-pro:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 210, 181, 0.38);
+            color: #061018;
+        }
+        .btn-history {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-history:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #64748b;
+            color: #ffffff;
         }
 
-        /* Section Headings */
+        /* Quick Stat Strip */
+        .stat-pill {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(0, 210, 181, 0.1);
+            color: var(--accent-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 2px;
+        }
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        /* Section Toolbar & Search */
+        .section-bar {
+            margin-top: 34px;
+            margin-bottom: 20px;
+        }
         .section-title {
             font-size: 12px;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.6px;
             text-transform: uppercase;
-            color: #64748b;
+            color: #94a3b8;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin: 0;
+        }
+        .search-box {
+            background: #111723;
+            border: 1px solid #263348;
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 13.5px;
+            width: 240px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-box::placeholder {
+            color: #64748b;
+        }
+        .search-box:focus {
+            border-color: var(--accent-teal);
         }
 
         /* Subject Cards */
         .subject-card {
-            background: #121824;
-            border: 1px solid #1e293b;
-            border-radius: 16px;
-            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 26px;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.3s ease;
+            transition: all 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
         }
         .subject-card:hover {
-            border-color: #00d2b5;
-            transform: translateY(-4px);
+            background: var(--bg-card-hover);
+            border-color: var(--accent-teal);
+            transform: translateY(-6px);
+            box-shadow: 0 18px 35px -12px rgba(0, 210, 181, 0.18);
         }
         .subject-icon {
-            width: 48px;
-            height: 48px;
-            background: #1a2234;
-            border-radius: 12px;
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(145deg, #192336, #121927);
+            border: 1px solid #28354d;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            margin-bottom: 16px;
+            font-size: 24px;
+            margin-bottom: 18px;
+            transition: transform 0.25s ease;
+        }
+        .subject-card:hover .subject-icon {
+            transform: scale(1.06);
+            border-color: rgba(0, 210, 181, 0.4);
         }
         .subject-title {
             font-size: 20px;
             font-weight: 700;
+            color: #f8fafc;
             margin-bottom: 6px;
         }
         .subject-desc {
             color: #94a3b8;
-            font-size: 13px;
-            margin-bottom: 20px;
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin-bottom: 22px;
         }
 
-        /* Buttons & Badges */
+        /* Badges & Action Buttons */
         .badge-active {
-            background: rgba(0, 210, 181, 0.15);
-            color: #00d2b5;
-            font-size: 11px;
+            background: rgba(0, 210, 181, 0.12);
+            border: 1px solid rgba(0, 210, 181, 0.25);
+            color: var(--accent-teal);
+            font-size: 10.5px;
             font-weight: 800;
+            letter-spacing: 0.6px;
             padding: 4px 10px;
-            border-radius: 20px;
+            border-radius: 50px;
             text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-teal);
+            border-radius: 50%;
+            display: inline-block;
         }
         .btn-action {
-            background: #ffffff;
-            color: #0b0f17;
+            background: #f8fafc;
+            color: #090d14;
             font-weight: 700;
+            font-size: 14px;
             width: 100%;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 11px 16px;
+            border-radius: 10px;
             border: none;
             text-decoration: none;
             text-align: center;
-            display: block;
-            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.22s ease;
         }
-        .btn-action:hover {
-            background: #00d2b5;
-            color: #0b0f17;
+        .subject-card:hover .btn-action {
+            background: var(--accent-teal);
+            color: #061018;
+        }
+        .btn-action .arrow {
+            transition: transform 0.2s ease;
+        }
+        .subject-card:hover .btn-action .arrow {
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                padding: 24px;
+            }
+            .search-box {
+                width: 100%;
+                margin-top: 12px;
+            }
         }
     </style>
 </head>
@@ -139,48 +308,116 @@
     <nav class="navbar navbar-teachoo">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="/" class="brand-logo">🚀 FormulaFly</a>
-            <div class="d-flex align-items-center gap-3">
-                <a href="{% url 'profile' %}" class="user-badge text-decoration-none">👤 {{ user.username|default:"Student" }}</a>
-                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm px-3 rounded-2 fw-semibold">Logout</a>
+            <div class="d-flex align-items-center gap-2 gap-md-3">
+                <a href="{% url 'profile' %}" class="user-badge text-decoration-none">
+                    👤 {{ user.username|default:"Student" }}
+                </a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm px-3 py-2 rounded-3 fw-semibold text-light">
+                    Logout
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="container pb-5">
+    <div class="container pb-5 flex-grow-1">
         <!-- Dynamic Welcome Banner -->
         <div class="dashboard-header">
-            <span class="class-tag">Class {{ student_class }}th • CBSE</span>
-            <h2 class="fw-bold mb-1">Student Dashboard</h2>
-            <p class="text-secondary mb-0">Select a subject to access practice tests, handwritten notes, and solutions.</p>
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <span class="class-tag">CLASS {{ student_class }}TH • CBSE BOARD</span>
+                    <h2 class="fw-bold mb-2" style="font-size: 28px;">Welcome back, {{ user.username|default:"Scholar" }} 👋</h2>
+                    <p class="text-secondary mb-0" style="font-size: 15px;">
+                        Pick a subject below to dive into handwritten chapter notes, step-by-step NCERT solutions, and timed mock quizzes.
+                    </p>
+                </div>
+                <div class="col-lg-5 d-flex flex-wrap justify-content-lg-end gap-2">
+                    <a href="{% url 'performance_history' %}" class="btn-history">
+                        📊 Quiz Analytics
+                    </a>
+                    <a href="{% url 'checkout' %}" class="btn-pro">
+                        ⚡ Unlock Learning Pass
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <!-- Section Title -->
-        <div class="section-title">Class {{ student_class }}th Subjects</div>
+        <!-- Quick Stats Strip -->
+        <div class="row g-3">
+            <div class="col-12 col-md-4">
+                <div class="stat-pill">
+                    <div class="stat-icon">📚</div>
+                    <div>
+                        <div class="stat-label">Enrolled Subjects</div>
+                        <div class="stat-value">{{ subjects|length }} Core Subjects</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="stat-pill">
+                    <div class="stat-icon">✍️</div>
+                    <div>
+                        <div class="stat-label">Study Material</div>
+                        <div class="stat-value">NCERT + Handwritten PDFs</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="stat-pill">
+                    <div class="stat-icon">🎯</div>
+                    <div>
+                        <div class="stat-label">Practice Engine</div>
+                        <div class="stat-value">Chapter-wise MCQ Tests</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Toolbar -->
+        <div class="section-bar d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+            <div class="section-title">Class {{ student_class }}th Subjects</div>
+            <input type="text" id="subjectSearch" class="search-box" placeholder="🔍 Search subject...">
+        </div>
 
         <!-- Dynamic Subjects Grid -->
-        <div class="row g-4">
+        <div class="row g-4" id="subjectsGrid">
             {% for subject in subjects %}
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-4 subject-item" data-name="{{ subject.name|lower }}">
                 <div class="subject-card">
                     <div>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex justify-content-between align-items-start">
                             <div class="subject-icon">{{ subject.icon }}</div>
-                            <span class="badge-active">ACTIVE</span>
+                            <span class="badge-active"><span class="status-dot"></span> ACTIVE</span>
                         </div>
                         <div class="subject-title">{{ subject.name }}</div>
                         <div class="subject-desc">{{ subject.desc }}</div>
                     </div>
-                    <a href="{% url 'subject_detail' subject.name %}" class="btn-action">Open {{ subject.name }} ➔</a>
+                    <a href="{% url 'subject_detail' subject.name %}" class="btn-action">
+                        Open {{ subject.name }} <span class="arrow">➔</span>
+                    </a>
                 </div>
             </div>
             {% empty %}
-            <div class="col-12 text-center text-muted py-5">
+            <div class="col-12 text-center text-secondary py-5">
                 No subjects available for this class yet.
             </div>
             {% endfor %}
         </div>
     </div>
+
     {% include 'quiz_app/footer.html' %}
 
+    <!-- Instant Subject Filter Script -->
+    <script>
+        const searchInput = document.getElementById('subjectSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                const query = this.value.toLowerCase().trim();
+                document.querySelectorAll('.subject-item').forEach(card => {
+                    const name = card.getAttribute('data-name');
+                    card.style.display = name.includes(query) ? '' : 'none';
+                });
+            });
+        }
+    </script>
 </body>
 </html>
