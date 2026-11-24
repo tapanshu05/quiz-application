@@ -498,7 +498,9 @@
                             <div class="stat-label">New chapter-wise MCQ tests for Class {{ student_class }}th are being added soon!</div>
                         </div>
                     </div>
+                    {% if user.is_staff %}
                     <a href="/admin/" class="btn btn-outline-info btn-sm rounded-3 px-3">Add Quiz in Admin</a>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
